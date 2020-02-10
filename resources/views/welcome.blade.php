@@ -1,11 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <example-component></example-component>
-    </div>
-  </div>
+<div id="map" style="width: 800px; height: 500px;">
+  <map-box></map-box>
 </div>
 @endsection
