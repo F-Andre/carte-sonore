@@ -1972,11 +1972,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    MglMap: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglMap"]
+    MglMap: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglMap"],
+    MglMarker: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglMarker"]
   },
   data: function data() {
     return {
@@ -1985,7 +1988,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       mapStyle: "mapbox://styles/mapbox/streets-v11",
       // your map style
       zoom: 12,
-      coordinates: [-3.876758, 48.358431]
+      coordinates: [-3, 48]
     };
   },
   created: function created() {
@@ -39496,23 +39499,32 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("MglMap", {
-    attrs: {
-      accessToken: _vm.accessToken,
-      mapStyle: _vm.mapStyle,
-      center: _vm.coordinates,
-      zoom: _vm.zoom
+  return _c(
+    "MglMap",
+    {
+      attrs: {
+        accessToken: _vm.accessToken,
+        mapStyle: _vm.mapStyle,
+        center: _vm.coordinates,
+        zoom: _vm.zoom
+      },
+      on: {
+        "update:mapStyle": function($event) {
+          _vm.mapStyle = $event
+        },
+        "update:map-style": function($event) {
+          _vm.mapStyle = $event
+        },
+        load: _vm.onMapLoaded
+      }
     },
-    on: {
-      "update:mapStyle": function($event) {
-        _vm.mapStyle = $event
-      },
-      "update:map-style": function($event) {
-        _vm.mapStyle = $event
-      },
-      load: _vm.onMapLoaded
-    }
-  })
+    [
+      _c("MglMarker", {
+        attrs: { coordinates: _vm.coordinates, color: "blue" }
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

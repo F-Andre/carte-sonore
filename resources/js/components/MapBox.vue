@@ -5,16 +5,19 @@
     :center="coordinates"
     :zoom="zoom"
     @load="onMapLoaded"
-  />
+  >
+    <MglMarker :coordinates="coordinates" color="blue" />
+  </MglMap>
 </template>
 
 <script>
 import Mapbox from "mapbox-gl";
-import { MglMap } from "vue-mapbox";
+import { MglMap, MglMarker } from "vue-mapbox";
 
 export default {
   components: {
-    MglMap
+    MglMap,
+    MglMarker
   },
   data() {
     return {
@@ -22,7 +25,7 @@ export default {
         "pk.eyJ1IjoiZmFiaWVuYW5kcmUiLCJhIjoiY2s2Z2lxNXBjMHlhbDNqcXB6eDAyZnhvNyJ9.p7K1EMcW_ODNIn7q9Xf17A", // your access token. Needed if you using Mapbox maps
       mapStyle: "mapbox://styles/mapbox/streets-v11", // your map style
       zoom: 12,
-      coordinates: [-3.876758, 48.358431]
+      coordinates: [-3, 48]
     };
   },
 
