@@ -24,7 +24,7 @@ export default {
       accessToken:
         "pk.eyJ1IjoiZmFiaWVuYW5kcmUiLCJhIjoiY2s2Z2lxNXBjMHlhbDNqcXB6eDAyZnhvNyJ9.p7K1EMcW_ODNIn7q9Xf17A", // your access token. Needed if you using Mapbox maps
       mapStyle: "mapbox://styles/mapbox/streets-v11", // your map style
-      zoom: 12,
+      zoom: 14,
       coordinates: [-3, 48]
     };
   },

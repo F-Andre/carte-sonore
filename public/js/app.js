@@ -1987,7 +1987,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       // your access token. Needed if you using Mapbox maps
       mapStyle: "mapbox://styles/mapbox/streets-v11",
       // your map style
-      zoom: 12,
+      zoom: 14,
       coordinates: [-3, 48]
     };
   },
