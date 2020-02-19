@@ -2328,8 +2328,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 asyncActions = data.component.actions;
                 _context2.next = 3;
                 return asyncActions.flyTo({
-                  center: [data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude],
-                  speed: 0.8
+                  center: [data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude]
                 });
 
               case 3:

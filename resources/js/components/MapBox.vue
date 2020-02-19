@@ -68,8 +68,7 @@ export default {
         center: [
           data.mapboxEvent.coords.longitude,
           data.mapboxEvent.coords.latitude
-        ],
-        speed: 0.8
+        ]
       });
 
       await asyncActions.easeTo({ bearing: data.mapboxEvent.coords.heading });
