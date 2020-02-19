@@ -43,7 +43,7 @@ export default {
         "pk.eyJ1IjoiZmFiaWVuYW5kcmUiLCJhIjoiY2s2Z2lxNXBjMHlhbDNqcXB6eDAyZnhvNyJ9.p7K1EMcW_ODNIn7q9Xf17A", // your access token. Needed if you using Mapbox maps
       mapStyle: "mapbox://styles/mapbox/streets-v10", // your map style
       zoom: 16,
-      coordinates: [-3, 48],
+      coordinates: [-3.87698246, 48.35829219],
       positionOptions: { enableHighAccuracy: true, timeout: 1000 },
       trackUserLocation: true,
       fitBoundsOptions: { maxZoom: 18 }
@@ -64,14 +64,13 @@ export default {
 
     async onGeolocate(data) {
       const asyncActions = data.component.actions;
-      await asyncActions.flyTo({
+      await asyncActions.easeTo({
         center: [
           data.mapboxEvent.coords.longitude,
           data.mapboxEvent.coords.latitude
-        ]
+        ],
+        bearing: data.mapboxEvent.coords.heading
       });
-
-      await asyncActions.easeTo({ bearing: data.mapboxEvent.coords.heading });
 
       var textLoc =
         "Latitude: " +
