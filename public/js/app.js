@@ -2255,6 +2255,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -2263,7 +2267,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     MglMap: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglMap"],
     MglMarker: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglMarker"],
     MglGeolocateControl: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglGeolocateControl"],
-    MglNavigationControl: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglNavigationControl"]
+    MglNavigationControl: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglNavigationControl"],
+    MglPopup: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglPopup"]
   },
   data: function data() {
     return {
@@ -2281,7 +2286,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       trackUserLocation: true,
       fitBoundsOptions: {
         maxZoom: 18
-      }
+      },
+      showed: false
     };
   },
   created: function created() {
@@ -2301,8 +2307,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 this.map = event.map;
                 language = new _mapbox_mapbox_gl_language__WEBPACK_IMPORTED_MODULE_3___default.a();
                 this.map.setStyle(language.setLanguage(this.map.getStyle(), "fr"));
+                this.map.on("mousemove", function (e) {
+                  document.querySelector("#message").textContent = "";
+                  document.querySelector("#message").textContent = e.lngLat.wrap();
+                });
 
-              case 3:
+              case 4:
               case "end":
                 return _context.stop();
             }
@@ -2338,16 +2348,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 5:
+                if (data.mapboxEvent.coords.longitude == this.coordinates[0] && data.mapboxEvent.coords.latitude == this.coordinates[1]) {
+                  this.showed = true;
+                }
+
                 textLoc = "Latitude: " + data.mapboxEvent.coords.latitude + " / " + "Longitude: " + data.mapboxEvent.coords.longitude + " / " + "Altitude: " + data.mapboxEvent.coords.altitude + " / " + "Vitesse: " + data.mapboxEvent.coords.speed + " / " + "Direction: " + data.mapboxEvent.coords.heading + " / " + "Précision: " + data.mapboxEvent.coords.accuracy;
                 document.querySelector("#message").textContent = "";
                 document.querySelector("#message").textContent = textLoc;
 
-              case 8:
+              case 9:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2);
+        }, _callee2, this);
       }));
 
       function onGeolocate(_x2) {
@@ -39858,7 +39872,27 @@ var render = function() {
         on: { geolocate: _vm.onGeolocate }
       }),
       _vm._v(" "),
-      _c("MglNavigationControl", { attrs: { position: "top-left" } })
+      _c("MglNavigationControl", { attrs: { position: "top-left" } }),
+      _vm._v(" "),
+      _c("MglMarker", {
+        attrs: {
+          coordinates: [-3.8777128, 48.358174],
+          color: "blue",
+          anchor: "bottom"
+        }
+      }),
+      _vm._v(" "),
+      _c(
+        "MglPopup",
+        {
+          attrs: {
+            coordinates: _vm.coordinates,
+            anchor: "top",
+            showed: _vm.showed
+          }
+        },
+        [_c("div", [_vm._v("Bingo !")])]
+      )
     ],
     1
   )

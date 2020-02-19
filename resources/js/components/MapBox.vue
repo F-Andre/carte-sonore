@@ -15,6 +15,10 @@
       @geolocate="onGeolocate"
     />
     <MglNavigationControl position="top-left" />
+    <MglMarker :coordinates="[-3.8777128, 48.3581740]" color="blue" anchor="bottom" />
+    <MglPopup :coordinates="coordinates" anchor="top" :showed="showed">
+      <div>Bingo !</div>
+    </MglPopup>
   </MglMap>
 </template>
 
@@ -24,7 +28,8 @@ import {
   MglMap,
   MglMarker,
   MglGeolocateControl,
-  MglNavigationControl
+  MglNavigationControl,
+  MglPopup
 } from "vue-mapbox";
 import MapboxLanguage from "@mapbox/mapbox-gl-language";
 
@@ -33,7 +38,8 @@ export default {
     MglMap,
     MglMarker,
     MglGeolocateControl,
-    MglNavigationControl
+    MglNavigationControl,
+    MglPopup
   },
 
   data() {
@@ -46,7 +52,8 @@ export default {
       coordinates: [-3.87711116, 48.3584854],
       positionOptions: { enableHighAccuracy: true, timeout: 1000 },
       trackUserLocation: true,
-      fitBoundsOptions: { maxZoom: 18 }
+      fitBoundsOptions: { maxZoom: 18 },
+      showed: false
     };
   },
 
@@ -60,6 +67,10 @@ export default {
       this.map = event.map;
       var language = new MapboxLanguage();
       this.map.setStyle(language.setLanguage(this.map.getStyle(), "fr"));
+      this.map.on("mousemove", e => {
+        document.querySelector("#message").textContent = "";
+        document.querySelector("#message").textContent = e.lngLat.wrap();
+      });
     },
 
     async onGeolocate(data) {
@@ -72,6 +83,10 @@ export default {
       });
 
       await asyncActions.easeTo({ bearing: data.mapboxEvent.coords.heading });
+
+      if (data.mapboxEvent.coords.longitude == this.coordinates[0] && data.mapboxEvent.coords.latitude == this.coordinates[1]) {
+        this.showed = true;
+      }
 
       var textLoc =
         "Latitude: " +
