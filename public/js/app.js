@@ -2268,16 +2268,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   created: function created() {
+    var _this = this;
+
     this.map = null;
+    navigator.geolocation.getCurrentPosition(function (pos) {
+      _this.coordinates = [pos.coords.longitude, pos.coords.latitude];
+    }, document.querySelector("#message").insertAdjacentText("afterbegin", "Erreur de localisation"), {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    });
+    var watchID = navigator.geolocation.watchPosition(function (pos) {
+      _this.coordinates = [pos.coords.longitude, pos.coords.latitude];
+    }, document.querySelector("#message").insertAdjacentText("afterbegin", "Erreur de localisation"), {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    });
   },
   methods: {
     onMapLoaded: function () {
       var _onMapLoaded = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(event) {
-        var _this = this;
-
-        var language, watchID;
+        var language;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -2286,22 +2300,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 this.map = event.map;
                 language = new _mapbox_mapbox_gl_language__WEBPACK_IMPORTED_MODULE_3___default.a();
                 this.map.setStyle(language.setLanguage(this.map.getStyle(), "fr"));
-                navigator.geolocation.getCurrentPosition(function (pos) {
-                  _this.coordinates = [pos.coords.longitude, pos.coords.latitude];
-                }, document.querySelector("#message").textContent = "Problème de localisation", {
-                  enableHighAccuracy: true,
-                  timeout: 5000,
-                  maximumAge: 0
-                });
-                watchID = navigator.geolocation.watchPosition(function (pos) {
-                  _this.coordinates = [pos.coords.longitude, pos.coords.latitude];
-                }, document.querySelector("#message").textContent = "Problème de localisation", {
-                  enableHighAccuracy: true,
-                  timeout: 5000,
-                  maximumAge: 0
-                });
 
-              case 5:
+              case 3:
               case "end":
                 return _context.stop();
             }
