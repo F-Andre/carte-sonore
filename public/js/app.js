@@ -2248,13 +2248,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     MglMap: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglMap"],
-    MglMarker: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglMarker"]
+    MglMarker: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglMarker"],
+    MglGeolocateControl: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglGeolocateControl"]
   },
   data: function data() {
     return {
@@ -2264,27 +2266,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       mapStyle: "mapbox://styles/mapbox/streets-v10",
       // your map style
       zoom: 17,
-      coordinates: [-3, 48]
+      coordinates: [-3, 48],
+      positionOptions: {
+        enableHighAccuracy: true,
+        timeout: 1000
+      },
+      trackUserLocation: true
     };
   },
   created: function created() {
-    var _this = this;
-
     this.map = null;
-    navigator.geolocation.getCurrentPosition(function (pos) {
-      _this.coordinates = [pos.coords.longitude, pos.coords.latitude];
-    }, document.querySelector("#message").insertAdjacentText("afterbegin", "Erreur de localisation"), {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0
-    });
-    var watchID = navigator.geolocation.watchPosition(function (pos) {
-      _this.coordinates = [pos.coords.longitude, pos.coords.latitude];
-    }, document.querySelector("#message").insertAdjacentText("afterbegin", "Erreur de localisation"), {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0
-    });
   },
   methods: {
     onMapLoaded: function () {
@@ -39809,6 +39800,14 @@ var render = function() {
     [
       _c("MglMarker", {
         attrs: { coordinates: _vm.coordinates, color: "blue" }
+      }),
+      _vm._v(" "),
+      _c("MglGeolocateControl", {
+        attrs: {
+          position: "top-right",
+          positionOptions: _vm.positionOptions,
+          trackUserLocation: _vm.trackUserLocation
+        }
       })
     ],
     1
