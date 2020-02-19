@@ -2273,7 +2273,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       mapStyle: "mapbox://styles/mapbox/streets-v10",
       // your map style
       zoom: 16,
-      coordinates: [-3.87698246, 48.35829219],
+      coordinates: [-3.87711116, 48.3584854],
       positionOptions: {
         enableHighAccuracy: true,
         timeout: 1000
@@ -2327,17 +2327,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 asyncActions = data.component.actions;
                 _context2.next = 3;
-                return asyncActions.easeTo({
-                  center: [data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude],
-                  bearing: data.mapboxEvent.coords.heading
+                return asyncActions.flyTo({
+                  center: [data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude]
                 });
 
               case 3:
+                _context2.next = 5;
+                return asyncActions.easeTo({
+                  bearing: data.mapboxEvent.coords.heading
+                });
+
+              case 5:
                 textLoc = "Latitude: " + data.mapboxEvent.coords.latitude + " / " + "Longitude: " + data.mapboxEvent.coords.longitude + " / " + "Altitude: " + data.mapboxEvent.coords.altitude + " / " + "Vitesse: " + data.mapboxEvent.coords.speed + " / " + "Direction: " + data.mapboxEvent.coords.heading + " / " + "Précision: " + data.mapboxEvent.coords.accuracy;
                 document.querySelector("#message").textContent = "";
                 document.querySelector("#message").textContent = textLoc;
 
-              case 6:
+              case 8:
               case "end":
                 return _context2.stop();
             }
