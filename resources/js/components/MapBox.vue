@@ -7,7 +7,6 @@
     :zoom="zoom"
     @load="onMapLoaded"
   >
-    <MglMarker :coordinates="coordinates" color="blue" />
     <MglGeolocateControl position="top-right" :positionOptions="positionOptions" :trackUserLocation="trackUserLocation" :fitBoundsOptions="fitBoundsOptions" @geolocate="onGeolocate"/>
   </MglMap>
 </template>
@@ -30,7 +29,7 @@ export default {
       accessToken:
         "pk.eyJ1IjoiZmFiaWVuYW5kcmUiLCJhIjoiY2s2Z2lxNXBjMHlhbDNqcXB6eDAyZnhvNyJ9.p7K1EMcW_ODNIn7q9Xf17A", // your access token. Needed if you using Mapbox maps
       mapStyle: "mapbox://styles/mapbox/streets-v10", // your map style
-      zoom: 17,
+      zoom: 16,
       coordinates: [-3, 48],
       positionOptions: { enableHighAccuracy: true, timeout: 1000},
       trackUserLocation: true,
@@ -51,6 +50,15 @@ export default {
     },
 
     async onGeolocate(data) {
+      const asyncActions = data.component.actions;
+      const newParams = await asyncActions.flyTo({
+        center: [data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude],
+        zoom: 14,
+        speed: 0.8,
+        bearing: data.mapboxEvent.coords.heading
+      })
+      
+      
       var textLoc = 'Latitude: ' + data.mapboxEvent.coords.latitude + ' / ' + 'Longitude: ' + data.mapboxEvent.coords.longitude + ' / ' + 'Altitude: ' + data.mapboxEvent.coords.altitude + ' / ' + 'Vitesse: ' + data.mapboxEvent.coords.speed + ' / ' + 'Direction: ' + data.mapboxEvent.coords.heading + ' / ' + 'Précision: ' + data.mapboxEvent.coords.accuracy;
       document.querySelector('#message').textContent = "";
       document.querySelector('#message').textContent = textLoc;

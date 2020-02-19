@@ -2248,7 +2248,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 
 
@@ -2265,7 +2264,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       // your access token. Needed if you using Mapbox maps
       mapStyle: "mapbox://styles/mapbox/streets-v10",
       // your map style
-      zoom: 17,
+      zoom: 16,
       coordinates: [-3, 48],
       positionOptions: {
         enableHighAccuracy: true,
@@ -2313,16 +2312,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _onGeolocate = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(data) {
-        var textLoc;
+        var asyncActions, newParams, textLoc;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
+                asyncActions = data.component.actions;
+                _context2.next = 3;
+                return asyncActions.flyTo({
+                  center: [data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude],
+                  zoom: 14,
+                  speed: 0.8,
+                  bearing: data.mapboxEvent.coords.heading
+                });
+
+              case 3:
+                newParams = _context2.sent;
                 textLoc = 'Latitude: ' + data.mapboxEvent.coords.latitude + ' / ' + 'Longitude: ' + data.mapboxEvent.coords.longitude + ' / ' + 'Altitude: ' + data.mapboxEvent.coords.altitude + ' / ' + 'Vitesse: ' + data.mapboxEvent.coords.speed + ' / ' + 'Direction: ' + data.mapboxEvent.coords.heading + ' / ' + 'Précision: ' + data.mapboxEvent.coords.accuracy;
                 document.querySelector('#message').textContent = "";
                 document.querySelector('#message').textContent = textLoc;
 
-              case 3:
+              case 7:
               case "end":
                 return _context2.stop();
             }
@@ -39828,10 +39838,6 @@ var render = function() {
       }
     },
     [
-      _c("MglMarker", {
-        attrs: { coordinates: _vm.coordinates, color: "blue" }
-      }),
-      _vm._v(" "),
       _c("MglGeolocateControl", {
         attrs: {
           position: "top-right",
