@@ -8,7 +8,7 @@
     @load="onMapLoaded"
   >
     <MglMarker :coordinates="coordinates" color="blue" />
-    <MglGeolocateControl position="top-right" :positionOptions="positionOptions" :trackUserLocation="trackUserLocation" />
+    <MglGeolocateControl position="top-right" :positionOptions="positionOptions" :trackUserLocation="trackUserLocation" :fitBoundsOptions="fitBoundsOptions" @geolocate="onGeolocate"/>
   </MglMap>
 </template>
 
@@ -33,14 +33,13 @@ export default {
       zoom: 17,
       coordinates: [-3, 48],
       positionOptions: { enableHighAccuracy: true, timeout: 1000},
-      trackUserLocation: true
+      trackUserLocation: true,
+      fitBoundsOptions: { maxZoom:18 }
     };
   },
 
   created() {
     this.map = null;
-
-    
   },
 
   methods: {
@@ -49,6 +48,12 @@ export default {
       this.map = event.map;
       var language = new MapboxLanguage();
       this.map.setStyle(language.setLanguage(this.map.getStyle(), "fr"));
+    },
+
+    async onGeolocate(data) {
+      var textLoc = 'Latitude: ' + data.mapboxEvent.coords.latitude + ' / ' + 'Longitude: ' + data.mapboxEvent.coords.longitude + ' / ' + 'Altitude: ' + data.mapboxEvent.coords.altitude + ' / ' + 'Vitesse: ' + data.mapboxEvent.coords.speed + ' / ' + 'Direction: ' + data.mapboxEvent.coords.heading + ' / ' + 'Précision: ' + data.mapboxEvent.coords.accuracy;
+      document.querySelector('#message').textContent = "";
+      document.querySelector('#message').textContent = textLoc;
     }
   }
 };

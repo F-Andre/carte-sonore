@@ -2271,7 +2271,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         enableHighAccuracy: true,
         timeout: 1000
       },
-      trackUserLocation: true
+      trackUserLocation: true,
+      fitBoundsOptions: {
+        maxZoom: 18
+      }
     };
   },
   created: function created() {
@@ -2305,6 +2308,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return onMapLoaded;
+    }(),
+    onGeolocate: function () {
+      var _onGeolocate = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(data) {
+        var textLoc;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                textLoc = 'Latitude: ' + data.mapboxEvent.coords.latitude + ' / ' + 'Longitude: ' + data.mapboxEvent.coords.longitude + ' / ' + 'Altitude: ' + data.mapboxEvent.coords.altitude + ' / ' + 'Vitesse: ' + data.mapboxEvent.coords.speed + ' / ' + 'Direction: ' + data.mapboxEvent.coords.heading + ' / ' + 'Précision: ' + data.mapboxEvent.coords.accuracy;
+                document.querySelector('#message').textContent = "";
+                document.querySelector('#message').textContent = textLoc;
+
+              case 3:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      function onGeolocate(_x2) {
+        return _onGeolocate.apply(this, arguments);
+      }
+
+      return onGeolocate;
     }()
   }
 });
@@ -39806,8 +39836,10 @@ var render = function() {
         attrs: {
           position: "top-right",
           positionOptions: _vm.positionOptions,
-          trackUserLocation: _vm.trackUserLocation
-        }
+          trackUserLocation: _vm.trackUserLocation,
+          fitBoundsOptions: _vm.fitBoundsOptions
+        },
+        on: { geolocate: _vm.onGeolocate }
       })
     ],
     1
