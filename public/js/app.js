@@ -2278,7 +2278,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       mapStyle: "mapbox://styles/mapbox/streets-v10",
       // your map style
       zoom: 16,
-      coordinates: [-3.87711116, 48.3584854],
+      coordinates: [-3.8773302850858045, 48.358303879093285],
       positionOptions: {
         enableHighAccuracy: true,
         timeout: 1000
@@ -2307,7 +2307,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 this.map = event.map;
                 language = new _mapbox_mapbox_gl_language__WEBPACK_IMPORTED_MODULE_3___default.a();
                 this.map.setStyle(language.setLanguage(this.map.getStyle(), "fr"));
-                this.map.on("mousemove", function (e) {
+                this.map.on("click", function (e) {
                   document.querySelector("#message").textContent = "";
                   document.querySelector("#message").textContent = e.lngLat.wrap();
                 });
@@ -2348,7 +2348,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 5:
-                if (data.mapboxEvent.coords.longitude == this.coordinates[0] && data.mapboxEvent.coords.latitude == this.coordinates[1]) {
+                if (data.mapboxEvent.coords.longitude.parseFloat().toFixed(4) == this.coordinates[0].parseFloat().toFixed(4) && data.mapboxEvent.coords.latitude.parseFloat().toFixed(4) == this.coordinates[1].parseFloat().toFixed(4)) {
                   this.showed = true;
                 }
 
@@ -39875,11 +39875,7 @@ var render = function() {
       _c("MglNavigationControl", { attrs: { position: "top-left" } }),
       _vm._v(" "),
       _c("MglMarker", {
-        attrs: {
-          coordinates: [-3.8777128, 48.358174],
-          color: "blue",
-          anchor: "bottom"
-        }
+        attrs: { coordinates: _vm.coordinates, color: "blue", anchor: "bottom" }
       }),
       _vm._v(" "),
       _c(
