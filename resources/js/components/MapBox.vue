@@ -84,30 +84,36 @@ export default {
 
       await asyncActions.easeTo({ bearing: data.mapboxEvent.coords.heading });
 
-      if (data.mapboxEvent.coords.longitude.parseFloat().toFixed(4) == this.coordinates[0].parseFloat().toFixed(4) && data.mapboxEvent.coords.latitude.parseFloat().toFixed(4) == this.coordinates[1].parseFloat().toFixed(4)) {
-        this.showed = true;
-      }
-
       var textLoc =
         "Latitude: " +
-        data.mapboxEvent.coords.latitude +
+        data.mapboxEvent.coords.latitude.toFixed(5) +
         " / " +
         "Longitude: " +
-        data.mapboxEvent.coords.longitude +
+        data.mapboxEvent.coords.longitude.toFixed(5) +
+        "<br>" +
+        "Mark Lat: " +
+        this.coordinates[1].toFixed(5) +
         " / " +
-        "Altitude: " +
-        data.mapboxEvent.coords.altitude +
-        " / " +
-        "Vitesse: " +
-        data.mapboxEvent.coords.speed +
-        " / " +
+        "Mark Long: " +
+        this.coordinates[0].toFixed(5) +
+        "<br>" +
         "Direction: " +
         data.mapboxEvent.coords.heading +
-        " / " +
+        "<br>" +
+        "Vitesse: " +
+        data.mapboxEvent.coords.speed +
+        "<br>" +
+        "Altitude: " +
+        data.mapboxEvent.coords.altitude +
+        "<br>" +
         "Précision: " +
         data.mapboxEvent.coords.accuracy;
-      document.querySelector("#message").textContent = "";
-      document.querySelector("#message").textContent = textLoc;
+      document.querySelector("#message").innerHTML = "";
+      document.querySelector("#message").innerHTML = textLoc;
+
+      if (data.mapboxEvent.coords.latitude.toFixed(5) == this.coordinates[0].toFixed(5) && data.mapboxEvent.coords.longitude.toFixed(5) == this.coordinates[1].toFixed(5)) {
+        this.showed = true;
+      }
     }
   }
 };

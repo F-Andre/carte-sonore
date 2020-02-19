@@ -2348,13 +2348,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 5:
-                if (data.mapboxEvent.coords.longitude.parseFloat().toFixed(4) == this.coordinates[0].parseFloat().toFixed(4) && data.mapboxEvent.coords.latitude.parseFloat().toFixed(4) == this.coordinates[1].parseFloat().toFixed(4)) {
+                textLoc = "Latitude: " + data.mapboxEvent.coords.latitude.toFixed(5) + " / " + "Longitude: " + data.mapboxEvent.coords.longitude.toFixed(5) + "<br>" + "Mark Lat: " + this.coordinates[1].toFixed(5) + " / " + "Mark Long: " + this.coordinates[0].toFixed(5) + "<br>" + "Direction: " + data.mapboxEvent.coords.heading + "<br>" + "Vitesse: " + data.mapboxEvent.coords.speed + "<br>" + "Altitude: " + data.mapboxEvent.coords.altitude + "<br>" + "Précision: " + data.mapboxEvent.coords.accuracy;
+                document.querySelector("#message").innerHTML = "";
+                document.querySelector("#message").innerHTML = textLoc;
+
+                if (data.mapboxEvent.coords.latitude.toFixed(5) == this.coordinates[0].toFixed(5) && data.mapboxEvent.coords.longitude.toFixed(5) == this.coordinates[1].toFixed(5)) {
                   this.showed = true;
                 }
-
-                textLoc = "Latitude: " + data.mapboxEvent.coords.latitude + " / " + "Longitude: " + data.mapboxEvent.coords.longitude + " / " + "Altitude: " + data.mapboxEvent.coords.altitude + " / " + "Vitesse: " + data.mapboxEvent.coords.speed + " / " + "Direction: " + data.mapboxEvent.coords.heading + " / " + "Précision: " + data.mapboxEvent.coords.accuracy;
-                document.querySelector("#message").textContent = "";
-                document.querySelector("#message").textContent = textLoc;
 
               case 9:
               case "end":
