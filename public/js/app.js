@@ -2248,6 +2248,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2255,7 +2262,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   components: {
     MglMap: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglMap"],
     MglMarker: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglMarker"],
-    MglGeolocateControl: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglGeolocateControl"]
+    MglGeolocateControl: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglGeolocateControl"],
+    MglNavigationControl: vue_mapbox__WEBPACK_IMPORTED_MODULE_2__["MglNavigationControl"]
   },
   data: function data() {
     return {
@@ -2312,7 +2320,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _onGeolocate = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(data) {
-        var asyncActions, newParams, textLoc;
+        var asyncActions, textLoc;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -2321,18 +2329,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context2.next = 3;
                 return asyncActions.flyTo({
                   center: [data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude],
-                  zoom: 14,
-                  speed: 0.8,
-                  bearing: data.mapboxEvent.coords.heading
+                  speed: 0.8
                 });
 
               case 3:
-                newParams = _context2.sent;
-                textLoc = 'Latitude: ' + data.mapboxEvent.coords.latitude + ' / ' + 'Longitude: ' + data.mapboxEvent.coords.longitude + ' / ' + 'Altitude: ' + data.mapboxEvent.coords.altitude + ' / ' + 'Vitesse: ' + data.mapboxEvent.coords.speed + ' / ' + 'Direction: ' + data.mapboxEvent.coords.heading + ' / ' + 'Précision: ' + data.mapboxEvent.coords.accuracy;
-                document.querySelector('#message').textContent = "";
-                document.querySelector('#message').textContent = textLoc;
+                _context2.next = 5;
+                return asyncActions.easeTo({
+                  bearing: data.mapboxEvent.coords.heading
+                });
 
-              case 7:
+              case 5:
+                textLoc = "Latitude: " + data.mapboxEvent.coords.latitude + " / " + "Longitude: " + data.mapboxEvent.coords.longitude + " / " + "Altitude: " + data.mapboxEvent.coords.altitude + " / " + "Vitesse: " + data.mapboxEvent.coords.speed + " / " + "Direction: " + data.mapboxEvent.coords.heading + " / " + "Précision: " + data.mapboxEvent.coords.accuracy;
+                document.querySelector("#message").textContent = "";
+                document.querySelector("#message").textContent = textLoc;
+
+              case 8:
               case "end":
                 return _context2.stop();
             }
@@ -39846,7 +39857,9 @@ var render = function() {
           fitBoundsOptions: _vm.fitBoundsOptions
         },
         on: { geolocate: _vm.onGeolocate }
-      })
+      }),
+      _vm._v(" "),
+      _c("MglNavigationControl", { attrs: { position: "top-left" } })
     ],
     1
   )

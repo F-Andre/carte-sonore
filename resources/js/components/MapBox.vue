@@ -7,20 +7,33 @@
     :zoom="zoom"
     @load="onMapLoaded"
   >
-    <MglGeolocateControl position="top-right" :positionOptions="positionOptions" :trackUserLocation="trackUserLocation" :fitBoundsOptions="fitBoundsOptions" @geolocate="onGeolocate"/>
+    <MglGeolocateControl
+      position="top-right"
+      :positionOptions="positionOptions"
+      :trackUserLocation="trackUserLocation"
+      :fitBoundsOptions="fitBoundsOptions"
+      @geolocate="onGeolocate"
+    />
+    <MglNavigationControl position="top-left" />
   </MglMap>
 </template>
 
 <script>
 import Mapbox from "mapbox-gl";
-import { MglMap, MglMarker, MglGeolocateControl } from "vue-mapbox";
+import {
+  MglMap,
+  MglMarker,
+  MglGeolocateControl,
+  MglNavigationControl
+} from "vue-mapbox";
 import MapboxLanguage from "@mapbox/mapbox-gl-language";
 
 export default {
   components: {
     MglMap,
     MglMarker,
-    MglGeolocateControl
+    MglGeolocateControl,
+    MglNavigationControl
   },
 
   data() {
@@ -31,9 +44,9 @@ export default {
       mapStyle: "mapbox://styles/mapbox/streets-v10", // your map style
       zoom: 16,
       coordinates: [-3, 48],
-      positionOptions: { enableHighAccuracy: true, timeout: 1000},
+      positionOptions: { enableHighAccuracy: true, timeout: 1000 },
       trackUserLocation: true,
-      fitBoundsOptions: { maxZoom:18 }
+      fitBoundsOptions: { maxZoom: 18 }
     };
   },
 
@@ -51,17 +64,36 @@ export default {
 
     async onGeolocate(data) {
       const asyncActions = data.component.actions;
-      const newParams = await asyncActions.flyTo({
-        center: [data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude],
-        zoom: 14,
-        speed: 0.8,
-        bearing: data.mapboxEvent.coords.heading
-      })
-      
-      
-      var textLoc = 'Latitude: ' + data.mapboxEvent.coords.latitude + ' / ' + 'Longitude: ' + data.mapboxEvent.coords.longitude + ' / ' + 'Altitude: ' + data.mapboxEvent.coords.altitude + ' / ' + 'Vitesse: ' + data.mapboxEvent.coords.speed + ' / ' + 'Direction: ' + data.mapboxEvent.coords.heading + ' / ' + 'Précision: ' + data.mapboxEvent.coords.accuracy;
-      document.querySelector('#message').textContent = "";
-      document.querySelector('#message').textContent = textLoc;
+      await asyncActions.flyTo({
+        center: [
+          data.mapboxEvent.coords.longitude,
+          data.mapboxEvent.coords.latitude
+        ],
+        speed: 0.8
+      });
+
+      await asyncActions.easeTo({ bearing: data.mapboxEvent.coords.heading });
+
+      var textLoc =
+        "Latitude: " +
+        data.mapboxEvent.coords.latitude +
+        " / " +
+        "Longitude: " +
+        data.mapboxEvent.coords.longitude +
+        " / " +
+        "Altitude: " +
+        data.mapboxEvent.coords.altitude +
+        " / " +
+        "Vitesse: " +
+        data.mapboxEvent.coords.speed +
+        " / " +
+        "Direction: " +
+        data.mapboxEvent.coords.heading +
+        " / " +
+        "Précision: " +
+        data.mapboxEvent.coords.accuracy;
+      document.querySelector("#message").textContent = "";
+      document.querySelector("#message").textContent = textLoc;
     }
   }
 };
