@@ -2348,11 +2348,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 5:
-                textLoc = "Latitude: " + data.mapboxEvent.coords.latitude.toFixed(5) + " / " + "Longitude: " + data.mapboxEvent.coords.longitude.toFixed(5) + "<br>" + "Mark Lat: " + this.coordinates[1].toFixed(5) + " / " + "Mark Long: " + this.coordinates[0].toFixed(5) + "<br>" + "Direction: " + data.mapboxEvent.coords.heading + "<br>" + "Vitesse: " + data.mapboxEvent.coords.speed + "<br>" + "Altitude: " + data.mapboxEvent.coords.altitude + "<br>" + "Précision: " + data.mapboxEvent.coords.accuracy;
+                textLoc = "Latitude: " + data.mapboxEvent.coords.latitude.toFixed(4) + " / " + "Longitude: " + data.mapboxEvent.coords.longitude.toFixed(4) + "<br>" + "Mark Lat: " + this.coordinates[1].toFixed(4) + " / " + "Mark Long: " + this.coordinates[0].toFixed(4) + "<br>" + "Direction: " + data.mapboxEvent.coords.heading + "<br>" + "Vitesse: " + data.mapboxEvent.coords.speed + "<br>" + "Altitude: " + data.mapboxEvent.coords.altitude + "<br>" + "Précision: " + data.mapboxEvent.coords.accuracy;
                 document.querySelector("#message").innerHTML = "";
                 document.querySelector("#message").innerHTML = textLoc;
 
-                if (data.mapboxEvent.coords.latitude.toFixed(5) == this.coordinates[0].toFixed(5) && data.mapboxEvent.coords.longitude.toFixed(5) == this.coordinates[1].toFixed(5)) {
+                if (data.mapboxEvent.coords.latitude.toFixed(4) == this.coordinates[0].toFixed(4) && data.mapboxEvent.coords.longitude.toFixed(4) == this.coordinates[1].toFixed(4)) {
                   this.showed = true;
                 }
 

@@ -86,16 +86,16 @@ export default {
 
       var textLoc =
         "Latitude: " +
-        data.mapboxEvent.coords.latitude.toFixed(5) +
+        data.mapboxEvent.coords.latitude.toFixed(4) +
         " / " +
         "Longitude: " +
-        data.mapboxEvent.coords.longitude.toFixed(5) +
+        data.mapboxEvent.coords.longitude.toFixed(4) +
         "<br>" +
         "Mark Lat: " +
-        this.coordinates[1].toFixed(5) +
+        this.coordinates[1].toFixed(4) +
         " / " +
         "Mark Long: " +
-        this.coordinates[0].toFixed(5) +
+        this.coordinates[0].toFixed(4) +
         "<br>" +
         "Direction: " +
         data.mapboxEvent.coords.heading +
@@ -111,7 +111,7 @@ export default {
       document.querySelector("#message").innerHTML = "";
       document.querySelector("#message").innerHTML = textLoc;
 
-      if (data.mapboxEvent.coords.latitude.toFixed(5) == this.coordinates[0].toFixed(5) && data.mapboxEvent.coords.longitude.toFixed(5) == this.coordinates[1].toFixed(5)) {
+      if (data.mapboxEvent.coords.latitude.toFixed(4) == this.coordinates[0].toFixed(4) && data.mapboxEvent.coords.longitude.toFixed(4) == this.coordinates[1].toFixed(4)) {
         this.showed = true;
       }
     }
