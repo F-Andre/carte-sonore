@@ -16,9 +16,7 @@
     />
     <MglNavigationControl position="top-left" />
     <MglMarker :coordinates="coordinates" color="blue" anchor="bottom" />
-    <MglPopup :coordinates="coordinates" anchor="top" :showed="showed">
-      <div>Bingo !</div>
-    </MglPopup>
+    <MglPopup :closeOnClick="false"></MglPopup>
   </MglMap>
 </template>
 
@@ -49,16 +47,16 @@ export default {
         "pk.eyJ1IjoiZmFiaWVuYW5kcmUiLCJhIjoiY2s2Z2lxNXBjMHlhbDNqcXB6eDAyZnhvNyJ9.p7K1EMcW_ODNIn7q9Xf17A", // your access token. Needed if you using Mapbox maps
       mapStyle: "mapbox://styles/mapbox/streets-v10", // your map style
       zoom: 16,
-      coordinates: [-3.8773302850858045, 48.358303879093285],
+      coordinates: [-3.8770151406342848, 48.3583926165185],
       positionOptions: { enableHighAccuracy: true, timeout: 1000 },
       trackUserLocation: true,
-      fitBoundsOptions: { maxZoom: 18 },
-      showed: false
+      fitBoundsOptions: { maxZoom: 18 }
     };
   },
 
   created() {
     this.map = null;
+    this.popup = null;
   },
 
   methods: {
@@ -75,6 +73,8 @@ export default {
 
     async onGeolocate(data) {
       const asyncActions = data.component.actions;
+      const asyncMapbox = data.component.mapbox;
+
       await asyncActions.flyTo({
         center: [
           data.mapboxEvent.coords.longitude,
@@ -111,8 +111,21 @@ export default {
       document.querySelector("#message").innerHTML = "";
       document.querySelector("#message").innerHTML = textLoc;
 
-      if (data.mapboxEvent.coords.latitude.toFixed(4) == this.coordinates[0].toFixed(4) && data.mapboxEvent.coords.longitude.toFixed(4) == this.coordinates[1].toFixed(4)) {
-        this.showed = true;
+      if (
+        data.mapboxEvent.coords.latitude.toFixed(4) ==
+          this.coordinates[1].toFixed(4) &&
+        data.mapboxEvent.coords.longitude.toFixed(4) ==
+          this.coordinates[0].toFixed(4)
+      ) {
+        console.log(Mapbox);
+
+        var popup = new Mapbox.Popup({ closeOnClick:false })
+          .setLngLat([
+            data.mapboxEvent.coords.longitude,
+            data.mapboxEvent.coords.latitude
+          ])
+          .setHTML("<h4>Bingo!!!</h4>")
+          .addTo(this.map);
       }
     }
   }

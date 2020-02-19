@@ -2257,8 +2257,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
 
 
 
@@ -2278,7 +2276,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       mapStyle: "mapbox://styles/mapbox/streets-v10",
       // your map style
       zoom: 16,
-      coordinates: [-3.8773302850858045, 48.358303879093285],
+      coordinates: [-3.8770151406342848, 48.3583926165185],
       positionOptions: {
         enableHighAccuracy: true,
         timeout: 1000
@@ -2286,12 +2284,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       trackUserLocation: true,
       fitBoundsOptions: {
         maxZoom: 18
-      },
-      showed: false
+      }
     };
   },
   created: function created() {
     this.map = null;
+    this.popup = null;
   },
   methods: {
     onMapLoaded: function () {
@@ -2330,33 +2328,37 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _onGeolocate = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(data) {
-        var asyncActions, textLoc;
+        var asyncActions, asyncMapbox, textLoc, popup;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 asyncActions = data.component.actions;
-                _context2.next = 3;
+                asyncMapbox = data.component.mapbox;
+                _context2.next = 4;
                 return asyncActions.flyTo({
                   center: [data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude]
                 });
 
-              case 3:
-                _context2.next = 5;
+              case 4:
+                _context2.next = 6;
                 return asyncActions.easeTo({
                   bearing: data.mapboxEvent.coords.heading
                 });
 
-              case 5:
+              case 6:
                 textLoc = "Latitude: " + data.mapboxEvent.coords.latitude.toFixed(4) + " / " + "Longitude: " + data.mapboxEvent.coords.longitude.toFixed(4) + "<br>" + "Mark Lat: " + this.coordinates[1].toFixed(4) + " / " + "Mark Long: " + this.coordinates[0].toFixed(4) + "<br>" + "Direction: " + data.mapboxEvent.coords.heading + "<br>" + "Vitesse: " + data.mapboxEvent.coords.speed + "<br>" + "Altitude: " + data.mapboxEvent.coords.altitude + "<br>" + "Précision: " + data.mapboxEvent.coords.accuracy;
                 document.querySelector("#message").innerHTML = "";
                 document.querySelector("#message").innerHTML = textLoc;
 
-                if (data.mapboxEvent.coords.latitude.toFixed(4) == this.coordinates[0].toFixed(4) && data.mapboxEvent.coords.longitude.toFixed(4) == this.coordinates[1].toFixed(4)) {
-                  this.showed = true;
+                if (data.mapboxEvent.coords.latitude.toFixed(4) == this.coordinates[1].toFixed(4) && data.mapboxEvent.coords.longitude.toFixed(4) == this.coordinates[0].toFixed(4)) {
+                  console.log(mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a);
+                  popup = new mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a.Popup({
+                    closeOnClick: false
+                  }).setLngLat([data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude]).setHTML("<h4>Bingo!!!</h4>").addTo(this.map);
                 }
 
-              case 9:
+              case 10:
               case "end":
                 return _context2.stop();
             }
@@ -39878,17 +39880,7 @@ var render = function() {
         attrs: { coordinates: _vm.coordinates, color: "blue", anchor: "bottom" }
       }),
       _vm._v(" "),
-      _c(
-        "MglPopup",
-        {
-          attrs: {
-            coordinates: _vm.coordinates,
-            anchor: "top",
-            showed: _vm.showed
-          }
-        },
-        [_c("div", [_vm._v("Bingo !")])]
-      )
+      _c("MglPopup", { attrs: { closeOnClick: false } })
     ],
     1
   )
