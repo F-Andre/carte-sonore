@@ -35,12 +35,6 @@ export default {
 
   created() {
     this.map = null;
-    navigator.geolocation.getCurrentPosition(pos => {
-      this.coordinates = [pos.coords.longitude, pos.coords.latitude];
-    });
-    var watchID = navigator.geolocation.watchPosition(pos => {
-      this.coordinates = [pos.coords.longitude, pos.coords.latitude];
-    });
   },
 
   methods: {
@@ -48,7 +42,33 @@ export default {
       // in component
       this.map = event.map;
       var language = new MapboxLanguage();
-      this.map.setStyle(language.setLanguage(this.map.getStyle(), 'fr'));
+      this.map.setStyle(language.setLanguage(this.map.getStyle(), "fr"));
+
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          this.coordinates = [pos.coords.longitude, pos.coords.latitude];
+        },
+        (document.querySelector("#message").textContent =
+          "Problème de localisation"),
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        }
+      );
+      
+      var watchID = navigator.geolocation.watchPosition(
+        pos => {
+          this.coordinates = [pos.coords.longitude, pos.coords.latitude];
+        },
+        (document.querySelector("#message").textContent =
+          "Problème de localisation"),
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        }
+      );
     }
   }
 };

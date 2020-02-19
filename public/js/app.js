@@ -2268,22 +2268,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   created: function created() {
-    var _this = this;
-
     this.map = null;
-    navigator.geolocation.getCurrentPosition(function (pos) {
-      _this.coordinates = [pos.coords.longitude, pos.coords.latitude];
-    });
-    var watchID = navigator.geolocation.watchPosition(function (pos) {
-      _this.coordinates = [pos.coords.longitude, pos.coords.latitude];
-    });
   },
   methods: {
     onMapLoaded: function () {
       var _onMapLoaded = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(event) {
-        var language;
+        var _this = this;
+
+        var language, watchID;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -2291,9 +2285,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 // in component
                 this.map = event.map;
                 language = new _mapbox_mapbox_gl_language__WEBPACK_IMPORTED_MODULE_3___default.a();
-                this.map.setStyle(language.setLanguage(this.map.getStyle(), 'fr'));
+                this.map.setStyle(language.setLanguage(this.map.getStyle(), "fr"));
+                navigator.geolocation.getCurrentPosition(function (pos) {
+                  _this.coordinates = [pos.coords.longitude, pos.coords.latitude];
+                }, document.querySelector("#message").textContent = "Problème de localisation", {
+                  enableHighAccuracy: true,
+                  timeout: 5000,
+                  maximumAge: 0
+                });
+                watchID = navigator.geolocation.watchPosition(function (pos) {
+                  _this.coordinates = [pos.coords.longitude, pos.coords.latitude];
+                }, document.querySelector("#message").textContent = "Problème de localisation", {
+                  enableHighAccuracy: true,
+                  timeout: 5000,
+                  maximumAge: 0
+                });
 
-              case 3:
+              case 5:
               case "end":
                 return _context.stop();
             }
@@ -54262,8 +54270,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/fab/laravel/cps/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/fab/laravel/cps/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/fab/laravel/carte-postale/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/fab/laravel/carte-postale/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
