@@ -2328,7 +2328,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _onGeolocate = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(data) {
-        var asyncActions, asyncMapbox, textLoc, popupDiv, img, cardBody, cardTitle, cardText, popup;
+        var asyncActions, asyncMapbox, textLoc, div, popup;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -2337,7 +2337,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 asyncMapbox = data.component.mapbox;
                 _context2.next = 4;
                 return asyncActions.flyTo({
-                  center: [data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude]
+                  center: [data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude],
+                  speed: 0.8
                 });
 
               case 4:
@@ -2352,27 +2353,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 document.querySelector("#message").innerHTML = textLoc;
 
                 if (data.mapboxEvent.coords.latitude.toFixed(4) == this.coordinates[1].toFixed(4) && data.mapboxEvent.coords.longitude.toFixed(4) == this.coordinates[0].toFixed(4)) {
-                  popupDiv = document.createElement("div");
-                  popupDiv.className = "card";
-                  popupDiv.style = "width: 18rem;";
-                  img = document.createElement("img");
-                  img.className = "card-img-top";
-                  img.setAttribute("src", "./images/brest.jpg");
-                  cardBody = document.createElement("div");
-                  cardBody.className = "card-body";
-                  cardTitle = document.createElement("h4");
-                  cardTitle.textContent = "Bingo!!!";
-                  cardText = document.createElement("p");
-                  cardText.textContent = "Vous avez rejoint ce marker!";
-                  cardBody.appendChild(cardTitle);
-                  cardBody.appendChild(cardText);
-                  popupDiv.appendChild(img);
-                  popupDiv.appendChild(cardBody);
+                  div = this.createPopup();
                   popup = new mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a.Popup({
                     closeOnClick: false,
                     anchor: "left",
                     offset: [10, 0]
-                  }).setLngLat([data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude]).setMaxWidth("80vw").setDOMContent(popupDiv).addTo(this.map);
+                  }).setLngLat([data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude]).setMaxWidth("80vw").setDOMContent(div).addTo(this.map);
                 }
 
               case 10:
@@ -2388,7 +2374,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return onGeolocate;
-    }()
+    }(),
+    createPopup: function createPopup() {
+      var popupDiv = document.createElement("div");
+      popupDiv.className = "card";
+      popupDiv.style = "width: 18rem;";
+      var img = document.createElement("img");
+      img.className = "card-img-top";
+      img.setAttribute("src", "./images/brest.jpg");
+      var cardBody = document.createElement("div");
+      cardBody.className = "card-body";
+      var cardTitle = document.createElement("h4");
+      cardTitle.textContent = "Bingo!!!";
+      var cardText = document.createElement("p");
+      cardText.textContent = "Vous êtes sur le marqueur test!";
+      cardBody.appendChild(cardTitle);
+      cardBody.appendChild(cardText);
+      popupDiv.appendChild(img);
+      popupDiv.appendChild(cardBody);
+      return popupDiv;
+    }
   }
 });
 

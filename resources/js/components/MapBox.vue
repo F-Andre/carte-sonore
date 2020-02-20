@@ -79,7 +79,8 @@ export default {
         center: [
           data.mapboxEvent.coords.longitude,
           data.mapboxEvent.coords.latitude
-        ]
+        ],
+        speed: 0.8
       });
 
       await asyncActions.easeTo({ bearing: data.mapboxEvent.coords.heading });
@@ -117,7 +118,25 @@ export default {
         data.mapboxEvent.coords.longitude.toFixed(4) ==
           this.coordinates[0].toFixed(4)
       ) {
-        let popupDiv = document.createElement("div");
+        let div = this.createPopup();
+
+        var popup = new Mapbox.Popup({
+          closeOnClick: false,
+          anchor: "left",
+          offset: [10, 0]
+        })
+          .setLngLat([
+            data.mapboxEvent.coords.longitude,
+            data.mapboxEvent.coords.latitude
+          ])
+          .setMaxWidth("80vw")
+          .setDOMContent(div)
+          .addTo(this.map);
+      }
+    },
+
+    createPopup() {
+      let popupDiv = document.createElement("div");
         popupDiv.className = "card";
         popupDiv.style = "width: 18rem;";
         let img = document.createElement("img");
@@ -131,26 +150,14 @@ export default {
         let cardTitle = document.createElement("h4");
         cardTitle.textContent = "Bingo!!!";
         let cardText = document.createElement("p");
-        cardText.textContent = "Vous avez rejoint ce marker!";
+        cardText.textContent = "Vous êtes sur le marqueur test!";
 
         cardBody.appendChild(cardTitle);
         cardBody.appendChild(cardText);
         popupDiv.appendChild(img);
         popupDiv.appendChild(cardBody);
 
-        var popup = new Mapbox.Popup({
-          closeOnClick: false,
-          anchor: "left",
-          offset: [10, 0]
-        })
-          .setLngLat([
-            data.mapboxEvent.coords.longitude,
-            data.mapboxEvent.coords.latitude
-          ])
-          .setMaxWidth("80vw")
-          .setDOMContent(popupDiv)
-          .addTo(this.map);
-      }
+        return popupDiv;
     }
   }
 };
