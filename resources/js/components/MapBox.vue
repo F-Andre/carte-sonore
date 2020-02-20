@@ -16,7 +16,6 @@
     />
     <MglNavigationControl position="top-left" />
     <MglMarker :coordinates="coordinates" color="blue" anchor="bottom" />
-    <MglPopup :closeOnClick="false"></MglPopup>
   </MglMap>
 </template>
 
@@ -48,6 +47,7 @@ export default {
       mapStyle: "mapbox://styles/mapbox/streets-v10", // your map style
       zoom: 16,
       coordinates: [-3.8770151406342848, 48.3583926165185],
+      //coordinates: [2.3387168986104143, 48.85818621830393],
       positionOptions: { enableHighAccuracy: true, timeout: 1000 },
       trackUserLocation: true,
       fitBoundsOptions: { maxZoom: 18 }
@@ -98,16 +98,16 @@ export default {
         this.coordinates[0].toFixed(4) +
         "<br>" +
         "Direction: " +
-        data.mapboxEvent.coords.heading +
+        parseInt(data.mapboxEvent.coords.heading) + '°' +
         "<br>" +
         "Vitesse: " +
-        data.mapboxEvent.coords.speed +
+        (data.mapboxEvent.coords.speed !== null ? data.mapboxEvent.coords.speed.toFixed(3) : 0) + 'm/s' +
         "<br>" +
         "Altitude: " +
-        data.mapboxEvent.coords.altitude +
+        parseInt(data.mapboxEvent.coords.altitude) + 'm' +
         "<br>" +
         "Précision: " +
-        data.mapboxEvent.coords.accuracy;
+        data.mapboxEvent.coords.accuracy.toFixed(4) + 'm';
       document.querySelector("#message").innerHTML = "";
       document.querySelector("#message").innerHTML = textLoc;
 
@@ -117,14 +117,38 @@ export default {
         data.mapboxEvent.coords.longitude.toFixed(4) ==
           this.coordinates[0].toFixed(4)
       ) {
-        console.log(Mapbox);
+        let popupDiv = document.createElement("div");
+        popupDiv.className = "card";
+        popupDiv.style = "width: 18rem;";
+        let img = document.createElement("img");
+        img.className = "card-img-top";
+        img.setAttribute(
+          "src",
+          "./images/brest.jpg"
+        );
+        let cardBody = document.createElement("div");
+        cardBody.className = "card-body";
+        let cardTitle = document.createElement("h4");
+        cardTitle.textContent = "Bingo!!!";
+        let cardText = document.createElement("p");
+        cardText.textContent = "Vous avez rejoint ce marker!";
 
-        var popup = new Mapbox.Popup({ closeOnClick:false })
+        cardBody.appendChild(cardTitle);
+        cardBody.appendChild(cardText);
+        popupDiv.appendChild(img);
+        popupDiv.appendChild(cardBody);
+
+        var popup = new Mapbox.Popup({
+          closeOnClick: false,
+          anchor: "left",
+          offset: [10, 0]
+        })
           .setLngLat([
             data.mapboxEvent.coords.longitude,
             data.mapboxEvent.coords.latitude
           ])
-          .setHTML("<h4>Bingo!!!</h4>")
+          .setMaxWidth("80vw")
+          .setDOMContent(popupDiv)
           .addTo(this.map);
       }
     }

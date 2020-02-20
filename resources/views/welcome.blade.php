@@ -6,7 +6,7 @@
 </div>
 <div class="card col-lg-8 mx-auto mt-3">
   <div class="card-body text-center">
-    <h4 class="card-title" id="message"></h4>
+    <p class="card-title" id="message"></p>
   </div>
 </div>
 @endsection
