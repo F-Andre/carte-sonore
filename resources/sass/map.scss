@@ -1,9 +1,11 @@
 #map {
   margin: 0 auto 0 auto;
 
-  #popup {
-    display: block;
-    width: 120px;
+  #card-popup {
+
+    .card-player {
+      width: 98%;
+    }
   }
 
   .mapboxgl-popup-close-button {
@@ -12,7 +14,7 @@
     background-color: white;
     border-radius: 50%;
     padding: 5px;
-    box-shadow: 1px 1px 2px gray;
+    box-shadow: 1px 1px 1px gray;
     left: calc(18rem + 5px);
     top: -10px;
 

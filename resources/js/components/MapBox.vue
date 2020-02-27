@@ -44,13 +44,14 @@ export default {
       container: "map",
       accessToken:
         "pk.eyJ1IjoiZmFiaWVuYW5kcmUiLCJhIjoiY2s2Z2lxNXBjMHlhbDNqcXB6eDAyZnhvNyJ9.p7K1EMcW_ODNIn7q9Xf17A", // your access token. Needed if you using Mapbox maps
-      mapStyle: "mapbox://styles/mapbox/streets-v10", // your map style
+      mapStyle: (new Date).getHours() >= 19 ? "mapbox://styles/mapbox/dark-v9" : (new Date).getHours() <= 8 ? "mapbox://styles/mapbox/dark-v9" : "mapbox://styles/mapbox/streets-v10", // your map style
       zoom: 16,
-      coordinates: [-3.8770151406342848, 48.3583926165185],
-      //coordinates: [2.3387168986104143, 48.85818621830393],
+      //coordinates: [-3.8770151406342848, 48.3583926165185],
+      coordinates: [2.6370463521272995, 48.84992158564938],
       positionOptions: { enableHighAccuracy: true, timeout: 1000 },
       trackUserLocation: true,
-      fitBoundsOptions: { maxZoom: 18 }
+      fitBoundsOptions: { maxZoom: 18 },
+      popupClose: true
     };
   },
 
@@ -99,16 +100,22 @@ export default {
         this.coordinates[0].toFixed(4) +
         "<br>" +
         "Direction: " +
-        parseInt(data.mapboxEvent.coords.heading) + '°' +
+        parseInt(data.mapboxEvent.coords.heading) +
+        "°" +
         "<br>" +
         "Vitesse: " +
-        (data.mapboxEvent.coords.speed !== null ? data.mapboxEvent.coords.speed.toFixed(3) : 0) + 'm/s' +
+        (data.mapboxEvent.coords.speed !== null
+          ? data.mapboxEvent.coords.speed.toFixed(3)
+          : 0) +
+        "m/s" +
         "<br>" +
         "Altitude: " +
-        parseInt(data.mapboxEvent.coords.altitude) + 'm' +
+        parseInt(data.mapboxEvent.coords.altitude) +
+        "m" +
         "<br>" +
         "Précision: " +
-        data.mapboxEvent.coords.accuracy.toFixed(4) + 'm';
+        data.mapboxEvent.coords.accuracy.toFixed(4) +
+        "m";
       document.querySelector("#message").innerHTML = "";
       document.querySelector("#message").innerHTML = textLoc;
 
@@ -116,14 +123,15 @@ export default {
         data.mapboxEvent.coords.latitude.toFixed(4) ==
           this.coordinates[1].toFixed(4) &&
         data.mapboxEvent.coords.longitude.toFixed(4) ==
-          this.coordinates[0].toFixed(4)
+          this.coordinates[0].toFixed(4) &&
+        !document.querySelector("#card-popup") &&
+        this.popupClose
       ) {
         let div = this.createPopup();
 
         var popup = new Mapbox.Popup({
           closeOnClick: false,
-          anchor: "left",
-          offset: [10, 0]
+          anchor: "center"
         })
           .setLngLat([
             data.mapboxEvent.coords.longitude,
@@ -132,32 +140,44 @@ export default {
           .setMaxWidth("80vw")
           .setDOMContent(div)
           .addTo(this.map);
+
+        this.popupClose = false;
+
+        popup.on("close", () => {
+          setTimeout(() => {
+            this.popupClose = true;
+          }, 5000);
+        });
       }
     },
 
     createPopup() {
       let popupDiv = document.createElement("div");
-        popupDiv.className = "card";
-        popupDiv.style = "width: 18rem;";
-        let img = document.createElement("img");
-        img.className = "card-img-top";
-        img.setAttribute(
-          "src",
-          "./images/brest.jpg"
-        );
-        let cardBody = document.createElement("div");
-        cardBody.className = "card-body";
-        let cardTitle = document.createElement("h4");
-        cardTitle.textContent = "Bingo!!!";
-        let cardText = document.createElement("p");
-        cardText.textContent = "Vous êtes sur le marqueur test!";
+      popupDiv.id = "card-popup";
+      popupDiv.className = "card";
+      popupDiv.style = "width: 18rem;";
+      let img = document.createElement("img");
+      img.className = "card-img-top";
+      img.setAttribute("src", "./images/brest.jpg");
+      let cardBody = document.createElement("div");
+      cardBody.className = "card-body";
+      let cardTitle = document.createElement("h4");
+      cardTitle.textContent = "Bingo!!!";
+      let cardText = document.createElement("p");
+      cardText.textContent = "Vous êtes sur le marqueur test!";
+      let audioPlayer = document.createElement("audio");
+      audioPlayer.src = "./Fichiers/Trompette.mp3";
+      audioPlayer.setAttribute("controls", "true");
+      audioPlayer.setAttribute("autoplay", "true");
+      audioPlayer.className = "card-player";
 
-        cardBody.appendChild(cardTitle);
-        cardBody.appendChild(cardText);
-        popupDiv.appendChild(img);
-        popupDiv.appendChild(cardBody);
+      cardBody.appendChild(cardTitle);
+      cardBody.appendChild(cardText);
+      cardBody.appendChild(audioPlayer);
+      popupDiv.appendChild(img);
+      popupDiv.appendChild(cardBody);
 
-        return popupDiv;
+      return popupDiv;
     }
   }
 };

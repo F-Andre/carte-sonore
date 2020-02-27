@@ -11367,9 +11367,8 @@ a.text-dark:focus {
   margin: 0 auto 0 auto;
 }
 
-#map #popup {
-  display: block;
-  width: 120px;
+#map #card-popup .card-player {
+  width: 98%;
 }
 
 #map .mapboxgl-popup-close-button {
@@ -11378,7 +11377,7 @@ a.text-dark:focus {
   background-color: white;
   border-radius: 50%;
   padding: 5px;
-  box-shadow: 1px 1px 2px gray;
+  box-shadow: 1px 1px 1px gray;
   left: calc(18rem + 5px);
   top: -10px;
   -webkit-transition: background-color 0.3s;

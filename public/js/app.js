@@ -2272,11 +2272,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       container: "map",
       accessToken: "pk.eyJ1IjoiZmFiaWVuYW5kcmUiLCJhIjoiY2s2Z2lxNXBjMHlhbDNqcXB6eDAyZnhvNyJ9.p7K1EMcW_ODNIn7q9Xf17A",
       // your access token. Needed if you using Mapbox maps
-      mapStyle: "mapbox://styles/mapbox/streets-v10",
+      mapStyle: new Date().getHours() >= 19 ? "mapbox://styles/mapbox/dark-v9" : new Date().getHours() <= 8 ? "mapbox://styles/mapbox/dark-v9" : "mapbox://styles/mapbox/streets-v10",
       // your map style
       zoom: 16,
-      coordinates: [-3.8770151406342848, 48.3583926165185],
-      //coordinates: [2.3387168986104143, 48.85818621830393],
+      //coordinates: [-3.8770151406342848, 48.3583926165185],
+      coordinates: [2.6370463521272995, 48.84992158564938],
       positionOptions: {
         enableHighAccuracy: true,
         timeout: 1000
@@ -2284,7 +2284,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       trackUserLocation: true,
       fitBoundsOptions: {
         maxZoom: 18
-      }
+      },
+      popupClose: true
     };
   },
   created: function created() {
@@ -2328,6 +2329,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _onGeolocate = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(data) {
+        var _this = this;
+
         var asyncActions, asyncMapbox, textLoc, div, popup;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
@@ -2348,17 +2351,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 6:
-                textLoc = "Latitude: " + data.mapboxEvent.coords.latitude.toFixed(4) + " / " + "Longitude: " + data.mapboxEvent.coords.longitude.toFixed(4) + "<br>" + "Mark Lat: " + this.coordinates[1].toFixed(4) + " / " + "Mark Long: " + this.coordinates[0].toFixed(4) + "<br>" + "Direction: " + parseInt(data.mapboxEvent.coords.heading) + '°' + "<br>" + "Vitesse: " + (data.mapboxEvent.coords.speed !== null ? data.mapboxEvent.coords.speed.toFixed(3) : 0) + 'm/s' + "<br>" + "Altitude: " + parseInt(data.mapboxEvent.coords.altitude) + 'm' + "<br>" + "Précision: " + data.mapboxEvent.coords.accuracy.toFixed(4) + 'm';
+                textLoc = "Latitude: " + data.mapboxEvent.coords.latitude.toFixed(4) + " / " + "Longitude: " + data.mapboxEvent.coords.longitude.toFixed(4) + "<br>" + "Mark Lat: " + this.coordinates[1].toFixed(4) + " / " + "Mark Long: " + this.coordinates[0].toFixed(4) + "<br>" + "Direction: " + parseInt(data.mapboxEvent.coords.heading) + "°" + "<br>" + "Vitesse: " + (data.mapboxEvent.coords.speed !== null ? data.mapboxEvent.coords.speed.toFixed(3) : 0) + "m/s" + "<br>" + "Altitude: " + parseInt(data.mapboxEvent.coords.altitude) + "m" + "<br>" + "Précision: " + data.mapboxEvent.coords.accuracy.toFixed(4) + "m";
                 document.querySelector("#message").innerHTML = "";
                 document.querySelector("#message").innerHTML = textLoc;
 
-                if (data.mapboxEvent.coords.latitude.toFixed(4) == this.coordinates[1].toFixed(4) && data.mapboxEvent.coords.longitude.toFixed(4) == this.coordinates[0].toFixed(4)) {
+                if (data.mapboxEvent.coords.latitude.toFixed(4) == this.coordinates[1].toFixed(4) && data.mapboxEvent.coords.longitude.toFixed(4) == this.coordinates[0].toFixed(4) && !document.querySelector("#card-popup") && this.popupClose) {
                   div = this.createPopup();
                   popup = new mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a.Popup({
                     closeOnClick: false,
-                    anchor: "left",
-                    offset: [10, 0]
+                    anchor: "center"
                   }).setLngLat([data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude]).setMaxWidth("80vw").setDOMContent(div).addTo(this.map);
+                  this.popupClose = false;
+                  popup.on("close", function () {
+                    setTimeout(function () {
+                      _this.popupClose = true;
+                    }, 5000);
+                  });
                 }
 
               case 10:
@@ -2377,6 +2385,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }(),
     createPopup: function createPopup() {
       var popupDiv = document.createElement("div");
+      popupDiv.id = "card-popup";
       popupDiv.className = "card";
       popupDiv.style = "width: 18rem;";
       var img = document.createElement("img");
@@ -2388,8 +2397,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       cardTitle.textContent = "Bingo!!!";
       var cardText = document.createElement("p");
       cardText.textContent = "Vous êtes sur le marqueur test!";
+      var audioPlayer = document.createElement("audio");
+      audioPlayer.src = "./Fichiers/Trompette.mp3";
+      audioPlayer.setAttribute("controls", "true");
+      audioPlayer.setAttribute("autoplay", "true");
+      audioPlayer.className = "card-player";
       cardBody.appendChild(cardTitle);
       cardBody.appendChild(cardText);
+      cardBody.appendChild(audioPlayer);
       popupDiv.appendChild(img);
       popupDiv.appendChild(cardBody);
       return popupDiv;
