@@ -3,7 +3,7 @@
     :container="container"
     :accessToken="accessToken"
     :mapStyle.sync="mapStyle"
-    :center="coordinates"
+    :center="coordinates[1]"
     :zoom="zoom"
     @load="onMapLoaded"
   >
@@ -15,7 +15,6 @@
       @geolocate="onGeolocate"
     />
     <MglNavigationControl position="top-left" />
-    <MglMarker :coordinates="coordinates" color="blue" anchor="bottom" />
   </MglMap>
 </template>
 
@@ -44,14 +43,22 @@ export default {
       container: "map",
       accessToken:
         "pk.eyJ1IjoiZmFiaWVuYW5kcmUiLCJhIjoiY2s2Z2lxNXBjMHlhbDNqcXB6eDAyZnhvNyJ9.p7K1EMcW_ODNIn7q9Xf17A", // your access token. Needed if you using Mapbox maps
-      mapStyle: (new Date).getHours() >= 19 ? "mapbox://styles/mapbox/dark-v9" : (new Date).getHours() <= 8 ? "mapbox://styles/mapbox/dark-v9" : "mapbox://styles/mapbox/streets-v10", // your map style
+      mapStyle:
+        new Date().getHours() >= 19
+          ? "mapbox://styles/mapbox/dark-v9"
+          : new Date().getHours() <= 8
+          ? "mapbox://styles/mapbox/dark-v9"
+          : "mapbox://styles/mapbox/streets-v10",
       zoom: 16,
-      //coordinates: [-3.8770151406342848, 48.3583926165185],
-      coordinates: [2.6370463521272995, 48.84992158564938],
       positionOptions: { enableHighAccuracy: true, timeout: 1000 },
       trackUserLocation: true,
       fitBoundsOptions: { maxZoom: 18 },
-      popupClose: true
+      popupClose: true,
+      coordinates: [
+        [2.6370463521272995, 48.84992158564938],
+        [-3.8770151406342848, 48.3583926165185],
+        [-4.503249831105336, 48.384794966193766]
+      ]
     };
   },
 
@@ -70,6 +77,11 @@ export default {
         document.querySelector("#message").textContent = "";
         document.querySelector("#message").textContent = e.lngLat.wrap();
       });
+      for (const coordinate of this.coordinates) {
+        const marker = new Mapbox.Marker()
+          .setLngLat(coordinate)
+          .addTo(this.map);
+      }
     },
 
     async onGeolocate(data) {
@@ -93,12 +105,6 @@ export default {
         "Longitude: " +
         data.mapboxEvent.coords.longitude.toFixed(4) +
         "<br>" +
-        "Mark Lat: " +
-        this.coordinates[1].toFixed(4) +
-        " / " +
-        "Mark Long: " +
-        this.coordinates[0].toFixed(4) +
-        "<br>" +
         "Direction: " +
         parseInt(data.mapboxEvent.coords.heading) +
         "°" +
@@ -119,39 +125,45 @@ export default {
       document.querySelector("#message").innerHTML = "";
       document.querySelector("#message").innerHTML = textLoc;
 
-      if (
-        data.mapboxEvent.coords.latitude.toFixed(4) ==
-          this.coordinates[1].toFixed(4) &&
-        data.mapboxEvent.coords.longitude.toFixed(4) ==
-          this.coordinates[0].toFixed(4) &&
-        !document.querySelector("#card-popup") &&
-        this.popupClose
-      ) {
-        let div = this.createPopup();
-
-        var popup = new Mapbox.Popup({
-          closeOnClick: false,
-          anchor: "center"
-        })
-          .setLngLat([
+      for (const coordinate of this.coordinates) {
+        if (
+          data.mapboxEvent.coords.latitude.toFixed(4) ==
+            coordinate[1].toFixed(4) &&
+          data.mapboxEvent.coords.longitude.toFixed(4) ==
+            coordinate[0].toFixed(4) &&
+          !document.querySelector("#card-popup") &&
+          this.popupClose
+        ) {
+          this.createPopup([
             data.mapboxEvent.coords.longitude,
             data.mapboxEvent.coords.latitude
-          ])
-          .setMaxWidth("80vw")
-          .setDOMContent(div)
-          .addTo(this.map);
-
-        this.popupClose = false;
-
-        popup.on("close", () => {
-          setTimeout(() => {
-            this.popupClose = true;
-          }, 5000);
-        });
+          ]);
+        }
       }
     },
 
-    createPopup() {
+    createPopup(coordinates) {
+      let div = this.createPopupDiv();
+
+      var popup = new Mapbox.Popup({
+        closeOnClick: false,
+        anchor: "center"
+      })
+        .setLngLat(coordinates)
+        .setMaxWidth("80vw")
+        .setDOMContent(div)
+        .addTo(this.map);
+
+      this.popupClose = false;
+
+      popup.on("close", () => {
+        setTimeout(() => {
+          this.popupClose = true;
+        }, 5000);
+      });
+    },
+
+    createPopupDiv() {
       let popupDiv = document.createElement("div");
       popupDiv.id = "card-popup";
       popupDiv.className = "card";
