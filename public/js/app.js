@@ -2294,7 +2294,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _onMapLoaded = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(event) {
-        var language, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, coordinate, marker;
+        var language, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, coordinate, cardPopup, popup, marker;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
@@ -2315,7 +2315,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 for (_iterator = this.coordinates[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                   coordinate = _step.value;
-                  marker = new mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a.Marker().setLngLat(coordinate).addTo(this.map);
+                  cardPopup = this.createPopupDiv();
+                  popup = new mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a.Popup({
+                    closeOnClick: false,
+                    anchor: "center"
+                  }).setDOMContent(cardPopup);
+                  marker = new mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a.Marker().setLngLat(coordinate).setPopup(popup).addTo(this.map);
                 }
 
                 _context.next = 15;
@@ -2401,7 +2406,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 for (_iterator2 = this.coordinates[Symbol.iterator](); !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
                   coordinate = _step2.value;
 
-                  if (data.mapboxEvent.coords.latitude.toFixed(4) == coordinate[1].toFixed(4) && data.mapboxEvent.coords.longitude.toFixed(4) == coordinate[0].toFixed(4) && !document.querySelector("#card-popup") && this.popupClose) {
+                  if (data.mapboxEvent.coords.latitude.toFixed(4) == coordinate[1].toFixed(4) && data.mapboxEvent.coords.longitude.toFixed(4) == coordinate[0].toFixed(4) && document.querySelectorAll(".card-popup").length == 0 && this.popupClose) {
                     this.createPopup([data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude]);
                   }
                 }
@@ -2470,8 +2475,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     createPopupDiv: function createPopupDiv() {
       var popupDiv = document.createElement("div");
-      popupDiv.id = "card-popup";
-      popupDiv.className = "card";
+      popupDiv.className = "card card-popup";
       popupDiv.style = "width: 18rem;";
       var img = document.createElement("img");
       img.className = "card-img-top";

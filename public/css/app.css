@@ -11367,7 +11367,7 @@ a.text-dark:focus {
   margin: 0 auto 0 auto;
 }
 
-#map #card-popup .card-player {
+#map .card-popup .card-player {
   width: 98%;
 }
 

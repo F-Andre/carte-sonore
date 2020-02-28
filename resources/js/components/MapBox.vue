@@ -79,8 +79,16 @@ export default {
         document.querySelector("#message").textContent = e.lngLat.wrap();
       });
       for (const coordinate of this.coordinates) {
+        const cardPopup = this.createPopupDiv();
+
+        const popup = new Mapbox.Popup({
+          closeOnClick: false,
+          anchor: "center"
+        }).setDOMContent(cardPopup);
+
         const marker = new Mapbox.Marker()
           .setLngLat(coordinate)
+          .setPopup(popup)
           .addTo(this.map);
       }
     },
@@ -132,7 +140,7 @@ export default {
             coordinate[1].toFixed(4) &&
           data.mapboxEvent.coords.longitude.toFixed(4) ==
             coordinate[0].toFixed(4) &&
-          !document.querySelector("#card-popup") &&
+          document.querySelectorAll(".card-popup").length == 0 &&
           this.popupClose
         ) {
           this.createPopup([
@@ -146,7 +154,7 @@ export default {
     createPopup(coordinates) {
       let div = this.createPopupDiv();
 
-      var popup = new Mapbox.Popup({
+      let popup = new Mapbox.Popup({
         closeOnClick: false,
         anchor: "center"
       })
@@ -166,8 +174,7 @@ export default {
 
     createPopupDiv() {
       let popupDiv = document.createElement("div");
-      popupDiv.id = "card-popup";
-      popupDiv.className = "card";
+      popupDiv.className = "card card-popup";
       popupDiv.style = "width: 18rem;";
       let img = document.createElement("img");
       img.className = "card-img-top";
