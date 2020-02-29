@@ -3,7 +3,7 @@
     :container="container"
     :accessToken="accessToken"
     :mapStyle.sync="mapStyle"
-    :center="coordinates[1]"
+    :center="points[0].coordinates"
     :zoom="zoom"
     @load="onMapLoaded"
   >
@@ -54,11 +54,35 @@ export default {
       trackUserLocation: true,
       fitBoundsOptions: { maxZoom: 18 },
       popupClose: true,
-      coordinates: [
-        [2.6370463521272995, 48.84992158564938],
-        [-3.8770151406342848, 48.3583926165185],
-        [-4.503249831105336, 48.384794966193766],
-        [-4.4804386822013385, 48.39098379760787]
+      points: [
+        {
+          title: "Edn",
+          description: "Centre équestre",
+          image: "./images/brest.jpg",
+          coordinates: [-3.8770151406342848, 48.3583926165185],
+          audio: "./Fichiers/Trompette.mp3"
+        },
+        {
+          title: "Super U",
+          description: "Centre commercial",
+          image: "./images/brest.jpg",
+          coordinates: [-4.503249831105336, 48.384794966193766],
+          audio: "./Fichiers/Trompette.mp3"
+        },
+        {
+          title: "Keroriou",
+          description: "Quartier",
+          image: "./images/brest.jpg",
+          coordinates: [-4.4804386822013385, 48.39098379760787],
+          audio: "./Fichiers/Trompette.mp3"
+        },
+        {
+          title: "Test loc",
+          description: "Geoloc connexion",
+          image: "./images/brest.jpg",
+          coordinates: [2.6370463521272995, 48.84992158564938],
+          audio: "./Fichiers/Trompette.mp3"
+        }
       ]
     };
   },
@@ -78,8 +102,9 @@ export default {
         document.querySelector("#message").textContent = "";
         document.querySelector("#message").textContent = e.lngLat.wrap();
       });
-      for (const coordinate of this.coordinates) {
-        const cardPopup = this.createPopupDiv();
+
+      for (const point of this.points) {
+        const cardPopup = this.createPopupDiv(point);
 
         const popup = new Mapbox.Popup({
           closeOnClick: false,
@@ -87,7 +112,7 @@ export default {
         }).setDOMContent(cardPopup);
 
         const marker = new Mapbox.Marker()
-          .setLngLat(coordinate)
+          .setLngLat(point.coordinates)
           .setPopup(popup)
           .addTo(this.map);
       }
@@ -134,59 +159,55 @@ export default {
       document.querySelector("#message").innerHTML = "";
       document.querySelector("#message").innerHTML = textLoc;
 
-      for (const coordinate of this.coordinates) {
+      for (const point of this.points) {
         if (
           data.mapboxEvent.coords.latitude.toFixed(4) ==
-            coordinate[1].toFixed(4) &&
+            point.coordinates[1].toFixed(4) &&
           data.mapboxEvent.coords.longitude.toFixed(4) ==
-            coordinate[0].toFixed(4) &&
+            point.coordinates[0].toFixed(4) &&
           document.querySelectorAll(".card-popup").length == 0 &&
           this.popupClose
         ) {
-          this.createPopup([
-            data.mapboxEvent.coords.longitude,
-            data.mapboxEvent.coords.latitude
-          ]);
+          let div = this.createPopupDiv(point);
+
+          let popup = new Mapbox.Popup({
+            closeOnClick: false,
+            anchor: "center"
+          })
+            .setLngLat([
+              data.mapboxEvent.coords.longitude,
+              data.mapboxEvent.coords.latitude
+            ])
+            .setMaxWidth("80vw")
+            .setDOMContent(div)
+            .addTo(this.map);
+
+          this.popupClose = false;
+
+          popup.on("close", () => {
+            setTimeout(() => {
+              this.popupClose = true;
+            }, 5000);
+          });
         }
       }
     },
 
-    createPopup(coordinates) {
-      let div = this.createPopupDiv();
-
-      let popup = new Mapbox.Popup({
-        closeOnClick: false,
-        anchor: "center"
-      })
-        .setLngLat(coordinates)
-        .setMaxWidth("80vw")
-        .setDOMContent(div)
-        .addTo(this.map);
-
-      this.popupClose = false;
-
-      popup.on("close", () => {
-        setTimeout(() => {
-          this.popupClose = true;
-        }, 5000);
-      });
-    },
-
-    createPopupDiv() {
+    createPopupDiv(point) {
       let popupDiv = document.createElement("div");
       popupDiv.className = "card card-popup";
       popupDiv.style = "width: 18rem;";
       let img = document.createElement("img");
       img.className = "card-img-top";
-      img.setAttribute("src", "./images/brest.jpg");
+      img.setAttribute("src", point.image);
       let cardBody = document.createElement("div");
       cardBody.className = "card-body";
       let cardTitle = document.createElement("h4");
-      cardTitle.textContent = "Bingo!!!";
+      cardTitle.textContent = point.title;
       let cardText = document.createElement("p");
-      cardText.textContent = "Vous êtes sur le marqueur test!";
+      cardText.textContent = point.description;
       let audioPlayer = document.createElement("audio");
-      audioPlayer.src = "./Fichiers/Trompette.mp3";
+      audioPlayer.src = point.audio;
       audioPlayer.setAttribute("controls", "true");
       audioPlayer.setAttribute("autoplay", "true");
       audioPlayer.className = "card-player";

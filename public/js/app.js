@@ -2282,7 +2282,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         maxZoom: 18
       },
       popupClose: true,
-      coordinates: [[2.6370463521272995, 48.84992158564938], [-3.8770151406342848, 48.3583926165185], [-4.503249831105336, 48.384794966193766], [-4.4804386822013385, 48.39098379760787]]
+      points: [{
+        title: "Edn",
+        description: "Centre équestre",
+        image: "./images/brest.jpg",
+        coordinates: [-3.8770151406342848, 48.3583926165185],
+        audio: "./Fichiers/Trompette.mp3"
+      }, {
+        title: "Super U",
+        description: "Centre commercial",
+        image: "./images/brest.jpg",
+        coordinates: [-4.503249831105336, 48.384794966193766],
+        audio: "./Fichiers/Trompette.mp3"
+      }, {
+        title: "Keroriou",
+        description: "Quartier",
+        image: "./images/brest.jpg",
+        coordinates: [-4.4804386822013385, 48.39098379760787],
+        audio: "./Fichiers/Trompette.mp3"
+      }, {
+        title: "Test loc",
+        description: "Geoloc connexion",
+        image: "./images/brest.jpg",
+        coordinates: [2.6370463521272995, 48.84992158564938],
+        audio: "./Fichiers/Trompette.mp3"
+      }]
     };
   },
   created: function created() {
@@ -2294,7 +2318,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _onMapLoaded = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(event) {
-        var language, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, coordinate, cardPopup, popup, marker;
+        var language, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, point, cardPopup, popup, marker;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
@@ -2313,14 +2337,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _iteratorError = undefined;
                 _context.prev = 7;
 
-                for (_iterator = this.coordinates[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                  coordinate = _step.value;
-                  cardPopup = this.createPopupDiv();
+                for (_iterator = this.points[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                  point = _step.value;
+                  cardPopup = this.createPopupDiv(point);
                   popup = new mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a.Popup({
                     closeOnClick: false,
                     anchor: "center"
                   }).setDOMContent(cardPopup);
-                  marker = new mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a.Marker().setLngLat(coordinate).setPopup(popup).addTo(this.map);
+                  marker = new mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a.Marker().setLngLat(point.coordinates).setPopup(popup).addTo(this.map);
                 }
 
                 _context.next = 15;
@@ -2374,7 +2398,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _onGeolocate = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(data) {
-        var asyncActions, asyncMapbox, textLoc, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, coordinate;
+        var _this = this;
+
+        var asyncActions, asyncMapbox, textLoc, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, point, div, popup;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
@@ -2403,11 +2429,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _iteratorError2 = undefined;
                 _context2.prev = 12;
 
-                for (_iterator2 = this.coordinates[Symbol.iterator](); !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                  coordinate = _step2.value;
+                for (_iterator2 = this.points[Symbol.iterator](); !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                  point = _step2.value;
 
-                  if (data.mapboxEvent.coords.latitude.toFixed(4) == coordinate[1].toFixed(4) && data.mapboxEvent.coords.longitude.toFixed(4) == coordinate[0].toFixed(4) && document.querySelectorAll(".card-popup").length == 0 && this.popupClose) {
-                    this.createPopup([data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude]);
+                  if (data.mapboxEvent.coords.latitude.toFixed(4) == point.coordinates[1].toFixed(4) && data.mapboxEvent.coords.longitude.toFixed(4) == point.coordinates[0].toFixed(4) && document.querySelectorAll(".card-popup").length == 0 && this.popupClose) {
+                    div = this.createPopupDiv(point);
+                    popup = new mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a.Popup({
+                      closeOnClick: false,
+                      anchor: "center"
+                    }).setLngLat([data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude]).setMaxWidth("80vw").setDOMContent(div).addTo(this.map);
+                    this.popupClose = false;
+                    popup.on("close", function () {
+                      setTimeout(function () {
+                        _this.popupClose = true;
+                      }, 5000);
+                    });
                   }
                 }
 
@@ -2458,36 +2494,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return onGeolocate;
     }(),
-    createPopup: function createPopup(coordinates) {
-      var _this = this;
-
-      var div = this.createPopupDiv();
-      var popup = new mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a.Popup({
-        closeOnClick: false,
-        anchor: "center"
-      }).setLngLat(coordinates).setMaxWidth("80vw").setDOMContent(div).addTo(this.map);
-      this.popupClose = false;
-      popup.on("close", function () {
-        setTimeout(function () {
-          _this.popupClose = true;
-        }, 5000);
-      });
-    },
-    createPopupDiv: function createPopupDiv() {
+    createPopupDiv: function createPopupDiv(point) {
       var popupDiv = document.createElement("div");
       popupDiv.className = "card card-popup";
       popupDiv.style = "width: 18rem;";
       var img = document.createElement("img");
       img.className = "card-img-top";
-      img.setAttribute("src", "./images/brest.jpg");
+      img.setAttribute("src", point.image);
       var cardBody = document.createElement("div");
       cardBody.className = "card-body";
       var cardTitle = document.createElement("h4");
-      cardTitle.textContent = "Bingo!!!";
+      cardTitle.textContent = point.title;
       var cardText = document.createElement("p");
-      cardText.textContent = "Vous êtes sur le marqueur test!";
+      cardText.textContent = point.description;
       var audioPlayer = document.createElement("audio");
-      audioPlayer.src = "./Fichiers/Trompette.mp3";
+      audioPlayer.src = point.audio;
       audioPlayer.setAttribute("controls", "true");
       audioPlayer.setAttribute("autoplay", "true");
       audioPlayer.className = "card-player";
@@ -39976,7 +39997,7 @@ var render = function() {
         container: _vm.container,
         accessToken: _vm.accessToken,
         mapStyle: _vm.mapStyle,
-        center: _vm.coordinates[1],
+        center: _vm.points[0].coordinates,
         zoom: _vm.zoom
       },
       on: {
