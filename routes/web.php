@@ -15,7 +15,7 @@ Auth::routes();
 
 Route::get('/', 'FrontController@index');
 
-Route::get('/admin', 'AdminController@index');
+Route::get('/admin', 'AdminController@index')->name('admin.home');
 
 Route::resource('audio', 'AudioController');
 Route::resource('card', 'CardController');

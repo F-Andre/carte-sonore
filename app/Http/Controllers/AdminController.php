@@ -18,6 +18,8 @@ class AdminController extends Controller
    */
   public function index()
   {
-    return view('admin.home');
+    $indexActive = 'active';
+
+    return view('admin.home', compact('indexActive'));
   }
 }
