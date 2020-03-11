@@ -30,6 +30,6 @@
         "@mapbox/mapbox-gl-language": "^0.10.1",
         "mapbox-gl": "^1.8.1",
         "vue-mapbox": "^0.4.1",
-        "vuetify": "^2.2.15"
+        "vuetify": "^2.2.16"
     }
 }
