@@ -19,7 +19,8 @@ class CreateImagesTable extends Migration
       $table->string('ext');
       $table->unsignedInteger('size');
       $table->string('path', 80)->unique();
-      $table->foreignId('user_id')->constrained();
+      $table->unsignedBigInteger('card_id');
+      $table->unsignedBigInteger('user_id');
       $table->timestamps();
     });
   }
@@ -31,10 +32,6 @@ class CreateImagesTable extends Migration
    */
   public function down()
   {
-    Schema::table('images', function (Blueprint $table) {
-      $table->dropForeign(['user_id']);
-    });
-
     Schema::dropIfExists('images');
   }
 }

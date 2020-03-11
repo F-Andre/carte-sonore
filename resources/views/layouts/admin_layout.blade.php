@@ -1,32 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-<ul class="nav nav-pills nav-stacked">
-  <li class="nav-item">
-    <a href="#" class="nav-link active">Active</a>
-  </li>
-  <li class="nav-item">
-    <a href="#" class="nav-link">Link</a>
-  </li>
-  <li class="nav-item disabled">
-    <a href="#" class="nav-link">Disabled</a>
-  </li>
-</ul>
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-header">Dashboard</div>
-
-        <div class="card-body">
-          @if (session('status'))
-          <div class="alert alert-success" role="alert">
-            {{ session('status') }}
-          </div>
-          @endif
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="d-flex px-4">
+  <ul class="nav nav-pills nav-stacked flex-column">
+    <li class="nav-item">
+      <a href="#" class="nav-link active">Accueil admin</a>
+    </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link">Marqueurs</a>
+    </li>
+    <li class="nav-item disabled">
+      <a href="#" class="nav-link">Parcours</a>
+    </li>
+  </ul>
+  <section class="flex-fill">
+    @yield('admin_content')
+  </section>
 </div>
 @endsection

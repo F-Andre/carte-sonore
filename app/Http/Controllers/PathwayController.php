@@ -2,20 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Carte;
-use App\Repositories\CarteRepository;
+use App\Pathway;
 use Illuminate\Http\Request;
 
-class CarteController extends Controller
+class PathwayController extends Controller
 {
-    protected $carte;
-
-    public function __construct(CarteRepository $carte)
-    {
-        $this->carte = $carte;
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -50,10 +41,10 @@ class CarteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Carte  $carte
+     * @param  \App\Pathway  $pathway
      * @return \Illuminate\Http\Response
      */
-    public function show(Carte $carte)
+    public function show(Pathway $pathway)
     {
         //
     }
@@ -61,10 +52,10 @@ class CarteController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Carte  $carte
+     * @param  \App\Pathway  $pathway
      * @return \Illuminate\Http\Response
      */
-    public function edit(Carte $carte)
+    public function edit(Pathway $pathway)
     {
         //
     }
@@ -73,10 +64,10 @@ class CarteController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Carte  $carte
+     * @param  \App\Pathway  $pathway
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Carte $carte)
+    public function update(Request $request, Pathway $pathway)
     {
         //
     }
@@ -84,10 +75,10 @@ class CarteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Carte  $carte
+     * @param  \App\Pathway  $pathway
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Carte $carte)
+    public function destroy(Pathway $pathway)
     {
         //
     }

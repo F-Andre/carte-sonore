@@ -11,10 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
+Route::get('/', 'FrontController@index');
+
 Route::get('/admin', 'AdminController@index');
+
+Route::resource('audio', 'AudioController');
+Route::resource('card', 'CardController');
+Route::resource('group', 'GroupController');
+Route::resource('image', 'ImageController');
+Route::resource('pathway', 'PathwayController');

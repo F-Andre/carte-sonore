@@ -49,7 +49,7 @@ export default {
           : new Date().getHours() <= 8
           ? "mapbox://styles/mapbox/dark-v9"
           : "mapbox://styles/mapbox/streets-v10",
-      zoom: 16,
+      zoom: 10,
       positionOptions: { enableHighAccuracy: true, timeout: 1000 },
       trackUserLocation: true,
       fitBoundsOptions: { maxZoom: 18 },

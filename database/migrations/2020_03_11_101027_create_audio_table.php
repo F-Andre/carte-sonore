@@ -20,7 +20,8 @@ class CreateAudioTable extends Migration
       $table->unsignedInteger('size');
       $table->unsignedInteger('duration');
       $table->string('path');
-      $table->foreignId('user_id')->constrained();
+      $table->unsignedBigInteger('card_id');
+      $table->unsignedBigInteger('user_id');
       $table->timestamps();
     });
   }
@@ -32,10 +33,6 @@ class CreateAudioTable extends Migration
    */
   public function down()
   {
-    Schema::table('audio', function (Blueprint $table) {
-      $table->dropForeign(['user_id']);
-    });
-
     Schema::dropIfExists('audio');
   }
 }

@@ -2272,7 +2272,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       accessToken: "pk.eyJ1IjoiZmFiaWVuYW5kcmUiLCJhIjoiY2s2Z2lxNXBjMHlhbDNqcXB6eDAyZnhvNyJ9.p7K1EMcW_ODNIn7q9Xf17A",
       // your access token. Needed if you using Mapbox maps
       mapStyle: new Date().getHours() >= 19 ? "mapbox://styles/mapbox/dark-v9" : new Date().getHours() <= 8 ? "mapbox://styles/mapbox/dark-v9" : "mapbox://styles/mapbox/streets-v10",
-      zoom: 16,
+      zoom: 10,
       positionOptions: {
         enableHighAccuracy: true,
         timeout: 1000
@@ -60253,7 +60253,8 @@ var __assign = undefined && undefined.__assign || function () {
       var render = _mixins_loadable__WEBPACK_IMPORTED_MODULE_2__["default"].options.methods.genProgress.call(this);
       if (!render) return null;
       return this.$createElement('div', {
-        staticClass: 'v-card__progress'
+        staticClass: 'v-card__progress',
+        key: 'progress'
       }, [render]);
     }
   },
@@ -61336,7 +61337,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _VColorPickerSwatches__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./VColorPickerSwatches */ "./src/components/VColorPicker/VColorPickerSwatches.ts");
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./util */ "./src/components/VColorPicker/util/index.ts");
 /* harmony import */ var _util_mixins__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../util/mixins */ "./src/util/mixins.ts");
-/* harmony import */ var _mixins_themeable__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../mixins/themeable */ "./src/mixins/themeable/index.ts");
+/* harmony import */ var _util_helpers__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../util/helpers */ "./src/util/helpers.ts");
+/* harmony import */ var _mixins_themeable__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../mixins/themeable */ "./src/mixins/themeable/index.ts");
 var __assign = undefined && undefined.__assign || function () {
   __assign = Object.assign || function (t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -61365,7 +61367,8 @@ var __assign = undefined && undefined.__assign || function () {
 
 
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(_util_mixins__WEBPACK_IMPORTED_MODULE_7__["default"])(_mixins_themeable__WEBPACK_IMPORTED_MODULE_8__["default"]).extend({
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(_util_mixins__WEBPACK_IMPORTED_MODULE_7__["default"])(_mixins_themeable__WEBPACK_IMPORTED_MODULE_9__["default"]).extend({
   name: 'v-color-picker',
   props: {
     canvasHeight: {
@@ -61414,7 +61417,8 @@ var __assign = undefined && undefined.__assign || function () {
   },
   computed: {
     hideAlpha: function hideAlpha() {
-      return this.value && !Object(_util__WEBPACK_IMPORTED_MODULE_6__["hasAlpha"])(this.value);
+      if (!this.value) return false;
+      return !Object(_util__WEBPACK_IMPORTED_MODULE_6__["hasAlpha"])(this.value);
     }
   },
   watch: {
@@ -61430,7 +61434,7 @@ var __assign = undefined && undefined.__assign || function () {
       this.internalValue = color;
       var value = Object(_util__WEBPACK_IMPORTED_MODULE_6__["extractColor"])(this.internalValue, this.value);
 
-      if (value !== this.value) {
+      if (!Object(_util_helpers__WEBPACK_IMPORTED_MODULE_8__["deepEqual"])(value, this.value)) {
         this.$emit('input', value);
         this.$emit('update:color', this.internalValue);
       }
@@ -61987,7 +61991,7 @@ var __assign = undefined && undefined.__assign || function () {
           max: 1
         },
         style: {
-          backgroundImage: !this.disabled ? "linear-gradient(to right, transparent, " + Object(_util_colorUtils__WEBPACK_IMPORTED_MODULE_2__["RGBtoCSS"])(this.color.rgba) + ")" : undefined
+          backgroundImage: this.disabled ? undefined : "linear-gradient(to " + (this.$vuetify.rtl ? 'left' : 'right') + ", transparent, " + Object(_util_colorUtils__WEBPACK_IMPORTED_MODULE_2__["RGBtoCSS"])(this.color.rgba) + ")"
         },
         on: {
           input: function input(val) {
@@ -62228,6 +62232,19 @@ var __assign = undefined && undefined.__assign || function () {
   };
 
   return __assign.apply(this, arguments);
+};
+
+var __rest = undefined && undefined.__rest || function (s, e) {
+  var t = {};
+
+  for (var p in s) {
+    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+  }
+
+  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+  }
+  return t;
 }; // Utilities
 
 
@@ -62339,6 +62356,18 @@ function parseColor(color, oldColor) {
     a: 1
   });
 }
+
+function stripAlpha(color, stripAlpha) {
+  if (stripAlpha) {
+    var a = color.a,
+        rest = __rest(color, ["a"]);
+
+    return rest;
+  }
+
+  return color;
+}
+
 function extractColor(color, input) {
   if (input == null) return color;
 
@@ -62347,7 +62376,7 @@ function extractColor(color, input) {
   }
 
   if (_typeof(input) === 'object') {
-    if (has(input, ['r', 'g', 'b'])) return color.rgba;else if (has(input, ['h', 's', 'l'])) return color.hsla;else if (has(input, ['h', 's', 'v'])) return color.hsva;
+    if (has(input, ['r', 'g', 'b'])) return stripAlpha(color.rgba, !input.a);else if (has(input, ['h', 's', 'l'])) return stripAlpha(color.hsla, !input.a);else if (has(input, ['h', 's', 'v'])) return stripAlpha(color.hsva, !input.a);
   }
 
   return color;
@@ -62360,7 +62389,7 @@ function hasAlpha(color) {
   }
 
   if (_typeof(color) === 'object') {
-    return has(color, ['a']);
+    return has(color, ['a']) || has(color, ['alpha']);
   }
 
   return false;
@@ -62933,7 +62962,7 @@ var __assign = undefined && undefined.__assign || function () {
       return this.serverItemsLength >= 0 ? this.serverItemsLength : this.filteredItems.length;
     },
     pageCount: function pageCount() {
-      return this.internalOptions.itemsPerPage === -1 ? 1 : Math.ceil(this.itemsLength / this.internalOptions.itemsPerPage); // TODO: can't use items.length here
+      return this.internalOptions.itemsPerPage <= 0 ? 1 : Math.ceil(this.itemsLength / this.internalOptions.itemsPerPage);
     },
     pageStart: function pageStart() {
       if (this.internalOptions.itemsPerPage === -1 || !this.items.length) return 0;
@@ -63313,7 +63342,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   },
   computed: {
     disableNextPageIcon: function disableNextPageIcon() {
-      return this.options.itemsPerPage < 0 || this.options.page * this.options.itemsPerPage >= this.pagination.itemsLength || this.pagination.pageStop < 0;
+      return this.options.itemsPerPage <= 0 || this.options.page * this.options.itemsPerPage >= this.pagination.itemsLength || this.pagination.pageStop < 0;
     },
     computedDataItemsPerPageOptions: function computedDataItemsPerPageOptions() {
       var _this = this;
@@ -63388,7 +63417,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     genPaginationInfo: function genPaginationInfo() {
       var children = ['–'];
 
-      if (this.pagination.itemsLength) {
+      if (this.pagination.itemsLength && this.pagination.itemsPerPage) {
         var itemsLength = this.pagination.itemsLength;
         var pageStart = this.pagination.pageStart + 1;
         var pageStop = itemsLength < this.pagination.pageStop || this.pagination.pageStop < 0 ? itemsLength : this.pagination.pageStop;
@@ -67846,14 +67875,16 @@ var baseMixins = Object(_util_mixins__WEBPACK_IMPORTED_MODULE_10__["default"])(_
           name: 'show',
           value: this.isActive
         }],
-        style: {}
+        style: {
+          transformOrigin: this.origin
+        }
       };
 
       if (!this.fullscreen) {
-        data.style = {
+        data.style = __assign({}, data.style, {
           maxWidth: this.maxWidth === 'none' ? undefined : Object(_util_helpers__WEBPACK_IMPORTED_MODULE_12__["convertToUnit"])(this.maxWidth),
           width: this.width === 'auto' ? undefined : Object(_util_helpers__WEBPACK_IMPORTED_MODULE_12__["convertToUnit"])(this.width)
-        };
+        });
       }
 
       return this.$createElement('div', data, this.getContentSlot());
@@ -86068,7 +86099,7 @@ function () {
 
   Vuetify.install = _install__WEBPACK_IMPORTED_MODULE_0__["install"];
   Vuetify.installed = false;
-  Vuetify.version = "2.2.15";
+  Vuetify.version = "2.2.16";
   return Vuetify;
 }();
 
