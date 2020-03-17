@@ -2231,10 +2231,29 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mapbox_mapbox_gl_language__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_mapbox_mapbox_gl_language__WEBPACK_IMPORTED_MODULE_3__);
 
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2283,24 +2302,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       },
       popupClose: true,
       points: [{
+        id: 0,
         title: "Edn",
         description: "Centre équestre",
         image: "./images/brest.jpg",
         coordinates: [-3.8770151406342848, 48.3583926165185],
         audio: "./Fichiers/Trompette.mp3"
       }, {
+        id: 1,
         title: "Super U",
         description: "Centre commercial",
         image: "./images/brest.jpg",
         coordinates: [-4.503249831105336, 48.384794966193766],
         audio: "./Fichiers/Trompette.mp3"
       }, {
+        id: 2,
         title: "Keroriou",
         description: "Quartier",
         image: "./images/brest.jpg",
         coordinates: [-4.4804386822013385, 48.39098379760787],
         audio: "./Fichiers/Trompette.mp3"
       }, {
+        id: 3,
         title: "Test loc",
         description: "Geoloc connexion",
         image: "./images/brest.jpg",
@@ -2309,17 +2332,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }]
     };
   },
-  created: function created() {
-    this.map = null;
-    this.popup = null;
-  },
   methods: {
     onMapLoaded: function () {
       var _onMapLoaded = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(event) {
-        var language, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, point, cardPopup, popup, marker;
-
+        var language;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -2332,60 +2350,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   document.querySelector("#message").textContent = "";
                   document.querySelector("#message").textContent = e.lngLat.wrap();
                 });
-                _iteratorNormalCompletion = true;
-                _didIteratorError = false;
-                _iteratorError = undefined;
-                _context.prev = 7;
 
-                for (_iterator = this.points[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                  point = _step.value;
-                  cardPopup = this.createPopupDiv(point);
-                  popup = new mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a.Popup({
-                    closeOnClick: false,
-                    anchor: "center"
-                  }).setDOMContent(cardPopup);
-                  marker = new mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a.Marker().setLngLat(point.coordinates).setPopup(popup).addTo(this.map);
-                }
-
-                _context.next = 15;
-                break;
-
-              case 11:
-                _context.prev = 11;
-                _context.t0 = _context["catch"](7);
-                _didIteratorError = true;
-                _iteratorError = _context.t0;
-
-              case 15:
-                _context.prev = 15;
-                _context.prev = 16;
-
-                if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-                  _iterator["return"]();
-                }
-
-              case 18:
-                _context.prev = 18;
-
-                if (!_didIteratorError) {
-                  _context.next = 21;
-                  break;
-                }
-
-                throw _iteratorError;
-
-              case 21:
-                return _context.finish(18);
-
-              case 22:
-                return _context.finish(15);
-
-              case 23:
+              case 4:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[7, 11, 15, 23], [16,, 18, 22]]);
+        }, _callee, this);
       }));
 
       function onMapLoaded(_x) {
@@ -2400,7 +2371,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(data) {
         var _this = this;
 
-        var asyncActions, asyncMapbox, textLoc, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, point, div, popup;
+        var asyncActions, asyncMapbox, textLoc, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, point, index;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
@@ -2424,20 +2395,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 textLoc = "Latitude: " + data.mapboxEvent.coords.latitude.toFixed(4) + " / " + "Longitude: " + data.mapboxEvent.coords.longitude.toFixed(4) + "<br>" + "Direction: " + parseInt(data.mapboxEvent.coords.heading) + "°" + "<br>" + "Vitesse: " + (data.mapboxEvent.coords.speed !== null ? data.mapboxEvent.coords.speed.toFixed(3) : 0) + "m/s" + "<br>" + "Altitude: " + parseInt(data.mapboxEvent.coords.altitude) + "m" + "<br>" + "Précision: " + data.mapboxEvent.coords.accuracy.toFixed(4) + "m";
                 document.querySelector("#message").innerHTML = "";
                 document.querySelector("#message").innerHTML = textLoc;
-                _iteratorNormalCompletion2 = true;
-                _didIteratorError2 = false;
-                _iteratorError2 = undefined;
+                _iteratorNormalCompletion = true;
+                _didIteratorError = false;
+                _iteratorError = undefined;
                 _context2.prev = 12;
 
-                for (_iterator2 = this.points[Symbol.iterator](); !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                  point = _step2.value;
+                for (_iterator = this.points[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                  point = _step.value;
 
-                  if (data.mapboxEvent.coords.latitude.toFixed(4) == point.coordinates[1].toFixed(4) && data.mapboxEvent.coords.longitude.toFixed(4) == point.coordinates[0].toFixed(4) && document.querySelectorAll(".card-popup").length == 0 && this.popupClose) {
-                    div = this.createPopupDiv(point);
-                    popup = new mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a.Popup({
-                      closeOnClick: false,
-                      anchor: "center"
-                    }).setLngLat([data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude]).setMaxWidth("80vw").setDOMContent(div).addTo(this.map);
+                  if (data.mapboxEvent.coords.latitude.toFixed(4) === point.coordinates[1].toFixed(4) && data.mapboxEvent.coords.longitude.toFixed(4) === point.coordinates[0].toFixed(4) && document.querySelectorAll(".card-popup").length === 0 && this.popupClose) {
+                    index = indexOf(point);
                     this.popupClose = false;
                     popup.on("close", function () {
                       setTimeout(function () {
@@ -2453,26 +2420,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 16:
                 _context2.prev = 16;
                 _context2.t0 = _context2["catch"](12);
-                _didIteratorError2 = true;
-                _iteratorError2 = _context2.t0;
+                _didIteratorError = true;
+                _iteratorError = _context2.t0;
 
               case 20:
                 _context2.prev = 20;
                 _context2.prev = 21;
 
-                if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-                  _iterator2["return"]();
+                if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+                  _iterator["return"]();
                 }
 
               case 23:
                 _context2.prev = 23;
 
-                if (!_didIteratorError2) {
+                if (!_didIteratorError) {
                   _context2.next = 26;
                   break;
                 }
 
-                throw _iteratorError2;
+                throw _iteratorError;
 
               case 26:
                 return _context2.finish(23);
@@ -2494,30 +2461,43 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return onGeolocate;
     }(),
-    createPopupDiv: function createPopupDiv(point) {
-      var popupDiv = document.createElement("div");
-      popupDiv.className = "card card-popup";
-      popupDiv.style = "width: 18rem;";
-      var img = document.createElement("img");
-      img.className = "card-img-top";
-      img.setAttribute("src", point.image);
-      var cardBody = document.createElement("div");
-      cardBody.className = "card-body";
-      var cardTitle = document.createElement("h4");
-      cardTitle.textContent = point.title;
-      var cardText = document.createElement("p");
-      cardText.textContent = point.description;
-      var audioPlayer = document.createElement("audio");
-      audioPlayer.src = point.audio;
-      audioPlayer.setAttribute("controls", "true");
-      audioPlayer.setAttribute("autoplay", "true");
-      audioPlayer.className = "card-player";
-      cardBody.appendChild(cardTitle);
-      cardBody.appendChild(cardText);
-      cardBody.appendChild(audioPlayer);
-      popupDiv.appendChild(img);
-      popupDiv.appendChild(cardBody);
-      return popupDiv;
+    selectMarker: function selectMarker(e) {
+      var _this2 = this;
+
+      this.popupClose = false;
+      this.map.flyTo({
+        center: [e.marker.getLngLat().lng, e.marker.getLngLat().lat]
+      });
+
+      var popupContent = e.marker.getPopup()._content;
+
+      var imgDiv = popupContent.childNodes[1].childNodes[0];
+      imgDiv.style.backgroundImage = "url('" + imgDiv.getAttribute("data-img") + "')";
+      var audioElem = popupContent.getElementsByTagName("audio")[0];
+      audioElem.src = audioElem.getAttribute("data-src");
+      var audioDuration = Number;
+      var audioElemLoaded = new Promise(function (resolve, reject) {
+        var testAudio = setInterval(function () {
+          console.log(_typeof(audioElem.duration));
+
+          if (typeof audioElem.duration === "number" && audioElem.duration > 0) {
+            console.log(audioElem.duration);
+            resolve(audioElem.duration);
+            clearInterval(testAudio);
+          }
+        }, 10);
+      });
+      audioElemLoaded.then(function (duration) {
+        audioDuration = duration * 1200;
+        setTimeout(function () {
+          e.marker.togglePopup();
+        }, audioDuration);
+      });
+      e.marker.getPopup().on("close", function () {
+        setTimeout(function () {
+          _this2.popupClose = true;
+        }, 5000);
+      });
     }
   }
 });
@@ -40021,9 +40001,50 @@ var render = function() {
         on: { geolocate: _vm.onGeolocate }
       }),
       _vm._v(" "),
-      _c("MglNavigationControl", { attrs: { position: "top-left" } })
+      _c("MglNavigationControl", { attrs: { position: "top-left" } }),
+      _vm._v(" "),
+      _vm._l(_vm.points, function(point) {
+        return _c(
+          "MglMarker",
+          {
+            key: point.id,
+            attrs: { coordinates: point.coordinates },
+            on: { click: _vm.selectMarker }
+          },
+          [
+            _c(
+              "MglPopup",
+              { attrs: { closeOnClick: false, anchor: "center" } },
+              [
+                _c("div", { staticClass: "card card-popup" }, [
+                  _c("div", {
+                    staticClass: "card-img-head",
+                    attrs: { "data-img": point.image }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("h4", [_vm._v(_vm._s(point.title))]),
+                    _vm._v(" "),
+                    _c("p", [_vm._v(_vm._s(point.description))]),
+                    _vm._v(" "),
+                    _c("audio", {
+                      staticClass: "card-player",
+                      attrs: {
+                        "data-src": point.audio,
+                        controls: "true",
+                        autoplay: "true"
+                      }
+                    })
+                  ])
+                ])
+              ]
+            )
+          ],
+          1
+        )
+      })
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
@@ -95554,6 +95575,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+
+Vue.use(vuetify__WEBPACK_IMPORTED_MODULE_0___default.a);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -95564,8 +95587,6 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-
-Vue.use(vuetify__WEBPACK_IMPORTED_MODULE_0___default.a);
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
 Vue.component('map-box', __webpack_require__(/*! ./components/MapBox.vue */ "./resources/js/components/MapBox.vue")["default"]);
 /**

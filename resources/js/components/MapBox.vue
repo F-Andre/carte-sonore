@@ -15,6 +15,23 @@
       @geolocate="onGeolocate"
     />
     <MglNavigationControl position="top-left" />
+    <MglMarker
+      v-for="point in points"
+      :key="point.id"
+      :coordinates="point.coordinates"
+      @click="selectMarker"
+    >
+      <MglPopup :closeOnClick="false" anchor="center">
+        <div class="card card-popup">
+          <div class="card-img-head" :data-img="point.image"></div>
+          <div class="card-body">
+            <h4>{{ point.title }}</h4>
+            <p>{{ point.description }}</p>
+            <audio :data-src="point.audio" controls="true" autoplay="true" class="card-player"></audio>
+          </div>
+        </div>
+      </MglPopup>
+    </MglMarker>
   </MglMap>
 </template>
 
@@ -56,6 +73,7 @@ export default {
       popupClose: true,
       points: [
         {
+          id: 0,
           title: "Edn",
           description: "Centre équestre",
           image: "./images/brest.jpg",
@@ -63,6 +81,7 @@ export default {
           audio: "./Fichiers/Trompette.mp3"
         },
         {
+          id: 1,
           title: "Super U",
           description: "Centre commercial",
           image: "./images/brest.jpg",
@@ -70,6 +89,7 @@ export default {
           audio: "./Fichiers/Trompette.mp3"
         },
         {
+          id: 2,
           title: "Keroriou",
           description: "Quartier",
           image: "./images/brest.jpg",
@@ -77,6 +97,7 @@ export default {
           audio: "./Fichiers/Trompette.mp3"
         },
         {
+          id: 3,
           title: "Test loc",
           description: "Geoloc connexion",
           image: "./images/brest.jpg",
@@ -85,11 +106,6 @@ export default {
         }
       ]
     };
-  },
-
-  created() {
-    this.map = null;
-    this.popup = null;
   },
 
   methods: {
@@ -102,20 +118,6 @@ export default {
         document.querySelector("#message").textContent = "";
         document.querySelector("#message").textContent = e.lngLat.wrap();
       });
-
-      for (const point of this.points) {
-        const cardPopup = this.createPopupDiv(point);
-
-        const popup = new Mapbox.Popup({
-          closeOnClick: false,
-          anchor: "center"
-        }).setDOMContent(cardPopup);
-
-        const marker = new Mapbox.Marker()
-          .setLngLat(point.coordinates)
-          .setPopup(popup)
-          .addTo(this.map);
-      }
     },
 
     async onGeolocate(data) {
@@ -161,26 +163,14 @@ export default {
 
       for (const point of this.points) {
         if (
-          data.mapboxEvent.coords.latitude.toFixed(4) ==
+          data.mapboxEvent.coords.latitude.toFixed(4) ===
             point.coordinates[1].toFixed(4) &&
-          data.mapboxEvent.coords.longitude.toFixed(4) ==
+          data.mapboxEvent.coords.longitude.toFixed(4) ===
             point.coordinates[0].toFixed(4) &&
-          document.querySelectorAll(".card-popup").length == 0 &&
+          document.querySelectorAll(".card-popup").length === 0 &&
           this.popupClose
         ) {
-          let div = this.createPopupDiv(point);
-
-          let popup = new Mapbox.Popup({
-            closeOnClick: false,
-            anchor: "center"
-          })
-            .setLngLat([
-              data.mapboxEvent.coords.longitude,
-              data.mapboxEvent.coords.latitude
-            ])
-            .setMaxWidth("80vw")
-            .setDOMContent(div)
-            .addTo(this.map);
+          let index = indexOf(point);
 
           this.popupClose = false;
 
@@ -193,32 +183,50 @@ export default {
       }
     },
 
-    createPopupDiv(point) {
-      let popupDiv = document.createElement("div");
-      popupDiv.className = "card card-popup";
-      popupDiv.style = "width: 18rem;";
-      let img = document.createElement("img");
-      img.className = "card-img-top";
-      img.setAttribute("src", point.image);
-      let cardBody = document.createElement("div");
-      cardBody.className = "card-body";
-      let cardTitle = document.createElement("h4");
-      cardTitle.textContent = point.title;
-      let cardText = document.createElement("p");
-      cardText.textContent = point.description;
-      let audioPlayer = document.createElement("audio");
-      audioPlayer.src = point.audio;
-      audioPlayer.setAttribute("controls", "true");
-      audioPlayer.setAttribute("autoplay", "true");
-      audioPlayer.className = "card-player";
+    selectMarker(e) {
+      this.popupClose = false;
 
-      cardBody.appendChild(cardTitle);
-      cardBody.appendChild(cardText);
-      cardBody.appendChild(audioPlayer);
-      popupDiv.appendChild(img);
-      popupDiv.appendChild(cardBody);
+      this.map.flyTo({
+        center: [e.marker.getLngLat().lng, e.marker.getLngLat().lat]
+      });
 
-      return popupDiv;
+      const popupContent = e.marker.getPopup()._content;
+
+      let imgDiv = popupContent.childNodes[1].childNodes[0];
+      imgDiv.style.backgroundImage =
+        "url('" + imgDiv.getAttribute("data-img") + "')";
+
+      let audioElem = popupContent.getElementsByTagName("audio")[0];
+      audioElem.src = audioElem.getAttribute("data-src");
+
+      let audioDuration = Number;
+      const audioElemLoaded = new Promise((resolve, reject) => {
+        let testAudio = setInterval(() => {
+          console.log(typeof audioElem.duration);
+          if (
+            typeof audioElem.duration === "number" &&
+            audioElem.duration > 0
+          ) {
+            console.log(audioElem.duration);
+            resolve(audioElem.duration);
+            clearInterval(testAudio);
+          }
+        }, 10);
+      });
+
+      audioElemLoaded.then(duration => {
+        audioDuration = duration * 1200;
+
+        setTimeout(() => {
+          e.marker.togglePopup();
+        }, audioDuration);
+      });
+
+      e.marker.getPopup().on("close", () => {
+        setTimeout(() => {
+          this.popupClose = true;
+        }, 5000);
+      });
     }
   }
 };

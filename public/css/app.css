@@ -11367,24 +11367,58 @@ a.text-dark:focus {
   margin: 0 auto 0 auto;
 }
 
-#map .card-popup .card-player {
-  width: 98%;
+#map .mapboxgl-popup {
+  min-width: 50vw;
+  max-height: 90vh;
 }
 
-#map .mapboxgl-popup-close-button {
+#map .mapboxgl-popup .mapboxgl-popup-content {
+  min-width: inherit;
+  max-height: inherit;
+}
+
+#map .mapboxgl-popup .mapboxgl-popup-content .card-popup {
+  max-height: inherit;
+}
+
+#map .mapboxgl-popup .mapboxgl-popup-content .card-popup .card-img-head {
+  margin-bottom: 20px;
+  width: 100%;
+  height: 30vh;
+  background-position: center;
+  background-size: cover;
+}
+
+#map .mapboxgl-popup .mapboxgl-popup-content .card-popup .card-body {
+  padding: 0 !important;
+}
+
+#map .mapboxgl-popup .mapboxgl-popup-content .card-popup .card-body h4,
+#map .mapboxgl-popup .mapboxgl-popup-content .card-popup .card-body p {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+#map .mapboxgl-popup .mapboxgl-popup-content .card-popup .card-player {
+  width: 100%;
+  margin-bottom: -10px;
+  padding-bottom: 0;
+}
+
+#map .mapboxgl-popup .mapboxgl-popup-content .mapboxgl-popup-close-button {
   font-size: 2rem;
   z-index: 1000;
   background-color: white;
   border-radius: 50%;
   padding: 5px;
   box-shadow: 1px 1px 1px gray;
-  left: calc(18rem + 5px);
-  top: -10px;
+  -webkit-transform: translate(10px, -10px);
+          transform: translate(10px, -10px);
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
 
-#map .mapboxgl-popup-close-button:hover {
+#map .mapboxgl-popup .mapboxgl-popup-content .mapboxgl-popup-close-button:hover {
   background-color: gainsboro;
 }
 
