@@ -20,18 +20,7 @@
       :key="point.id"
       :coordinates="point.coordinates"
       @click="selectMarker"
-    >
-      <MglPopup :closeOnClick="false" anchor="center">
-        <div class="card card-popup">
-          <div class="card-img-head" :data-img="point.image"></div>
-          <div class="card-body">
-            <h4>{{ point.title }}</h4>
-            <p>{{ point.description }}</p>
-            <audio :data-src="point.audio" controls="true" autoplay="true" class="card-player"></audio>
-          </div>
-        </div>
-      </MglPopup>
-    </MglMarker>
+    ></MglMarker>
   </MglMap>
 </template>
 
@@ -103,6 +92,14 @@ export default {
           image: "./images/brest.jpg",
           coordinates: [2.6370463521272995, 48.84992158564938],
           audio: "./Fichiers/Trompette.mp3"
+        },
+        {
+          id: 4,
+          title: "Test loc 2",
+          description: "Geoloc fixe",
+          image: "./images/brest.jpg",
+          coordinates: [2.3387194638617075, 48.85818100483493],
+          audio: "./Fichiers/Trompette.mp3"
         }
       ]
     };
@@ -162,44 +159,84 @@ export default {
       document.querySelector("#message").innerHTML = textLoc;
 
       for (const point of this.points) {
-        if (
-          data.mapboxEvent.coords.latitude.toFixed(4) ===
-            point.coordinates[1].toFixed(4) &&
-          data.mapboxEvent.coords.longitude.toFixed(4) ===
-            point.coordinates[0].toFixed(4) &&
-          document.querySelectorAll(".card-popup").length === 0 &&
-          this.popupClose
-        ) {
-          let index = indexOf(point);
+        if (this.map.getBounds().contains(point.coordinates)) {
+          if (
+            data.mapboxEvent.coords.latitude.toFixed(4) ==
+              point.coordinates[1].toFixed(4) &&
+            data.mapboxEvent.coords.longitude.toFixed(4) ==
+              point.coordinates[0].toFixed(4) &&
+            document.querySelectorAll(".card-popup").length == 0 &&
+            this.popupClose
+          ) {
+            let div = this.createPopupDiv(point);
 
-          this.popupClose = false;
+            let popup = new Mapbox.Popup({
+              closeOnClick: false,
+              anchor: "center"
+            })
+              .setLngLat([
+                data.mapboxEvent.coords.longitude,
+                data.mapboxEvent.coords.latitude
+              ])
+              .setDOMContent(div)
+              .addTo(this.map);
 
-          popup.on("close", () => {
-            setTimeout(() => {
-              this.popupClose = true;
-            }, 5000);
-          });
+            this.popupClose = false;
+
+            this.closePopupAtAudioEnd(popup)
+
+            popup.on("close", () => {
+              setTimeout(() => {
+                this.popupClose = true;
+              }, 5000);
+            });
+          }
         }
       }
     },
 
     selectMarker(e) {
-      this.popupClose = false;
+      const marker = e.marker;
+      const markerCoords = [marker.getLngLat().lng, marker.getLngLat().lat];
 
       this.map.flyTo({
-        center: [e.marker.getLngLat().lng, e.marker.getLngLat().lat]
+        center: markerCoords
       });
 
-      const popupContent = e.marker.getPopup()._content;
+      this.popupShow = true;
+      this.popupCoord = markerCoords;
 
-      let imgDiv = popupContent.childNodes[1].childNodes[0];
-      imgDiv.style.backgroundImage =
-        "url('" + imgDiv.getAttribute("data-img") + "')";
+      for (const key in this.points) {
+        if (this.points.hasOwnProperty(key)) {
+          const element = this.points[key];
+          if (
+            element.coordinates[0] === markerCoords[0] &&
+            element.coordinates[1] === markerCoords[1]
+          ) {
+            let div = this.createPopupDiv(element);
 
-      let audioElem = popupContent.getElementsByTagName("audio")[0];
-      audioElem.src = audioElem.getAttribute("data-src");
+            let popup = new Mapbox.Popup({
+              closeOnClick: false,
+              anchor: "center"
+            })
+              .setLngLat(element.coordinates)
+              .setDOMContent(div)
+              .addTo(this.map);
 
-      let audioDuration = Number;
+            this.popupClose = false;
+
+            this.closePopupAtAudioEnd(popup)
+
+            popup.on("close", () => {
+              setTimeout(() => {
+                this.popupClose = true;
+              }, 5000);
+            });
+          }
+        }
+      }
+
+      /* let audioDuration = Number;
       const audioElemLoaded = new Promise((resolve, reject) => {
         let testAudio = setInterval(() => {
           console.log(typeof audioElem.duration);
@@ -220,12 +257,65 @@ export default {
         setTimeout(() => {
           e.marker.togglePopup();
         }, audioDuration);
-      });
+      }); */
 
-      e.marker.getPopup().on("close", () => {
+      /* e.marker.getPopup().on("close", () => {
         setTimeout(() => {
           this.popupClose = true;
         }, 5000);
+      }); */
+    },
+
+    createPopupDiv(point) {
+      let popupDiv = document.createElement("div");
+      popupDiv.className = "card card-popup";
+      let img = document.createElement("div");
+      img.className = "card-img-head";
+      img.style.backgroundImage = "url('" + point.image + "')";
+      let cardBody = document.createElement("div");
+      cardBody.className = "card-body";
+      let cardTitle = document.createElement("h4");
+      cardTitle.textContent = point.title;
+      let cardText = document.createElement("p");
+      cardText.textContent = point.description;
+      let audioPlayer = document.createElement("audio");
+      audioPlayer.src = point.audio;
+      audioPlayer.setAttribute("controls", "true");
+      audioPlayer.setAttribute("autoplay", "true");
+      audioPlayer.className = "card-player";
+
+      cardBody.appendChild(cardTitle);
+      cardBody.appendChild(cardText);
+      cardBody.appendChild(audioPlayer);
+      popupDiv.appendChild(img);
+      popupDiv.appendChild(cardBody);
+
+      return popupDiv;
+    },
+
+    closePopupAtAudioEnd(popup) {
+      const audioElem = popup.getElement().querySelectorAll(".card-player")[0];
+      let audioDuration = Number;
+      const audioElemLoaded = new Promise((resolve, reject) => {
+        let testAudio = setInterval(() => {
+          console.log(typeof audioElem.duration);
+          if (
+            typeof audioElem.duration === "number" &&
+            audioElem.duration > 0
+          ) {
+            console.log(audioElem.duration);
+            resolve(audioElem.duration);
+            clearInterval(testAudio);
+          }
+        }, 10);
+      });
+
+      audioElemLoaded.then(duration => {
+        audioDuration = duration * 1200;
+
+        setTimeout(() => {
+          popup.remove();
+        }, audioDuration);
       });
     }
   }

@@ -2231,23 +2231,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mapbox_mapbox_gl_language__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_mapbox_mapbox_gl_language__WEBPACK_IMPORTED_MODULE_3__);
 
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2329,24 +2318,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         image: "./images/brest.jpg",
         coordinates: [2.6370463521272995, 48.84992158564938],
         audio: "./Fichiers/Trompette.mp3"
+      }, {
+        id: 4,
+        title: "Test loc 2",
+        description: "Geoloc fixe",
+        image: "./images/brest.jpg",
+        coordinates: [2.3387194638617075, 48.85818100483493],
+        audio: "./Fichiers/Trompette.mp3"
       }]
     };
   },
   methods: {
-    onMapLoaded: function () {
-      var _onMapLoaded = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(event) {
+    onMapLoaded: function onMapLoaded(event) {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
         var language;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 // in component
-                this.map = event.map;
+                _this.map = event.map;
                 language = new _mapbox_mapbox_gl_language__WEBPACK_IMPORTED_MODULE_3___default.a();
-                this.map.setStyle(language.setLanguage(this.map.getStyle(), "fr"));
-                this.map.on("click", function (e) {
+
+                _this.map.setStyle(language.setLanguage(_this.map.getStyle(), "fr"));
+
+                _this.map.on("click", function (e) {
                   document.querySelector("#message").textContent = "";
                   document.querySelector("#message").textContent = e.lngLat.wrap();
                 });
@@ -2356,22 +2354,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context.stop();
             }
           }
-        }, _callee, this);
-      }));
+        }, _callee);
+      }))();
+    },
+    onGeolocate: function onGeolocate(data) {
+      var _this2 = this;
 
-      function onMapLoaded(_x) {
-        return _onMapLoaded.apply(this, arguments);
-      }
-
-      return onMapLoaded;
-    }(),
-    onGeolocate: function () {
-      var _onGeolocate = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(data) {
-        var _this = this;
-
-        var asyncActions, asyncMapbox, textLoc, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, point, index;
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var asyncActions, asyncMapbox, textLoc, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, point, div, popup;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
@@ -2400,17 +2390,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _iteratorError = undefined;
                 _context2.prev = 12;
 
-                for (_iterator = this.points[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                for (_iterator = _this2.points[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                   point = _step.value;
 
-                  if (data.mapboxEvent.coords.latitude.toFixed(4) === point.coordinates[1].toFixed(4) && data.mapboxEvent.coords.longitude.toFixed(4) === point.coordinates[0].toFixed(4) && document.querySelectorAll(".card-popup").length === 0 && this.popupClose) {
-                    index = indexOf(point);
-                    this.popupClose = false;
-                    popup.on("close", function () {
-                      setTimeout(function () {
-                        _this.popupClose = true;
-                      }, 5000);
-                    });
+                  if (_this2.map.getBounds().contains(point.coordinates)) {
+                    if (data.mapboxEvent.coords.latitude.toFixed(4) == point.coordinates[1].toFixed(4) && data.mapboxEvent.coords.longitude.toFixed(4) == point.coordinates[0].toFixed(4) && document.querySelectorAll(".card-popup").length == 0 && _this2.popupClose) {
+                      div = _this2.createPopupDiv(point);
+                      popup = new mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a.Popup({
+                        closeOnClick: false,
+                        anchor: "center"
+                      }).setLngLat([data.mapboxEvent.coords.longitude, data.mapboxEvent.coords.latitude]).setDOMContent(div).addTo(_this2.map);
+                      _this2.popupClose = false;
+
+                      _this2.closePopupAtAudioEnd(popup);
+
+                      popup.on("close", function () {
+                        setTimeout(function () {
+                          _this2.popupClose = true;
+                        }, 5000);
+                      });
+                    }
                   }
                 }
 
@@ -2452,29 +2451,94 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[12, 16, 20, 28], [21,, 23, 27]]);
-      }));
-
-      function onGeolocate(_x2) {
-        return _onGeolocate.apply(this, arguments);
-      }
-
-      return onGeolocate;
-    }(),
+        }, _callee2, null, [[12, 16, 20, 28], [21,, 23, 27]]);
+      }))();
+    },
     selectMarker: function selectMarker(e) {
-      var _this2 = this;
+      var _this3 = this;
 
-      this.popupClose = false;
+      var marker = e.marker;
+      var markerCoords = [marker.getLngLat().lng, marker.getLngLat().lat];
       this.map.flyTo({
-        center: [e.marker.getLngLat().lng, e.marker.getLngLat().lat]
+        center: markerCoords
       });
+      this.popupShow = true;
+      this.popupCoord = markerCoords;
 
-      var popupContent = e.marker.getPopup()._content;
+      for (var key in this.points) {
+        if (this.points.hasOwnProperty(key)) {
+          var element = this.points[key];
 
-      var imgDiv = popupContent.childNodes[1].childNodes[0];
-      imgDiv.style.backgroundImage = "url('" + imgDiv.getAttribute("data-img") + "')";
-      var audioElem = popupContent.getElementsByTagName("audio")[0];
-      audioElem.src = audioElem.getAttribute("data-src");
+          if (element.coordinates[0] === markerCoords[0] && element.coordinates[1] === markerCoords[1]) {
+            var div = this.createPopupDiv(element);
+            var popup = new mapbox_gl__WEBPACK_IMPORTED_MODULE_1___default.a.Popup({
+              closeOnClick: false,
+              anchor: "center"
+            }).setLngLat(element.coordinates).setDOMContent(div).addTo(this.map);
+            this.popupClose = false;
+            this.closePopupAtAudioEnd(popup);
+            popup.on("close", function () {
+              setTimeout(function () {
+                _this3.popupClose = true;
+              }, 5000);
+            });
+          }
+        }
+      }
+      /* let audioDuration = Number;
+      const audioElemLoaded = new Promise((resolve, reject) => {
+        let testAudio = setInterval(() => {
+          console.log(typeof audioElem.duration);
+          if (
+            typeof audioElem.duration === "number" &&
+            audioElem.duration > 0
+          ) {
+            console.log(audioElem.duration);
+            resolve(audioElem.duration);
+            clearInterval(testAudio);
+          }
+        }, 10);
+      });
+       audioElemLoaded.then(duration => {
+        audioDuration = duration * 1200;
+         setTimeout(() => {
+          e.marker.togglePopup();
+        }, audioDuration);
+      }); */
+
+      /* e.marker.getPopup().on("close", () => {
+        setTimeout(() => {
+          this.popupClose = true;
+        }, 5000);
+      }); */
+
+    },
+    createPopupDiv: function createPopupDiv(point) {
+      var popupDiv = document.createElement("div");
+      popupDiv.className = "card card-popup";
+      var img = document.createElement("div");
+      img.className = "card-img-head";
+      img.style.backgroundImage = "url('" + point.image + "')";
+      var cardBody = document.createElement("div");
+      cardBody.className = "card-body";
+      var cardTitle = document.createElement("h4");
+      cardTitle.textContent = point.title;
+      var cardText = document.createElement("p");
+      cardText.textContent = point.description;
+      var audioPlayer = document.createElement("audio");
+      audioPlayer.src = point.audio;
+      audioPlayer.setAttribute("controls", "true");
+      audioPlayer.setAttribute("autoplay", "true");
+      audioPlayer.className = "card-player";
+      cardBody.appendChild(cardTitle);
+      cardBody.appendChild(cardText);
+      cardBody.appendChild(audioPlayer);
+      popupDiv.appendChild(img);
+      popupDiv.appendChild(cardBody);
+      return popupDiv;
+    },
+    closePopupAtAudioEnd: function closePopupAtAudioEnd(popup) {
+      var audioElem = popup.getElement().querySelectorAll(".card-player")[0];
       var audioDuration = Number;
       var audioElemLoaded = new Promise(function (resolve, reject) {
         var testAudio = setInterval(function () {
@@ -2490,13 +2554,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       audioElemLoaded.then(function (duration) {
         audioDuration = duration * 1200;
         setTimeout(function () {
-          e.marker.togglePopup();
+          popup.remove();
         }, audioDuration);
-      });
-      e.marker.getPopup().on("close", function () {
-        setTimeout(function () {
-          _this2.popupClose = true;
-        }, 5000);
       });
     }
   }
@@ -37892,7 +37951,7 @@ var runtime = (function (exports) {
     return { __await: arg };
   };
 
-  function AsyncIterator(generator) {
+  function AsyncIterator(generator, PromiseImpl) {
     function invoke(method, arg, resolve, reject) {
       var record = tryCatch(generator[method], generator, arg);
       if (record.type === "throw") {
@@ -37903,14 +37962,14 @@ var runtime = (function (exports) {
         if (value &&
             typeof value === "object" &&
             hasOwn.call(value, "__await")) {
-          return Promise.resolve(value.__await).then(function(value) {
+          return PromiseImpl.resolve(value.__await).then(function(value) {
             invoke("next", value, resolve, reject);
           }, function(err) {
             invoke("throw", err, resolve, reject);
           });
         }
 
-        return Promise.resolve(value).then(function(unwrapped) {
+        return PromiseImpl.resolve(value).then(function(unwrapped) {
           // When a yielded Promise is resolved, its final value becomes
           // the .value of the Promise<{value,done}> result for the
           // current iteration.
@@ -37928,7 +37987,7 @@ var runtime = (function (exports) {
 
     function enqueue(method, arg) {
       function callInvokeWithMethodAndArg() {
-        return new Promise(function(resolve, reject) {
+        return new PromiseImpl(function(resolve, reject) {
           invoke(method, arg, resolve, reject);
         });
       }
@@ -37968,9 +38027,12 @@ var runtime = (function (exports) {
   // Note that simple async functions are implemented on top of
   // AsyncIterator objects; they just return a Promise for the value of
   // the final result produced by the iterator.
-  exports.async = function(innerFn, outerFn, self, tryLocsList) {
+  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+    if (PromiseImpl === void 0) PromiseImpl = Promise;
+
     var iter = new AsyncIterator(
-      wrap(innerFn, outerFn, self, tryLocsList)
+      wrap(innerFn, outerFn, self, tryLocsList),
+      PromiseImpl
     );
 
     return exports.isGeneratorFunction(outerFn)
@@ -40004,44 +40066,11 @@ var render = function() {
       _c("MglNavigationControl", { attrs: { position: "top-left" } }),
       _vm._v(" "),
       _vm._l(_vm.points, function(point) {
-        return _c(
-          "MglMarker",
-          {
-            key: point.id,
-            attrs: { coordinates: point.coordinates },
-            on: { click: _vm.selectMarker }
-          },
-          [
-            _c(
-              "MglPopup",
-              { attrs: { closeOnClick: false, anchor: "center" } },
-              [
-                _c("div", { staticClass: "card card-popup" }, [
-                  _c("div", {
-                    staticClass: "card-img-head",
-                    attrs: { "data-img": point.image }
-                  }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card-body" }, [
-                    _c("h4", [_vm._v(_vm._s(point.title))]),
-                    _vm._v(" "),
-                    _c("p", [_vm._v(_vm._s(point.description))]),
-                    _vm._v(" "),
-                    _c("audio", {
-                      staticClass: "card-player",
-                      attrs: {
-                        "data-src": point.audio,
-                        controls: "true",
-                        autoplay: "true"
-                      }
-                    })
-                  ])
-                ])
-              ]
-            )
-          ],
-          1
-        )
+        return _c("MglMarker", {
+          key: point.id,
+          attrs: { coordinates: point.coordinates },
+          on: { click: _vm.selectMarker }
+        })
       })
     ],
     2
@@ -40137,7 +40166,7 @@ function normalizeComponent (
       // for template-only hot-reload because in that case the render fn doesn't
       // go through the normalizer
       options._injectStyles = hook
-      // register for functioal component in vue file
+      // register for functional component in vue file
       var originalRender = options.render
       options.render = function renderWithStyleInjection (h, context) {
         hook.call(context)
@@ -55380,7 +55409,7 @@ var defaultMenuProps = __assign({}, _VSelect_VSelect__WEBPACK_IMPORTED_MODULE_1_
 
       this.$nextTick(function () {
         if (!_this.multiple || !_this.internalSearch || !_this.isMenuActive) {
-          _this.internalSearch = !_this.selectedItems.length || _this.multiple || _this.hasSlot ? _this.internalSearch || null : _this.getText(_this.selectedItem);
+          _this.internalSearch = !_this.selectedItems.length || _this.multiple || _this.hasSlot ? null : _this.getText(_this.selectedItem);
         }
       });
     },
@@ -86120,7 +86149,7 @@ function () {
 
   Vuetify.install = _install__WEBPACK_IMPORTED_MODULE_0__["install"];
   Vuetify.installed = false;
-  Vuetify.version = "2.2.16";
+  Vuetify.version = "2.2.17";
   return Vuetify;
 }();
 
