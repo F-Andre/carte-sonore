@@ -37,9 +37,9 @@ class CardController extends Controller
   public function create()
   {
     $cardActive = 'active';
-    $cards = $this->card->getCollection();
+    $newMarker = true;
 
-    return view('admin.card_create', compact('cards', 'cardActive'));
+    return view('admin.card_create', compact('newMarker', 'cardActive'));
   }
 
   /**

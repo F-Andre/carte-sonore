@@ -11,6 +11,9 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+//mapbox
+@import '~mapbox-gl/dist/mapbox-gl.css';
+
 //App
 @import 'map';
 @import 'admin';

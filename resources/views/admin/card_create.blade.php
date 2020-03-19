@@ -12,7 +12,7 @@
             {{ session('status') }}
           </div>
           @endif
-          
+          <create-marker-form></create-marker-form>
         </div>
       </div>
     </div>

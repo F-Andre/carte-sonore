@@ -18,8 +18,16 @@
     <MglMarker
       v-for="point in points"
       :key="point.id"
+      v-bind:point="point"
       :coordinates="point.coordinates"
       @click="selectMarker"
+    ></MglMarker>
+    <MglMarker
+      @dragend="dragend"
+      v-if="addMarker"
+      :coordinates="center"
+      color="green"
+      :draggable="true"
     ></MglMarker>
   </MglMap>
 </template>
@@ -34,6 +42,7 @@ import {
   MglPopup
 } from "vue-mapbox";
 import MapboxLanguage from "@mapbox/mapbox-gl-language";
+import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 
 export default {
   components: {
@@ -42,6 +51,13 @@ export default {
     MglGeolocateControl,
     MglNavigationControl,
     MglPopup
+  },
+
+  props: {
+    addMarker: {
+      type: String,
+      value: "false"
+    }
   },
 
   data() {
@@ -56,10 +72,13 @@ export default {
           ? "mapbox://styles/mapbox/dark-v9"
           : "mapbox://styles/mapbox/streets-v10",
       zoom: 10,
+      center: [0, 0],
       positionOptions: { enableHighAccuracy: true, timeout: 1000 },
       trackUserLocation: true,
       fitBoundsOptions: { maxZoom: 18 },
       popupClose: true,
+      newMarker: this.addMarker,
+      newMarkerPos: [0, 0],
       points: [
         {
           id: 0,
@@ -115,6 +134,22 @@ export default {
         document.querySelector("#message").textContent = "";
         document.querySelector("#message").textContent = e.lngLat.wrap();
       });
+      if (this.newMarker) {
+        this.center = [this.map.getCenter().lng, this.map.getCenter().lat];
+        this.map.on("moveend", e => {
+          this.center = [this.map.getCenter().lng, this.map.getCenter().lat];
+          this.$emit("newDraggedMarker", this.center);
+        });
+
+        const geocoder = new MapboxGeocoder({
+          accessToken: this.accessToken,
+          language: "fr",
+          countries: "fr",
+          types: "place, locality, locality, address",
+          mapboxgl: Mapbox
+        });
+        this.map.addControl(geocoder);
+      }
     },
 
     async onGeolocate(data) {
@@ -183,7 +218,7 @@ export default {
 
             this.popupClose = false;
 
-            this.closePopupAtAudioEnd(popup)
+            this.closePopupAtAudioEnd(popup);
 
             popup.on("close", () => {
               setTimeout(() => {
@@ -225,7 +260,7 @@ export default {
 
             this.popupClose = false;
 
-            this.closePopupAtAudioEnd(popup)
+            this.closePopupAtAudioEnd(popup);
 
             popup.on("close", () => {
               setTimeout(() => {
@@ -235,35 +270,6 @@ export default {
           }
         }
       }
-
-      /* let audioDuration = Number;
-      const audioElemLoaded = new Promise((resolve, reject) => {
-        let testAudio = setInterval(() => {
-          console.log(typeof audioElem.duration);
-          if (
-            typeof audioElem.duration === "number" &&
-            audioElem.duration > 0
-          ) {
-            console.log(audioElem.duration);
-            resolve(audioElem.duration);
-            clearInterval(testAudio);
-          }
-        }, 10);
-      });
-
-      audioElemLoaded.then(duration => {
-        audioDuration = duration * 1200;
-
-        setTimeout(() => {
-          e.marker.togglePopup();
-        }, audioDuration);
-      }); */
-
-      /* e.marker.getPopup().on("close", () => {
-        setTimeout(() => {
-          this.popupClose = true;
-        }, 5000);
-      }); */
     },
 
     createPopupDiv(point) {
@@ -317,6 +323,12 @@ export default {
           popup.remove();
         }, audioDuration);
       });
+    },
+
+    dragend(e) {
+      const marker = e.marker;
+      this.newMarkerPos = [e.marker.getLngLat().lng, e.marker.getLngLat().lat];
+      this.$emit("newDraggedMarker", this.newMarkerPos);
     }
   }
 };

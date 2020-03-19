@@ -23,6 +23,7 @@ Vue.use(Vuetify);
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('map-box', require('./components/MapBox.vue').default);
+Vue.component('create-marker-form', require('./components/CreateMarker.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -31,6 +32,12 @@ Vue.component('map-box', require('./components/MapBox.vue').default);
  */
 
 const app = new Vue({
-    el: '#app',
-    vuetify: new Vuetify(),
+  el: '#app',
+  vuetify: new Vuetify(),
+
+  data() {
+    return {
+      draggedMarker: [0, 0]
+    }
+  }
 });
