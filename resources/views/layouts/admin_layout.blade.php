@@ -16,7 +16,7 @@
       <a href="{{ route('group.index') }}" class="nav-link {{ $groupActive ?? '' }}">Groupes</a>
     </li>
   </ul>
-  <section class="flex-fill">
+  <section class="flex-fill" id="admin-content">
     @yield('admin_content')
   </section>
 </div>

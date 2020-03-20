@@ -5691,12 +5691,91 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       draggedMarkerCoord: [0, 0],
-      draggedMarkerAddress: String
+      imageInput: "/images/image.webp",
+      audioInput: "Fichier audio"
     };
+  },
+  props: ["route"],
+  methods: {
+    processImageFile: function processImageFile(event) {
+      var file = event.target.files[0];
+      this.imageInput = URL.createObjectURL(file);
+    },
+    processAudioFile: function processAudioFile(event) {
+      var file = event.target.files[0];
+      this.audioInput = file.name;
+    }
   }
 });
 
@@ -45315,12 +45394,154 @@ var render = function() {
       1
     ),
     _vm._v(" "),
-    _c("p", [_vm._v(_vm._s(_vm.draggedMarkerCoord[0]))]),
-    _vm._v(" "),
-    _c("p", { attrs: { id: "geocoder" } })
+    _c(
+      "form",
+      {
+        staticClass: "col-lg-10 mx-auto",
+        attrs: {
+          method: "POST",
+          action: _vm.route,
+          enctype: "multipart/form-data"
+        }
+      },
+      [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "coordinates" } }, [
+            _vm._v("Coordonnées du point")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "form-control",
+            attrs: {
+              type: "text",
+              name: "coordinates",
+              id: "coordinates",
+              readonly: ""
+            },
+            domProps: {
+              value:
+                _vm.draggedMarkerCoord[0] + " , " + _vm.draggedMarkerCoord[1]
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-deck col-lg-10 mx-auto" }, [
+          _c("div", { staticClass: "card" }, [
+            _c(
+              "div",
+              {
+                staticClass: "card-img-head",
+                style: "background-image:url('" + _vm.imageInput + "');"
+              },
+              [
+                _c("label", {
+                  staticClass: "file-label",
+                  attrs: { for: "image" }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: {
+                    type: "file",
+                    name: "image",
+                    id: "image",
+                    accept: "image/*",
+                    hidden: "",
+                    required: ""
+                  },
+                  on: {
+                    change: function($event) {
+                      return _vm.processImageFile($event)
+                    }
+                  }
+                })
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _vm._m(1),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("div", { staticClass: "custom-file" }, [
+                  _c("input", {
+                    staticClass: "custom-file-input",
+                    attrs: {
+                      type: "file",
+                      name: "audio",
+                      id: "audioFile",
+                      lang: "fr",
+                      accept: "audio/*",
+                      required: ""
+                    },
+                    on: {
+                      change: function($event) {
+                        return _vm.processAudioFile($event)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "label",
+                    {
+                      staticClass: "custom-file-label",
+                      attrs: { for: "audioFile" }
+                    },
+                    [_vm._v(_vm._s(_vm.audioInput))]
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                { staticClass: "btn btn-success", attrs: { type: "submit" } },
+                [_vm._v("Valider")]
+              )
+            ])
+          ])
+        ])
+      ]
+    )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group card-title" }, [
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          type: "text",
+          id: "title",
+          placeholder: "Titre",
+          name: "title",
+          required: ""
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-text" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c("textarea", {
+          staticClass: "form-control",
+          attrs: {
+            name: "description",
+            id: "description",
+            placeholder: "Description",
+            rows: "3",
+            required: ""
+          }
+        })
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

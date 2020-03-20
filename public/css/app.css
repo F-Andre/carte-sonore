@@ -4220,6 +4220,10 @@ input[type=button].btn-block {
   content: "Browse";
 }
 
+.custom-file-input:lang(fr) ~ .custom-file-label::after {
+  content: "Parcourir";
+}
+
 .custom-file-input ~ .custom-file-label[data-browse]::after {
   content: attr(data-browse);
 }
@@ -10944,5 +10948,19 @@ a.text-dark:focus {
 
 #map .mapboxgl-popup .mapboxgl-popup-content .mapboxgl-popup-close-button:hover {
   background-color: gainsboro;
+}
+
+#admin-content .card-img-head {
+  margin-bottom: 20px;
+  width: 100%;
+  height: 30vh;
+  background-position: center;
+  background-size: cover;
+}
+
+#admin-content .file-label {
+  width: inherit;
+  height: inherit;
+  cursor: pointer;
 }
 
