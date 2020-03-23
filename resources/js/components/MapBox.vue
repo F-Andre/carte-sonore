@@ -71,7 +71,7 @@ export default {
           : new Date().getHours() <= 8
           ? "mapbox://styles/mapbox/dark-v9"
           : "mapbox://styles/mapbox/streets-v10",
-      zoom: 10,
+      zoom: 8,
       center: [0, 0],
       positionOptions: { enableHighAccuracy: true, timeout: 1000 },
       trackUserLocation: true,
@@ -84,41 +84,41 @@ export default {
           id: 0,
           title: "Edn",
           description: "Centre équestre",
-          image: "./images/brest.jpg",
+          image: "/images/brest.jpg",
           coordinates: [-3.8770151406342848, 48.3583926165185],
-          audio: "./Fichiers/Trompette.mp3"
+          audio: "/Fichiers/Trompette.mp3"
         },
         {
           id: 1,
           title: "Super U",
           description: "Centre commercial",
-          image: "./images/brest.jpg",
+          image: "/images/brest.jpg",
           coordinates: [-4.503249831105336, 48.384794966193766],
-          audio: "./Fichiers/Trompette.mp3"
+          audio: "/Fichiers/Trompette.mp3"
         },
         {
           id: 2,
           title: "Keroriou",
           description: "Quartier",
-          image: "./images/brest.jpg",
+          image: "/images/brest.jpg",
           coordinates: [-4.4804386822013385, 48.39098379760787],
-          audio: "./Fichiers/Trompette.mp3"
+          audio: "/Fichiers/Trompette.mp3"
         },
         {
           id: 3,
           title: "Test loc",
           description: "Geoloc connexion",
-          image: "./images/brest.jpg",
+          image: "/images/brest.jpg",
           coordinates: [2.6370463521272995, 48.84992158564938],
-          audio: "./Fichiers/Trompette.mp3"
+          audio: "/Fichiers/Trompette.mp3"
         },
         {
           id: 4,
           title: "Test loc 2",
           description: "Geoloc fixe",
-          image: "./images/brest.jpg",
+          image: "/images/brest.jpg",
           coordinates: [2.3387194638617075, 48.85818100483493],
-          audio: "./Fichiers/Trompette.mp3"
+          audio: "/Fichiers/Trompette.mp3"
         }
       ]
     };

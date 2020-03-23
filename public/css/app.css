@@ -10898,8 +10898,9 @@ a.text-dark:focus {
 }
 
 #map .mapboxgl-popup {
-  min-width: 50vw;
-  max-height: 90vh;
+  min-width: 80%;
+  max-height: 90vw;
+  z-index: 10;
 }
 
 #map .mapboxgl-popup .mapboxgl-popup-content {

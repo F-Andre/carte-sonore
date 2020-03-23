@@ -7,6 +7,7 @@
       ></map-box>
     </div>
     <form class="col-lg-10 mx-auto" method="POST" :action="route" enctype="multipart/form-data">
+      <input type="hidden" name="_token" :value="csrf" />
       <div class="form-group">
         <label for="coordinates">Coordonnées du point</label>
         <input
@@ -84,7 +85,10 @@ export default {
     return {
       draggedMarkerCoord: [0, 0],
       imageInput: "/images/image.webp",
-      audioInput: "Fichier audio"
+      audioInput: "Fichier audio",
+      csrf: document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute("content")
     };
   },
 

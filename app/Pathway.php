@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pathway extends Model
 {
+  protected $fillable = [
+    'title', 'description', 'points', 'misc', 'creator_id', 'editor_id'
+  ];
+
   public function cards()
   {
     return $this->hasMany('App\Card');

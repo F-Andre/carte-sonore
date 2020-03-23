@@ -21,21 +21,25 @@
           @foreach ($cards as $card)
           <div class="col mb-2">
             <div class="card card-admin">
-              <img class="card-img-top" src={{ $card->image()->path }} alt={{ $card->image()->name }}>
+              <img class="card-img-top" src={{ $card->image->path }} alt={{ $card->image->name }}>
               <div class="card-body">
                 <h4 class="card-title">{{ $card->title }}</h4>
                 <p class="card-text">{{ $card->description }}</p>
-                <audio src={{ $card->audio()->path }} controls></audio>
-                <p>{{ $card->group()->name }}</p>
+                <audio src={{ $card->audio->path }} controls></audio>
+                {{-- <p>{{ $card->group->name }}</p> --}}
               </div>
-              <div class="card-footer">
-                <a class="btn btn-warning" href={{ route('card.edit', $card->id) }} role="button">Editer</a>
+              <div class="card-footer d-flex justify-content-between">
+                <a class="btn btn-warning" href={{ route('card.edit', $card) }} role="button">Editer</a>
                 <div class="dropdown">
                   <button class="btn btn-danger dropdown-toggle" type="button" id="deleteBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Supprimer
                   </button>
                   <div class="dropdown-menu" aria-labelledby="deleteBtn">
-                    <button class="dropdown-item" href={{ route('card.destroy', $card->id) }}>Valider</button>
+                    <form method="POST" action={{ route('card.destroy', $card) }}>
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" class="text-danger dropdown-item" href="{{ route('card.destroy', $card) }}" role="button">Valider</button>
+                    </form>
                   </div>
                 </div>
               </div>

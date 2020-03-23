@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Card extends Model
 {
+  protected $fillable = [
+    'title', 'description', 'coordinates', 'creator_id', 'editor_id'
+  ];
+
   public function image()
   {
     return $this->hasOne('App\Image');

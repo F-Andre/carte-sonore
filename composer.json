@@ -11,11 +11,13 @@
         "php": "^7.2.5",
         "caouecs/laravel-lang": "~4.0",
         "fideloper/proxy": "^4.0",
+        "intervention/image": "^2.5",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.2",
         "facade/ignition": "^2.0",
         "fzaninotto/faker": "^1.4",
         "laravel/ui": "^2.0",
