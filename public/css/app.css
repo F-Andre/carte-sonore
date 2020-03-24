@@ -10965,3 +10965,9 @@ a.text-dark:focus {
   cursor: pointer;
 }
 
+#admin-content .card-player {
+  width: 100%;
+  margin-bottom: -10px;
+  padding-bottom: 0;
+}
+

@@ -18,6 +18,7 @@ class CreateCardsTable extends Migration
       $table->string('title', 100)->unique();
       $table->text('description')->nullable();
       $table->string('coordinates');
+      $table->string('address');
       $table->unsignedBigInteger('pathway_id')->nullable();
       $table->unsignedBigInteger('group_id')->nullable();
       $table->unsignedBigInteger('creator_id');

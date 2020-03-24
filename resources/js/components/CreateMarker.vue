@@ -3,6 +3,7 @@
     <div id="map" style="width: 50vw; height: 50vh;">
       <map-box
         v-on:newDraggedMarker="draggedMarkerCoord = $event"
+        v-on:newMarkerAddress="markerAddress = $event"
         :add-marker="'{!! json_encode($newMarker) !!}'"
       ></map-box>
     </div>
@@ -16,6 +17,17 @@
           name="coordinates"
           id="coordinates"
           :value="draggedMarkerCoord[0] + ' , ' + draggedMarkerCoord[1]"
+          readonly
+        />
+      </div>
+      <div class="form-group">
+        <label for="address">Adresse du point</label>
+        <input
+          type="text"
+          class="form-control"
+          name="address"
+          id="address"
+          :value="markerAddress"
           readonly
         />
       </div>
@@ -84,6 +96,7 @@ export default {
   data() {
     return {
       draggedMarkerCoord: [0, 0],
+      markerAddress: "",
       imageInput: "/images/image.webp",
       audioInput: "Fichier audio",
       csrf: document
@@ -103,7 +116,7 @@ export default {
     processAudioFile(event) {
       const file = event.target.files[0];
       this.audioInput = file.name;
-    }
+    },
   }
 };
 </script>

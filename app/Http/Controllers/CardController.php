@@ -97,7 +97,7 @@ class CardController extends Controller
       $audioPathUrl = '/storage/audios/' . $audioFileName . '.' . $audioFileExt;
       $audioPath = $request->file('audio')->storeAs('public/audios', $audioFileName . '.' . $audioFileExt);
 
-      $cardInputs = ['coordinates' => $request->coordinates, 'title' => $request->title, 'description' => $request->description, 'creator_id' => auth()->user()->id];
+      $cardInputs = ['title' => $request->title, 'description' => $request->description, 'coordinates' => $request->coordinates, 'address' => $request->address, 'creator_id' => auth()->user()->id];
       $cardStored = $this->card->store($cardInputs);
 
       if ($cardStored) {

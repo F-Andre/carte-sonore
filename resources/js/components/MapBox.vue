@@ -79,6 +79,7 @@ export default {
       popupClose: true,
       newMarker: this.addMarker,
       newMarkerPos: [0, 0],
+      markerAddress: String,
       points: [
         {
           id: 0,
@@ -139,6 +140,8 @@ export default {
         this.map.on("moveend", e => {
           this.center = [this.map.getCenter().lng, this.map.getCenter().lat];
           this.$emit("newDraggedMarker", this.center);
+          this.markerAddress = this.getReverseGeocode(this.center);
+          this.$emit("newMarkerAddress", this.markerAddress);
         });
 
         const geocoder = new MapboxGeocoder({
@@ -149,6 +152,7 @@ export default {
           mapboxgl: Mapbox
         });
         this.map.addControl(geocoder);
+        
       }
     },
 
@@ -328,7 +332,38 @@ export default {
     dragend(e) {
       const marker = e.marker;
       this.newMarkerPos = [e.marker.getLngLat().lng, e.marker.getLngLat().lat];
+      this.getReverseGeocode(this.newMarkerPos);
       this.$emit("newDraggedMarker", this.newMarkerPos);
+    },
+
+    getReverseGeocode(coords) {
+      const url =
+        "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
+        coords[0] +
+        "," +
+        coords[1] +
+        ".json?access_token=" +
+        this.accessToken;
+
+      let address = "";
+
+      $.get(url, function(data) {
+        address = data.features[0].place_name;
+      });
+
+      let receiveAddress = new Promise((resolve, reject) => {
+        let test = setInterval(() => {
+          if (address.length > 0) {
+            resolve(address);
+            clearInterval(test);
+          }
+        }, 10)
+      })
+
+      receiveAddress.then((address) => {
+        this.markerAddress = address;
+        this.$emit("newMarkerAddress", address);
+      })
     }
   }
 };

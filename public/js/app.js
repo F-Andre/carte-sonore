@@ -5759,10 +5759,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       draggedMarkerCoord: [0, 0],
+      markerAddress: "",
       imageInput: "/images/image.webp",
       audioInput: "Fichier audio",
       csrf: document.querySelector('meta[name="csrf-token"]').getAttribute("content")
@@ -5911,6 +5924,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       popupClose: true,
       newMarker: this.addMarker,
       newMarkerPos: [0, 0],
+      markerAddress: String,
       points: [{
         id: 0,
         title: "Edn",
@@ -5977,6 +5991,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     _this.center = [_this.map.getCenter().lng, _this.map.getCenter().lat];
 
                     _this.$emit("newDraggedMarker", _this.center);
+
+                    _this.markerAddress = _this.getReverseGeocode(_this.center);
+
+                    _this.$emit("newMarkerAddress", _this.markerAddress);
                   });
 
                   geocoder = new _mapbox_mapbox_gl_geocoder__WEBPACK_IMPORTED_MODULE_4___default.a({
@@ -6175,7 +6193,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     dragend: function dragend(e) {
       var marker = e.marker;
       this.newMarkerPos = [e.marker.getLngLat().lng, e.marker.getLngLat().lat];
+      this.getReverseGeocode(this.newMarkerPos);
       this.$emit("newDraggedMarker", this.newMarkerPos);
+    },
+    getReverseGeocode: function getReverseGeocode(coords) {
+      var _this4 = this;
+
+      var url = "https://api.mapbox.com/geocoding/v5/mapbox.places/" + coords[0] + "," + coords[1] + ".json?access_token=" + this.accessToken;
+      var address = "";
+      $.get(url, function (data) {
+        address = data.features[0].place_name;
+      });
+      var receiveAddress = new Promise(function (resolve, reject) {
+        var test = setInterval(function () {
+          if (address.length > 0) {
+            resolve(address);
+            clearInterval(test);
+          }
+        }, 10);
+      });
+      receiveAddress.then(function (address) {
+        _this4.markerAddress = address;
+
+        _this4.$emit("newMarkerAddress", address);
+      });
     }
   }
 });
@@ -45389,6 +45430,9 @@ var render = function() {
           on: {
             newDraggedMarker: function($event) {
               _vm.draggedMarkerCoord = $event
+            },
+            newMarkerAddress: function($event) {
+              _vm.markerAddress = $event
             }
           }
         })
@@ -45429,6 +45473,23 @@ var render = function() {
               value:
                 _vm.draggedMarkerCoord[0] + " , " + _vm.draggedMarkerCoord[1]
             }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "address" } }, [
+            _vm._v("Adresse du point")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "form-control",
+            attrs: {
+              type: "text",
+              name: "address",
+              id: "address",
+              readonly: ""
+            },
+            domProps: { value: _vm.markerAddress }
           })
         ]),
         _vm._v(" "),
