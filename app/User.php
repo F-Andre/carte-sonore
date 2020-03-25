@@ -47,9 +47,9 @@ class User extends Authenticatable
     return $this->hasMany('App\Card');
   }
 
-  public function images()
+  public function photos()
   {
-    return $this->hasMany('App\Image');
+    return $this->hasMany('App\Photo');
   }
 
   public function audios()

@@ -34,11 +34,11 @@
       <div class="card-deck col-lg-10 mx-auto">
         <div class="card">
           <div class="card-img-head" :style="'background-image:url(\'' + imageInput + '\');'">
-            <label class="file-label" for="image"></label>
+            <label class="file-label" for="photo"></label>
             <input
               type="file"
-              name="image"
-              id="image"
+              name="photo"
+              id="photo"
               @change="processImageFile($event)"
               accept="image/*"
               hidden

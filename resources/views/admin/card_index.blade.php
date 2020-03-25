@@ -15,7 +15,7 @@
             @foreach ($cards as $card)
             <div class="col mb-2">
               <div class="card card-admin">
-                <img class="card-img-top" src={{ $card->image->path }} alt={{ $card->image->name }}>
+                <img class="card-img-top" src={{ $card->photo->path }} alt={{ $card->photo->name }}>
                 <div class="card-body">
                   <h4 class="card-title">{{ $card->title }}</h4>
                   <p class="card-text">{{ $card->description }}</p>

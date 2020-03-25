@@ -10,14 +10,19 @@ class Card extends Model
     'title', 'description', 'coordinates', 'address', 'creator_id', 'editor_id'
   ];
 
-  public function image()
+  public function photo()
   {
-    return $this->hasOne('App\Image');
+    return $this->hasOne('App\Photo');
   }
 
   public function audio()
   {
     return $this->hasOne('App\Audio');
+  }
+
+  public function catogory()
+  {
+    return $this->belongsTo('App\Category');
   }
 
   public function group()

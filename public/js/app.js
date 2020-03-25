@@ -45504,14 +45504,14 @@ var render = function() {
               [
                 _c("label", {
                   staticClass: "file-label",
-                  attrs: { for: "image" }
+                  attrs: { for: "photo" }
                 }),
                 _vm._v(" "),
                 _c("input", {
                   attrs: {
                     type: "file",
-                    name: "image",
-                    id: "image",
+                    name: "photo",
+                    id: "photo",
                     accept: "image/*",
                     hidden: "",
                     required: ""

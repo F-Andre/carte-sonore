@@ -5,22 +5,19 @@ namespace App\Http\Controllers;
 use App\Card;
 use App\Repositories\AudioRepository;
 use App\Repositories\CardRepository;
-use App\Repositories\ImageRepository;
+use App\Repositories\PhotoRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
 
 class CardController extends Controller
 {
   protected $card;
-  protected $image;
+  protected $photo;
   protected $audio;
 
-  public function __construct(CardRepository $card, ImageRepository $image, AudioRepository $audio)
+  public function __construct(CardRepository $card, PhotoRepository $photo, AudioRepository $audio)
   {
     $this->card = $card;
-    $this->image = $image;
+    $this->photo = $photo;
     $this->audio = $audio;
     $this->middleware('auth');
   }
@@ -68,41 +65,21 @@ class CardController extends Controller
       }
     }
 
-    if ($request->image->isValid()) {
+    if ($request->photo->isValid()) {
+      $photoSaved = $this->photo->savePhoto($request->file('photo'));
+      $photoPathUrl = $photoSaved['photoPathUrl'];
+      $photoFileExt = $photoSaved['photoFileExt'];
 
-      $titleName = preg_replace('/\s/', '_', $request->title);
-      Storage::makeDirectory('public/images/');
-
-      //$imageFileExt = $request->image->getClientOriginalExtension();
-      $imageFileExt = 'webp';
-      $imageFileName = Str::random(15);
-      while (Storage::exists('public/images/' . $imageFileName . '.' . $imageFileExt)) {
-        $imageFileName = Str::random(15);
-      }
-
-      $imagePath = Storage::url('public/images/' . $imageFileName . '.' . $imageFileExt);
-
-      $imagePathUrl = '/storage/images/' . $imageFileName . '.' . $imageFileExt;
-      $imageMake = Image::make($request->file('image'));
-      $imageMake->widen(900, function ($constraint) {
-        $constraint->upsize();
-      });
-      $imageMake->save('.' . $imagePath);
-
-      $audioFileExt = $request->audio->getClientOriginalExtension();
-      $audioFileName = Str::random(15);
-      while (Storage::exists('public/audios/' . $audioFileName . '.' . $audioFileExt)) {
-        $audioFileName = Str::random(15);
-      }
-      $audioPathUrl = '/storage/audios/' . $audioFileName . '.' . $audioFileExt;
-      $audioPath = $request->file('audio')->storeAs('public/audios', $audioFileName . '.' . $audioFileExt);
+      $audioSaved= $this->audio->saveAudio($request->file('audio'));
+      $audioFileExt = $audioSaved['audioFileExt'];
+      $audioPathUrl = $audioSaved['audioPathUrl'];
 
       $cardInputs = ['title' => $request->title, 'description' => $request->description, 'coordinates' => $request->coordinates, 'address' => $request->address, 'creator_id' => auth()->user()->id];
       $cardStored = $this->card->store($cardInputs);
 
       if ($cardStored) {
-        $imageInputs = ['name' => $request->file('image')->getClientOriginalName(), 'ext' => $imageFileExt, 'size' => $request->file('image')->getSize(), 'path' => $imagePathUrl, 'card_id' => $cardStored->id, 'user_id' => auth()->user()->id];
-        $imageStored = $this->image->store($imageInputs);
+        $photoInputs = ['name' => $request->file('photo')->getClientOriginalName(), 'ext' => $photoFileExt, 'size' => $request->file('photo')->getSize(), 'path' => $photoPathUrl, 'card_id' => $cardStored->id, 'user_id' => auth()->user()->id];
+        $photoStored = $this->photo->store($photoInputs);
       }
 
       if ($cardStored) {
@@ -110,11 +87,11 @@ class CardController extends Controller
         $audioStored = $this->audio->store($audioInputs);
       }
 
-      if ($cardStored && $imageStored && $audioStored) {
+      if ($cardStored && $photoStored && $audioStored) {
         return redirect(route('card.index'))->with('ok', 'La carte a bien été enregistrée.');
       } else {
         $cardStored ? $this->card->destroy($cardStored->id) : '';
-        $imageStored ? $this->image->destroy($imageStored->id) : '';
+        $photoStored ? $this->photo->destroy($photoStored->id) : '';
         $audioStored ? $this->audio->destroy($audioStored->id) : '';
       }
 
@@ -165,10 +142,10 @@ class CardController extends Controller
    */
   public function destroy(Card $card)
   {
-    if ($card->image) {
-      $imageDestroyed = $card->image->destroy($card->image->id);
+    if ($card->photo) {
+      $photoDestroyed = $card->photo->destroy($card->photo->id);
     } else {
-      $imageDestroyed = true;
+      $photoDestroyed = true;
     }
 
     if ($card->audio) {
@@ -177,7 +154,7 @@ class CardController extends Controller
       $audioDestroyed = true;
     }
 
-    if ($imageDestroyed && $audioDestroyed) {
+    if ($photoDestroyed && $audioDestroyed) {
       $card->destroy($card->id);
       return redirect()->back()->with('ok', 'La carte a bien été effacée.');
     }
