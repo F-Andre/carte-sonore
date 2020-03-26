@@ -19,6 +19,7 @@ Route::get('/admin', 'AdminController@index')->name('admin.home');
 
 Route::resource('audio', 'AudioController');
 Route::resource('card', 'CardController');
+Route::resource('category', 'CategoryController');
 Route::resource('group', 'GroupController');
 Route::resource('image', 'ImageController');
 Route::resource('pathway', 'PathwayController');

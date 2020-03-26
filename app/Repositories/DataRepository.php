@@ -16,6 +16,11 @@ abstract class DataRepository
     return $this->model->orderBy('id', 'desc')->get();
   }
 
+  public function getColumn($column)
+  {
+    return $this->model->pluck($column);
+  }
+
   public function store($inputs)
   {
     return $this->model->create($inputs);

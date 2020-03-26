@@ -23,7 +23,10 @@ class CategoryController extends Controller
    */
   public function index()
   {
-    //
+    $categories = $this->category->getCollection();
+    $categoryActive = "active";
+
+    return view('admin.category_index', compact('categories', 'categoryActive'));
   }
 
   /**
@@ -33,7 +36,10 @@ class CategoryController extends Controller
    */
   public function create()
   {
-    //
+    $namesArray = $this->category->getColumn('name');
+    $categoryActive = "active";
+
+    return view('admin.category_create', compact('namesArray', 'categoryActive'));
   }
 
   /**
@@ -44,7 +50,24 @@ class CategoryController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    $categories = $this->category->getCollection();
+
+    foreach ($categories as $category) {
+      if ($category->name === $request->name) {
+        return redirect()->back()->with('error', 'Ce nom de catégorie est déjà utilisé.');
+      }
+    }
+
+    $creator = auth()->user()->id;
+    $inputs = array_merge($request->all(), ['creator_id' => $creator]);
+
+    $inputsStored = $this->category->store($inputs);
+
+    if ($inputsStored) {
+      return redirect(route('category.index'))->with('ok', 'La catégorie a bien été enregistrée.');
+    }
+
+    return redirect()->back()->with('error', 'Un problème est survenu lors de l\'enregistrement de la catégorie.');
   }
 
   /**

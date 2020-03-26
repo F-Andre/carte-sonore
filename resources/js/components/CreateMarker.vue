@@ -7,7 +7,12 @@
         :add-marker="'{!! json_encode($newMarker) !!}'"
       ></map-box>
     </div>
-    <form class="col-lg-10 mx-auto" method="POST" :action="route" enctype="multipart/form-data">
+    <form
+      class="col-lg-10 mx-auto"
+      method="POST"
+      :action="route"
+      enctype="multipart/form-data"
+    >
       <input type="hidden" name="_token" :value="csrf" />
       <div class="form-group">
         <label for="coordinates">Coordonnées du point</label>
@@ -33,7 +38,10 @@
       </div>
       <div class="card-deck col-lg-10 mx-auto">
         <div class="card">
-          <div class="card-img-head" :style="'background-image:url(\'' + imageInput + '\');'">
+          <div
+            class="card-img-head"
+            :style="'background-image:url(\'' + imageInput + '\');'"
+          >
             <label class="file-label" for="photo"></label>
             <input
               type="file"
@@ -80,7 +88,9 @@
                   accept="audio/*"
                   required
                 />
-                <label class="custom-file-label" for="audioFile">{{ audioInput }}</label>
+                <label class="custom-file-label" for="audioFile">{{
+                  audioInput
+                }}</label>
               </div>
             </div>
             <button type="submit" class="btn btn-success">Valider</button>
@@ -116,7 +126,7 @@ export default {
     processAudioFile(event) {
       const file = event.target.files[0];
       this.audioInput = file.name;
-    },
+    }
   }
 };
 </script>

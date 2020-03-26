@@ -1,19 +1,25 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url("https://fonts.googleapis.com/css?family=Nunito");
 
 // Variables
-@import 'variables';
+@import "variables";
 
 //vuetify
-@import '~vuetify/dist/vuetify.min.css';
-@import '~@mdi/font/css/materialdesignicons.min.css';
+@import "~vuetify/dist/vuetify.min.css";
+@import "~@mdi/font/css/materialdesignicons.min.css";
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap";
 
 //mapbox
-@import '~mapbox-gl/dist/mapbox-gl.css';
+@import "~mapbox-gl/dist/mapbox-gl.css";
+
+//font awesome
+@import "./font_awesome/scss/fontawesome.scss";
+@import "./font_awesome/scss/solid.scss";
+@import "./font_awesome/scss/brands.scss";
 
 //App
-@import 'map';
-@import 'admin';
+@import "global";
+@import "map";
+@import "admin";

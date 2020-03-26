@@ -5,9 +5,9 @@
   <div class="row justify-content-center">
     <div class="col-md-12">
       <div class="card">
-        <div class="card-header h4">Création d'un marqueur</div>
+        <div class="card-header h4">Création d'une catégorie</div>
         <div class="card-body">
-          <create-marker-form route="{{ route('card.store') }}"></create-marker-form>
+          <create-category-form route="{{ route('category.store') }}" :names-array='{!! json_encode($namesArray) !!}'></create-category-form>
         </div>
       </div>
     </div>

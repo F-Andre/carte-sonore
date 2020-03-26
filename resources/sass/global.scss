@@ -1,0 +1,11 @@
+.text-danger {
+  @extend %fa-icon;
+  @extend .fas;
+
+  &:before {
+    content: fa-content($fa-var-exclamation-triangle);
+    margin-right: 0.5rem;
+  }
+
+  font-weight: normal;
+}

@@ -19,7 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->text('description');
             $table->string('marker');
             $table->unsignedBigInteger('creator_id');
-            $table->unsignedBigInteger('editor_id');
+            $table->unsignedBigInteger('editor_id')->nullable();
             $table->timestamps();
         });
     }

@@ -7,6 +7,9 @@
       <a href="{{ route('admin.home') }}" class="nav-link {{ $indexActive ?? '' }}">Accueil admin</a>
     </li>
     <li class="nav-item">
+      <a href="{{ route('category.index') }}" class="nav-link {{ $categoryActive ?? '' }}">Catégories</a>
+    </li>
+    <li class="nav-item">
       <a href="{{ route('card.index') }}" class="nav-link {{ $cardActive ?? '' }}">Marqueurs</a>
     </li>
     <li class="nav-item disabled">
