@@ -29,8 +29,8 @@
     "dependencies": {
         "@mapbox/mapbox-gl-geocoder": "^4.5.1",
         "@mapbox/mapbox-gl-language": "^0.10.1",
-        "mapbox-gl": "^1.8.1",
+        "mapbox-gl": "^1.9.0",
         "vue-mapbox": "^0.4.1",
-        "vuetify": "^2.2.18"
+        "vuetify": "^2.2.19"
     }
 }
