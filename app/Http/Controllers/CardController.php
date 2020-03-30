@@ -70,7 +70,7 @@ class CardController extends Controller
       $photoPathUrl = $photoSaved['photoPathUrl'];
       $photoFileExt = $photoSaved['photoFileExt'];
 
-      $audioSaved= $this->audio->saveAudio($request->file('audio'));
+      $audioSaved = $this->audio->saveAudio($request->file('audio'));
       $audioFileExt = $audioSaved['audioFileExt'];
       $audioPathUrl = $audioSaved['audioPathUrl'];
 
@@ -108,7 +108,8 @@ class CardController extends Controller
    */
   public function show(Card $card)
   {
-    //
+    $cardActive = 'active';
+    return view('admin.card_show', compact('card', 'cardActive'));
   }
 
   /**

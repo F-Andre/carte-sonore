@@ -7,9 +7,6 @@
       <div class="card">
         <div class="card-header h4">Détail du marqueurs</div>
         <div class="card-body">
-          <div class="col-lg-6">
-            <a class="btn btn-success" href={{ route('card.create') }} role="button">Créer un nouveau marqueur</a>
-          </div>
           <div class="row row-cols-1 row-cols-md-2">
             <div class="col mb-2">
               <div class="card card-admin">
@@ -18,7 +15,7 @@
                   <h4 class="card-title">{{ $card->title }}</h4>
                   <p class="card-text">{{ $card->description }}</p>
                   <audio class="card-player" src={{ $card->audio->path }} controls></audio>
-                  {{-- <p>{{ $card->group->name }}</p> --}}
+                  <p>{{ $card->category->name }}</p>
                 </div>
                 <div class="card-footer ">
                   <div>
@@ -42,6 +39,9 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div class="row row-cols-1 row-cols-md-2">
+            <div id="map"></div>
           </div>
         </div>
       </div>

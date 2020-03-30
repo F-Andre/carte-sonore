@@ -20,7 +20,7 @@ class Card extends Model
     return $this->hasOne('App\Audio');
   }
 
-  public function catogory()
+  public function category()
   {
     return $this->belongsTo('App\Category');
   }

@@ -10,41 +10,38 @@
           <div class="col-lg-6">
             <a class="btn btn-success" href={{ route('card.create') }} role="button">Créer un nouveau marqueur</a>
           </div>
-          <div class="row row-cols-1 row-cols-md-2">
-            @if (count($cards) > 0)
-            @foreach ($cards as $card)
-            <div class="col mb-2">
-              <div class="card card-admin">
-                <img class="card-img-top" src={{ $card->photo->path }} alt={{ $card->photo->name }}>
-                <div class="card-body">
-                  <h4 class="card-title">{{ $card->title }}</h4>
-                  <p class="card-text">{{ $card->description }}</p>
-                  <audio class="card-player" src={{ $card->audio->path }} controls></audio>
-                  {{-- <p>{{ $card->group->name }}</p> --}}
+          @if(count($cards) > 0)
+          <div class="admin-card d-flex justify-content-between flex-wrap">
+            <div class="list-group col-lg-6 py-0">
+              @foreach ($cards as $key => $card)
+              @if (fmod($key, 2) == 1)
+              <a href={{ route('card.show', $card) }} class="card-list list-group-item list-group-item-action flex-fill">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{ $card->title }}</h5>
+                  <small>{{ Carbon\Carbon::parse($card->created_at)->locale('fr')->diffForHumans() }}</small>
                 </div>
-                <div class="card-footer ">
-                  <div>
-                    <p>{{ $card->address }}</p>
-                  </div>
-                  <div class="d-flex justify-content-between">
-                    <a class="btn btn-warning" href={{ route('card.edit', $card) }} role="button">Editer</a>
-                    <div class="dropdown">
-                      <button class="btn btn-danger dropdown-toggle" type="button" id="deleteBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Supprimer
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="deleteBtn">
-                        <form method="POST" action={{ route('card.destroy', $card) }}>
-                          @csrf
-                          @method('DELETE')
-                          <button type="submit" class="text-danger dropdown-item" href="{{ route('card.destroy', $card) }}" role="button">Valider</button>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                <p class="mb-1">{{ $card->description }}</p>
+                <p class="mb-1">{{ $card->address }}</p>
+                <p class="mb-1">Catégorie: {{ $card->category->name }}</p>
+              </a>
+              @endif
+              @endforeach
             </div>
-            @endforeach
+            <div class="list-group col-lg-6 py-0">
+              @foreach ($cards as $key => $card)
+              @if (fmod($key, 2) == 0)
+              <a href={{ route('card.show', $card) }} class="card-list list-group-item list-group-item-action flex-fill">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{ $card->title }}</h5>
+                  <small>{{ Carbon\Carbon::parse($card->created_at)->locale('fr')->diffForHumans() }}</small>
+                </div>
+                <p class="mb-1">{{ $card->description }}</p>
+                <p class="mb-1">{{ $card->address }}</p>
+                <p class="mb-1">Catégorie: {{ $card->category->name }}</p>
+              </a>
+              @endif
+              @endforeach
+            </div>
             @else
             <div class="col mb-2 mx-auto">
               <div class="card card-default">

@@ -44,17 +44,19 @@
             <hr>
             <p class="h5">Marqueurs:</p>
             <table class="table table-striped table-inverse table-responsive">
-              <thead class="thead-inverse">
+              <thead class="thead-dark">
                 <tr>
-                  <th>Nom</th>
+                  <th>Titre</th>
                   <th>Adresse</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
-                @foreach ($category->cards() as $card)
+                @foreach ($category->cards as $card)
                 <tr>
-                  <td scope="row">{{ $card->name }}</td>
+                  <td scope="row">{{ $card->title }}</td>
                   <td>{{ $card->address }}</td>
+                  <td><a class="btn btn-sm btn-info" href={{ route('card.show', $card) }} role="button">Voir</a>
                 </tr>
                 @endforeach
               </tbody>
@@ -65,7 +67,9 @@
           <div class="d-flex">
             <a class="btn btn-warning mr-2" href={{ route('category.edit', $category) }} role="button">Editer</a>
             <div class="dropdown open">
-              <button class="btn btn-danger dropdown-toggle" type="button" id="deleteCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button class="btn btn-danger dropdown-toggle" type="button" id="deleteCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @if (count($category->cards) > 0)
+                disabled title="Suppression impossible tant que des marqueurs font partis de cette categorie"
+                @endif>
                 Effacer
               </button>
               <div class="dropdown-menu" aria-labelledby="deleteCategory">
