@@ -24,6 +24,7 @@ Vue.use(Vuetify);
 Vue.component('map-box', require('./components/MapBox.vue').default);
 Vue.component('create-marker-form', require('./components/CreateMarker.vue').default);
 Vue.component('create-category-form', require('./components/CreateCategory.vue').default);
+Vue.component('edit-category-form', require('./components/EditCategory.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

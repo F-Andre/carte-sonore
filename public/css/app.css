@@ -17041,3 +17041,17 @@ readers do not read off random characters that represent icons */
   overflow-y: scroll;
 }
 
+#admin-content .marker-color {
+  display: flex;
+  align-items: center;
+  line-height: 25px;
+}
+
+#admin-content .marker-color .dot {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  margin-left: 0.5rem;
+}
+

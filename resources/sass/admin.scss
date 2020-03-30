@@ -23,4 +23,17 @@
     max-height: 60vh;
     overflow-y: scroll;
   }
+
+  .marker-color {
+    display: flex;
+    align-items: center;
+    line-height: 25px;
+    .dot {
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      margin-left: 0.5rem;
+    }
+  }
 }

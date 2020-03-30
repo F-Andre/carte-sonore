@@ -14,6 +14,7 @@ class CategoryController extends Controller
   public function __construct(CategoryRepository $category)
   {
     $this->category = $category;
+    $this->middleware('auth');
   }
 
   /**
@@ -78,7 +79,8 @@ class CategoryController extends Controller
    */
   public function show(Category $category)
   {
-    //
+    $categoryActive = "active";
+    return view('admin.category_show', compact('category', 'categoryActive'));
   }
 
   /**
@@ -89,7 +91,10 @@ class CategoryController extends Controller
    */
   public function edit(Category $category)
   {
-    //
+    $namesArray = $this->category->getColumn('name');
+    $categoryActive = "active";
+
+    return view('admin.category_edit', compact('category', 'namesArray', 'categoryActive'));
   }
 
   /**
@@ -101,7 +106,15 @@ class CategoryController extends Controller
    */
   public function update(Request $request, Category $category)
   {
-    //
+    $editor = auth()->user()->id;
+    $inputs = array_merge($request->all(), ["editor_id" => $editor]);
+    $categoryUpdated = $category->update($inputs);
+
+    if ($categoryUpdated) {
+      return redirect(route('category.show', $category))->with('ok', 'La catégorie a bien été mise à jour.');
+    }
+
+    return redirect()->back()->with('error', 'Une erreur s\'est produite lors de l\'enregistrement de la catégorie.');
   }
 
   /**
@@ -112,6 +125,12 @@ class CategoryController extends Controller
    */
   public function destroy(Category $category)
   {
-    //
+    $categoryDestroyed = $category->destroy($category->id);
+
+    if ($categoryDestroyed) {
+      return redirect(route('category.index'))->with('ok', 'La catégorie a bien été supprimée.');
+    }
+
+    return redirect()->back()->with('error', 'Une erreur s\'est produite lors de la suppression de la catégorie.');
   }
 }

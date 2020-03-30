@@ -21,5 +21,5 @@ Route::resource('audio', 'AudioController');
 Route::resource('card', 'CardController');
 Route::resource('category', 'CategoryController');
 Route::resource('group', 'GroupController');
-Route::resource('image', 'ImageController');
+Route::resource('photo', 'PhotoController');
 Route::resource('pathway', 'PathwayController');

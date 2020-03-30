@@ -37,11 +37,11 @@ class Card extends Model
 
   public function creator()
   {
-    return $this->belongsTo('App\User', 'id', 'creator_id');
+    return $this->belongsTo('App\User', 'creator_id');
   }
 
   public function editor()
   {
-    return $this->belongsTo('App\User', 'id', 'editor_id');
+    return $this->belongsTo('App\User', 'editor_id');
   }
 }

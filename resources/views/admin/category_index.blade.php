@@ -13,18 +13,16 @@
           <div class="admin-card d-flex justify-content-between flex-wrap">
             @if (count($categories) > 0)
             <div class="list-group col-lg-6 py-0">
-              @foreach ($categories as $category)
-              @php
-              $resultat1 = fmod($category->id, 2);
-              @endphp
-              @if ($resultat1 == 1)
+              @foreach ($categories as $key => $category)
+              @if (fmod($key, 2) == 1)
               <a href={{ route('category.show', $category) }} class="category-list list-group-item list-group-item-action flex-fill">
                 <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1">{{ $category->name }}</h5>
                   <small>{{ Carbon\Carbon::parse($category->created_at)->locale('fr')->diffForHumans() }}</small>
                 </div>
                 <p class="mb-1">{{ $category->description }}</p>
-                <div class="d-flex align-items-center float-right">
+                <div class="d-flex align-items-end justify-content-between">
+                  <p class="mb-0">Nbre de marqueurs: {{ $category->cards()->count() }}</p>
                   <svg display="block" height="41px" width="27px" viewBox="0 0 27 41">
                     <g fill-rule="nonzero">
                       <g transform="translate(3.0, 29.0)" fill="#000000">
@@ -56,18 +54,16 @@
               @endforeach
             </div>
             <div class="list-group col-lg-6 py-0">
-              @foreach ($categories as $category)
-              @php
-              $resultat2 = fmod($category->id, 2);
-              @endphp
-              @if ($resultat2 == 0)
+              @foreach ($categories as $key => $category)
+              @if (fmod($key, 2) == 0)
               <a href={{ route('category.show', $category) }} class="category-list list-group-item list-group-item-action flex-fill">
                 <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1">{{ $category->name }}</h5>
                   <small>{{ Carbon\Carbon::parse($category->created_at)->locale('fr')->diffForHumans() }}</small>
                 </div>
                 <p class="mb-1">{{ $category->description }}</p>
-                <div class="d-flex align-items-center float-right">
+                <div class="d-flex align-items-end justify-content-between">
+                  <p class="mb-0">Nbre de marqueurs: {{ $category->cards()->count() }}</p>
                   <svg display="block" height="41px" width="27px" viewBox="0 0 27 41">
                     <g fill-rule="nonzero">
                       <g transform="translate(3.0, 29.0)" fill="#000000">
