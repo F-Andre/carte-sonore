@@ -15,11 +15,15 @@
                   <h4 class="card-title">{{ $card->title }}</h4>
                   <p class="card-text">{{ $card->description }}</p>
                   <audio class="card-player" src={{ $card->audio->path }} controls></audio>
-                  <p>{{ $card->category->name }}</p>
                 </div>
                 <div class="card-footer ">
                   <div>
-                    <p>{{ $card->address }}</p>
+                    <p>Adresse: {{ $card->address }}</p>
+                    <p>Catégorie: {{ $card->category->name }}</p>
+                    <p>Créé le {{ Carbon\Carbon::parse($card->created_at)->timezone('Europe/Paris')->locale('fr')->isoFormat('dddd DD MMMM YYYY \à HH:mm') }} par {{ $card->creator->name }}</p>
+                    @if (isset($card->editor_id))
+                    <p>Dernière modification le {{ Carbon\Carbon::parse($card->updated_at)->timezone('Europe/Paris')->locale('fr')->isoFormat('dddd DD MMMM YYYY \à HH:mm') }} par {{ $card->editor->name }}</p>
+                    @endif
                   </div>
                   <div class="d-flex justify-content-between">
                     <a class="btn btn-warning" href={{ route('card.edit', $card) }} role="button">Editer</a>
@@ -39,9 +43,11 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="row row-cols-1 row-cols-md-2">
-            <div id="map"></div>
+            <div class="col mb-2">
+              <div id="map" class="card-show-map">
+                <map-box :add-marker="false" :points='{!! json_encode($points) !!}'></map-box>
+              </div>
+            </div>
           </div>
         </div>
       </div>

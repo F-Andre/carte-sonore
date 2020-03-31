@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Card extends Model
 {
   protected $fillable = [
-    'title', 'description', 'coordinates', 'address', 'creator_id', 'editor_id'
+    'title', 'description', 'coordinates', 'address', 'category_id', 'creator_id', 'editor_id'
   ];
 
   public function photo()

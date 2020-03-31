@@ -36,4 +36,12 @@ class PhotoRepository extends DataRepository
 
     return ['photoPathUrl' => $photoPathUrl, 'photoFileExt' => $photoFileExt];
   }
+
+  public function deletePhoto($photo)
+  {
+    $url = preg_replace('/(\/storage)/', 'public', $photo->path);
+    $photoDeleted = Storage::delete($url);
+
+    return $photoDeleted;
+  }
 }

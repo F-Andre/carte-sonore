@@ -25,4 +25,12 @@ class AudioRepository extends DataRepository
 
     return ['audioFileExt' => $audioFileExt, 'audioPathUrl' => $audioPathUrl];
   }
+
+  public function deleteAudio($audio)
+  {
+    $url = preg_replace('/(\/storage)/', 'public', $audio->path);
+    $audioDeleted = Storage::delete($url);
+
+    return $audioDeleted;
+  }
 }

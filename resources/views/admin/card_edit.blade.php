@@ -7,7 +7,7 @@
       <div class="card">
         <div class="card-header h4">Création d'un marqueur</div>
         <div class="card-body">
-          <create-marker-form route="{{ route('card.store') }}" :points_old='{!! json_encode($points) !!}' :categories='{!! json_encode($categoriesName) !!}'></create-marker-form>
+          <edit-marker-form route="{{ route('card.update', $card) }}" :points_old='{!! json_encode($points) !!}' :categories='{!! json_encode($categoriesName) !!}'></edit-marker-form>
         </div>
       </div>
     </div>

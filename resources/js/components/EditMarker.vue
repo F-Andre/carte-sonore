@@ -15,6 +15,10 @@
       enctype="multipart/form-data"
     >
       <input type="hidden" name="_token" :value="csrf" />
+      <input type="hidden" name="_method" value="PATCH" />
+      <input type="hidden" name="newAudio" :value="newAudio" />
+      <input type="hidden" name="newImage" :value="newImage" />
+
       <div class="form-group">
         <label for="coordinates">Coordonnées du point</label>
         <input
@@ -44,6 +48,7 @@
             v-for="(category, index) in categories"
             :key="index"
             :value="category"
+            :selected="points_old[0].category == category ? true : false"
             >{{ category }}</option
           >
         </select>
@@ -62,7 +67,6 @@
               @change="processImageFile($event)"
               accept="image/*"
               hidden
-              required
             />
           </div>
           <div class="card-body">
@@ -71,7 +75,7 @@
                 type="text"
                 class="form-control"
                 id="title"
-                placeholder="Titre"
+                :value="points_old[0].title"
                 name="title"
                 required
               />
@@ -82,7 +86,7 @@
                   class="form-control"
                   name="description"
                   id="description"
-                  placeholder="Description"
+                  :value="points_old[0].description"
                   rows="3"
                   required
                 ></textarea>
@@ -98,7 +102,6 @@
                   @change="processAudioFile($event)"
                   lang="fr"
                   accept="audio/*"
-                  required
                 />
                 <label class="custom-file-label" for="audioFile">{{
                   audioInput
@@ -118,9 +121,11 @@ export default {
   data() {
     return {
       draggedMarkerCoord: this.points_old[0].coordinates,
-      markerAddress: "",
-      imageInput: "/images/image.webp",
-      audioInput: "Fichier audio",
+      markerAddress: this.points_old[0].address,
+      imageInput: this.points_old[0].image,
+      audioInput: this.points_old[0].audioName,
+      newAudio: false,
+      newImage: false,
       csrf: document
         .querySelector('meta[name="csrf-token"]')
         .getAttribute("content")
@@ -137,11 +142,13 @@ export default {
     processImageFile(event) {
       const file = event.target.files[0];
       this.imageInput = URL.createObjectURL(file);
+      this.newImage = true;
     },
 
     processAudioFile(event) {
       const file = event.target.files[0];
       this.audioInput = file.name;
+      this.newAudio = true;
     }
   }
 };

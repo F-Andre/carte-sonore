@@ -6,6 +6,7 @@ use App\Card;
 use App\Repositories\AudioRepository;
 use App\Repositories\CardRepository;
 use App\Repositories\PhotoRepository;
+use App\Repositories\CategoryRepository;
 use Illuminate\Http\Request;
 
 class CardController extends Controller
@@ -14,11 +15,12 @@ class CardController extends Controller
   protected $photo;
   protected $audio;
 
-  public function __construct(CardRepository $card, PhotoRepository $photo, AudioRepository $audio)
+  public function __construct(CardRepository $card, PhotoRepository $photo, AudioRepository $audio, CategoryRepository $category)
   {
     $this->card = $card;
     $this->photo = $photo;
     $this->audio = $audio;
+    $this->category = $category;
     $this->middleware('auth');
   }
 
@@ -45,8 +47,28 @@ class CardController extends Controller
     $cardActive = 'active';
     $newMarker = true;
     $cards = $this->card->getCollection();
+    $categoriesName = $this->category->getColumn('name');
 
-    return view('admin.card_create', compact('newMarker', 'cardActive', 'cards'));
+    $points = [];
+    foreach ($cards as $key => $card) {
+      $coordinates = explode(' ,', $card->coordinates);
+
+      array_push(
+        $points,
+        [
+          "key" => $key,
+          "id" => $card->id,
+          "title" => $card->title,
+          "description" => $card->description,
+          "coordinates" => $coordinates,
+          "image" => $card->photo->path,
+          "audio" => $card->audio->path,
+          "color" => $card->category->marker
+        ]
+      );
+    }
+
+    return view('admin.card_create', compact('newMarker', 'cardActive', 'cards', 'points', 'categoriesName'));
   }
 
   /**
@@ -57,10 +79,11 @@ class CardController extends Controller
    */
   public function store(Request $request)
   {
-    $cards = $this->card->getCollection();
+    $cardsTitle = $this->card->getColumn('title');
+    $category = $this->category->getByName($request->category);
 
-    foreach ($cards as $card) {
-      if ($card->title === $request->title) {
+    foreach ($cardsTitle as $title) {
+      if ($title === $request->title) {
         return redirect()->back()->with('error', 'Ce titre existe déjà.');
       }
     }
@@ -74,7 +97,7 @@ class CardController extends Controller
       $audioFileExt = $audioSaved['audioFileExt'];
       $audioPathUrl = $audioSaved['audioPathUrl'];
 
-      $cardInputs = ['title' => $request->title, 'description' => $request->description, 'coordinates' => $request->coordinates, 'address' => $request->address, 'creator_id' => auth()->user()->id];
+      $cardInputs = ['category_id' => $category->id, 'title' => $request->title, 'description' => $request->description, 'coordinates' => $request->coordinates, 'address' => $request->address, 'creator_id' => auth()->user()->id];
       $cardStored = $this->card->store($cardInputs);
 
       if ($cardStored) {
@@ -109,7 +132,24 @@ class CardController extends Controller
   public function show(Card $card)
   {
     $cardActive = 'active';
-    return view('admin.card_show', compact('card', 'cardActive'));
+
+    $points = [];
+    $coordinates = explode(' ,', $card->coordinates);
+    array_push(
+      $points,
+      [
+        "key" => 0,
+        "id" => $card->id,
+        "title" => $card->title,
+        "description" => $card->description,
+        "coordinates" => $coordinates,
+        "image" => $card->photo->path,
+        "audio" => $card->audio->path,
+        "color" => $card->category->marker,
+      ]
+    );
+
+    return view('admin.card_show', compact('card', 'cardActive', 'points'));
   }
 
   /**
@@ -120,7 +160,30 @@ class CardController extends Controller
    */
   public function edit(Card $card)
   {
-    //
+    $cardActive = 'active';
+    $newMarker = true;
+    $categoriesName = $this->category->getColumn('name');
+
+    $points = [];
+    $coordinates = explode(' ,', $card->coordinates);
+    array_push(
+      $points,
+      [
+        "key" => 0,
+        "id" => $card->id,
+        "title" => $card->title,
+        "description" => $card->description,
+        "coordinates" => $coordinates,
+        "address" => $card->address,
+        "image" => $card->photo->path,
+        "audio" => $card->audio->path,
+        "audioName" => $card->audio->name,
+        "color" => $card->category->marker,
+        "category" => $card->category->name
+      ]
+    );
+
+    return view('admin.card_edit', compact('card', 'cardActive', 'points', 'categoriesName'));
   }
 
   /**
@@ -132,7 +195,37 @@ class CardController extends Controller
    */
   public function update(Request $request, Card $card)
   {
-    //
+    $cardsTitle = $this->card->getColumn('title');
+    $category = $this->category->getByName($request->category);
+
+    foreach ($cardsTitle as $title) {
+      if ($title === $request->title && $card->title !== $request->title) {
+        return redirect()->back()->with('error', 'Ce titre existe déjà.');
+      }
+    }
+
+    $cardInputs = ['category_id' => $category->id, 'title' => $request->title, 'description' => $request->description, 'coordinates' => $request->coordinates, 'address' => $request->address, 'editor_id' => auth()->user()->id];
+    $cardUpdated = $this->card->update($cardInputs);
+
+    if ($request->newImage === "true") {
+      $this->photo->deletePhoto($card->photo);
+      $photoSaved = $this->photo->savePhoto($request->file('photo'));
+      $photoPathUrl = $photoSaved['photoPathUrl'];
+      $photoFileExt = $photoSaved['photoFileExt'];
+      $photoInputs = ['name' => $request->file('photo')->getClientOriginalName(), 'ext' => $photoFileExt, 'size' => $request->file('photo')->getSize(), 'path' => $photoPathUrl, 'user_id' => auth()->user()->id];
+      $photoUpdated = $this->photo->update($photoInputs);
+    }
+
+    if ($request->newAudio === "true") {
+      $this->audio->deleteAudio($card->audio);
+      $audioSaved = $this->audio->saveAudio($request->file('audio'));
+      $audioFileExt = $audioSaved['audioFileExt'];
+      $audioPathUrl = $audioSaved['audioPathUrl'];
+      $audioInputs = ['name' => $request->file('audio')->getClientOriginalName(), 'ext' => $request->file('audio')->extension(), 'size' => $request->file('audio')->getSize(), 'duration' => 0, 'path' => $audioPathUrl, 'user_id' => auth()->user()->id];
+      $audioUpdated = $this->audio->update($audioInputs);
+    }
+
+    return redirect(route('card.index'))->with('ok', 'La carte a bien été enregistrée.');
   }
 
   /**
@@ -144,13 +237,23 @@ class CardController extends Controller
   public function destroy(Card $card)
   {
     if ($card->photo) {
-      $photoDestroyed = $card->photo->destroy($card->photo->id);
+      $photoDeleted = $this->photo->deletePhoto($card->photo);
+      if ($photoDeleted) {
+        $photoDestroyed = $card->photo->destroy($card->photo->id);
+      } else {
+        $photoDestroyed = false;
+      }
     } else {
       $photoDestroyed = true;
     }
 
     if ($card->audio) {
-      $audioDestroyed = $card->audio->destroy($card->audio->id);
+      $audioDeleted = $this->audio->deleteAudio($card->audio);
+      if ($audioDeleted) {
+        $audioDestroyed = $card->audio->destroy($card->audio->id);
+      } else {
+        $audioDestroyed = false;
+      }
     } else {
       $audioDestroyed = true;
     }

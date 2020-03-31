@@ -27,7 +27,7 @@
       @dragend="dragend"
       v-if="addMarker"
       :coordinates="center"
-      color="green"
+      color="#ff9b9b"
       :draggable="true"
     ></MglMarker>
   </MglMap>
