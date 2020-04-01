@@ -117,7 +117,7 @@
 export default {
   data() {
     return {
-      draggedMarkerCoord: this.points_old[0].coordinates,
+      draggedMarkerCoord: [-3.58, 48.21],
       markerAddress: "",
       imageInput: "/images/image.webp",
       audioInput: "Fichier audio",

@@ -8,13 +8,16 @@
         <div class="card-header h4">Marqueurs</div>
         <div class="card-body">
           <div class="col-lg-6">
-            <a class="btn btn-success" href={{ route('card.create') }} role="button">Créer un nouveau marqueur</a>
+            <a @if($nbrCategories===0) class="btn btn-success disabled" href="#" @else class="btn btn-success" href={{ route('card.create') }} @endif role="button">Créer un nouveau marqueur</a>
+            @if($nbrCategories === 0)
+            <p>Il faut créer au moins une catégorie avant de pouvoir créer un marqueur</p>
+            @endif
           </div>
           @if(count($cards) > 0)
           <div class="admin-card d-flex justify-content-between flex-wrap">
             <div class="list-group col-lg-6 py-0">
               @foreach ($cards as $key => $card)
-              @if (fmod($key, 2) == 1)
+              @if (fmod($key, 2) == 0)
               <a href={{ route('card.show', $card) }} class="card-list list-group-item list-group-item-action flex-fill">
                 <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1">{{ $card->title }}</h5>
@@ -29,7 +32,7 @@
             </div>
             <div class="list-group col-lg-6 py-0">
               @foreach ($cards as $key => $card)
-              @if (fmod($key, 2) == 0)
+              @if (fmod($key, 2) == 1)
               <a href={{ route('card.show', $card) }} class="card-list list-group-item list-group-item-action flex-fill">
                 <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1">{{ $card->title }}</h5>

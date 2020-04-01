@@ -14,6 +14,7 @@ class CardController extends Controller
   protected $card;
   protected $photo;
   protected $audio;
+  protected $category;
 
   public function __construct(CardRepository $card, PhotoRepository $photo, AudioRepository $audio, CategoryRepository $category)
   {
@@ -33,8 +34,9 @@ class CardController extends Controller
   {
     $cardActive = 'active';
     $cards = $this->card->getCollection();
+    $nbrCategories = count($this->category->getColumn('id'));
 
-    return view('admin.card_index', compact('cards', 'cardActive'));
+    return view('admin.card_index', compact('cards', 'cardActive', 'nbrCategories'));
   }
 
   /**
@@ -205,7 +207,7 @@ class CardController extends Controller
     }
 
     $cardInputs = ['category_id' => $category->id, 'title' => $request->title, 'description' => $request->description, 'coordinates' => $request->coordinates, 'address' => $request->address, 'editor_id' => auth()->user()->id];
-    $cardUpdated = $this->card->update($cardInputs);
+    $cardUpdated = $card->update($cardInputs);
 
     if ($request->newImage === "true") {
       $this->photo->deletePhoto($card->photo);
@@ -213,7 +215,7 @@ class CardController extends Controller
       $photoPathUrl = $photoSaved['photoPathUrl'];
       $photoFileExt = $photoSaved['photoFileExt'];
       $photoInputs = ['name' => $request->file('photo')->getClientOriginalName(), 'ext' => $photoFileExt, 'size' => $request->file('photo')->getSize(), 'path' => $photoPathUrl, 'user_id' => auth()->user()->id];
-      $photoUpdated = $this->photo->update($photoInputs);
+      $photoUpdated = $card->photo->update($photoInputs);
     }
 
     if ($request->newAudio === "true") {
@@ -222,10 +224,10 @@ class CardController extends Controller
       $audioFileExt = $audioSaved['audioFileExt'];
       $audioPathUrl = $audioSaved['audioPathUrl'];
       $audioInputs = ['name' => $request->file('audio')->getClientOriginalName(), 'ext' => $request->file('audio')->extension(), 'size' => $request->file('audio')->getSize(), 'duration' => 0, 'path' => $audioPathUrl, 'user_id' => auth()->user()->id];
-      $audioUpdated = $this->audio->update($audioInputs);
+      $audioUpdated = $card->audio->update($audioInputs);
     }
 
-    return redirect(route('card.index'))->with('ok', 'La carte a bien été enregistrée.');
+    return redirect(route('card.show', $card))->with('ok', 'La carte a bien été mise à jour.');
   }
 
   /**
@@ -260,7 +262,7 @@ class CardController extends Controller
 
     if ($photoDestroyed && $audioDestroyed) {
       $card->destroy($card->id);
-      return redirect()->back()->with('ok', 'La carte a bien été effacée.');
+      return redirect(route('card.index'))->with('ok', 'La carte a bien été effacée.');
     }
 
     return redirect()->back()->with('error', 'La carte n\'a pas été effacée correctement.');

@@ -14,7 +14,7 @@
             @if (count($categories) > 0)
             <div class="list-group col-lg-6 py-0">
               @foreach ($categories as $key => $category)
-              @if (fmod($key, 2) == 1)
+              @if (fmod($key, 2) == 0)
               <a href={{ route('category.show', $category) }} class="category-list list-group-item list-group-item-action flex-fill">
                 <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1">{{ $category->name }}</h5>
@@ -55,7 +55,7 @@
             </div>
             <div class="list-group col-lg-6 py-0">
               @foreach ($categories as $key => $category)
-              @if (fmod($key, 2) == 0)
+              @if (fmod($key, 2) == 1)
               <a href={{ route('category.show', $category) }} class="category-list list-group-item list-group-item-action flex-fill">
                 <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1">{{ $category->name }}</h5>

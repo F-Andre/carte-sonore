@@ -6008,7 +6008,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      draggedMarkerCoord: this.points_old[0].coordinates,
+      draggedMarkerCoord: [-3.58, 48.21],
       markerAddress: "",
       imageInput: "/images/image.webp",
       audioInput: "Fichier audio",
@@ -6505,7 +6505,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       // your access token. Needed if you using Mapbox maps
       mapStyle: new Date().getHours() >= 19 ? "mapbox://styles/mapbox/dark-v9" : new Date().getHours() <= 8 ? "mapbox://styles/mapbox/dark-v9" : "mapbox://styles/mapbox/streets-v10",
       zoom: 8,
-      center: [0, 0],
+      center: [-3.58, 48.21],
       positionOptions: {
         enableHighAccuracy: true,
         timeout: 1000
@@ -6516,7 +6516,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       },
       popupClose: true,
       newMarker: this.addMarker,
-      newMarkerPos: [0, 0],
+      newMarkerPos: [-3.58, 48.21],
       markerAddress: String
     };
   },
@@ -6542,17 +6542,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 if (_this.newMarker) {
                   _this.center = [_this.map.getCenter().lng, _this.map.getCenter().lat];
-
-                  _this.map.on("moveend", function (e) {
-                    _this.center = [_this.map.getCenter().lng, _this.map.getCenter().lat];
-
-                    _this.$emit("newDraggedMarker", _this.center);
-
-                    _this.markerAddress = _this.getReverseGeocode(_this.center);
-
-                    _this.$emit("newMarkerAddress", _this.markerAddress);
-                  });
-
                   geocoder = new _mapbox_mapbox_gl_geocoder__WEBPACK_IMPORTED_MODULE_4___default.a({
                     accessToken: _this.accessToken,
                     language: "fr",
@@ -47100,7 +47089,7 @@ var render = function() {
         container: _vm.container,
         accessToken: _vm.accessToken,
         mapStyle: _vm.mapStyle,
-        center: _vm.points[0].coordinates,
+        center: [-3.58, 48.21],
         zoom: _vm.zoom
       },
       on: {

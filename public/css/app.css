@@ -16958,6 +16958,11 @@ readers do not read off random characters that represent icons */
   margin-right: 0.5rem;
 }
 
+.btn.disabled {
+  pointer-events: all !important;
+  cursor: not-allowed;
+}
+
 #map {
   margin: 0 auto 0 auto;
 }

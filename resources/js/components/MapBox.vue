@@ -3,7 +3,7 @@
     :container="container"
     :accessToken="accessToken"
     :mapStyle.sync="mapStyle"
-    :center="points[0].coordinates"
+    :center="[-3.58, 48.21]"
     :zoom="zoom"
     @load="onMapLoaded"
   >
@@ -74,13 +74,13 @@ export default {
           ? "mapbox://styles/mapbox/dark-v9"
           : "mapbox://styles/mapbox/streets-v10",
       zoom: 8,
-      center: [0, 0],
+      center: [-3.58, 48.21],
       positionOptions: { enableHighAccuracy: true, timeout: 1000 },
       trackUserLocation: true,
       fitBoundsOptions: { maxZoom: 18 },
       popupClose: true,
       newMarker: this.addMarker,
-      newMarkerPos: [0, 0],
+      newMarkerPos: [-3.58, 48.21],
       markerAddress: String
     };
   },
@@ -96,13 +96,6 @@ export default {
       });
       if (this.newMarker) {
         this.center = [this.map.getCenter().lng, this.map.getCenter().lat];
-        this.map.on("moveend", e => {
-          this.center = [this.map.getCenter().lng, this.map.getCenter().lat];
-          this.$emit("newDraggedMarker", this.center);
-          this.markerAddress = this.getReverseGeocode(this.center);
-          this.$emit("newMarkerAddress", this.markerAddress);
-        });
-
         const geocoder = new MapboxGeocoder({
           accessToken: this.accessToken,
           language: "fr",

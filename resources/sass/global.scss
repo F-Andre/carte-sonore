@@ -9,3 +9,8 @@
 
   font-weight: normal;
 }
+
+.btn.disabled {
+  pointer-events: all !important;
+  cursor: not-allowed;
+}
