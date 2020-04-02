@@ -22,7 +22,7 @@
                 </div>
                 <p class="mb-1">{{ $category->description }}</p>
                 <div class="d-flex align-items-end justify-content-between">
-                  <p class="mb-0">Nbre de marqueurs: {{ $category->cards()->count() }}</p>
+                  <p class="mb-0">Nbre de marqueurs: {{ null !== $category->cards() ? $category->cards()->count() : 0 }}</p>
                   <svg display="block" height="41px" width="27px" viewBox="0 0 27 41">
                     <g fill-rule="nonzero">
                       <g transform="translate(3.0, 29.0)" fill="#000000">
@@ -63,7 +63,7 @@
                 </div>
                 <p class="mb-1">{{ $category->description }}</p>
                 <div class="d-flex align-items-end justify-content-between">
-                  <p class="mb-0">Nbre de marqueurs: {{ $category->cards()->count() }}</p>
+                  <p class="mb-0">Nbre de marqueurs: {{ null !== $category->cards() ? $category->cards()->count() : 0 }}</p>
                   <svg display="block" height="41px" width="27px" viewBox="0 0 27 41">
                     <g fill-rule="nonzero">
                       <g transform="translate(3.0, 29.0)" fill="#000000">
