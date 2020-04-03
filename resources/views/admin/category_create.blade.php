@@ -7,7 +7,7 @@
       <div class="card">
         <div class="card-header h4">Création d'une catégorie</div>
         <div class="card-body">
-          <create-category-form route="{{ route('category.store') }}" :names-array='{!! json_encode($namesArray) !!}'></create-category-form>
+          <create-category-form route="{{ route('category.store') }}" :names-array='{!! json_encode($namesArray, JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_UNESCAPED_SLASHES) !!}'></create-category-form>
         </div>
       </div>
     </div>
