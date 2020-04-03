@@ -42,7 +42,7 @@ import {
   MglMarker,
   MglGeolocateControl,
   MglNavigationControl,
-  MglPopup
+  MglPopup,
 } from "vue-mapbox";
 import MapboxLanguage from "@mapbox/mapbox-gl-language";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
@@ -53,15 +53,15 @@ export default {
     MglMarker,
     MglGeolocateControl,
     MglNavigationControl,
-    MglPopup
+    MglPopup,
   },
 
   props: {
     addMarker: {
       type: Boolean,
-      value: "false"
+      value: "false",
     },
-    points: Array
+    points: Array,
   },
 
   data() {
@@ -83,7 +83,7 @@ export default {
       popupClose: true,
       newMarker: this.addMarker,
       newMarkerPos: [-3.58, 48.21],
-      markerAddress: String
+      markerAddress: String,
     };
   },
 
@@ -92,7 +92,7 @@ export default {
       this.map = event.map;
       var language = new MapboxLanguage();
       this.map.setStyle(language.setLanguage(this.map.getStyle(), "fr"));
-      this.map.on("click", e => {
+      this.map.on("click", (e) => {
         document.querySelector("#message").textContent = "";
         document.querySelector("#message").textContent = e.lngLat.wrap();
       });
@@ -103,7 +103,7 @@ export default {
           language: "fr",
           countries: "fr",
           types: "place, locality, locality, address",
-          mapboxgl: Mapbox
+          mapboxgl: Mapbox,
         });
         this.map.addControl(geocoder);
       }
@@ -116,9 +116,9 @@ export default {
       await asyncActions.flyTo({
         center: [
           data.mapboxEvent.coords.longitude,
-          data.mapboxEvent.coords.latitude
+          data.mapboxEvent.coords.latitude,
         ],
-        speed: 0.8
+        speed: 0.8,
       });
 
       await asyncActions.easeTo({ bearing: data.mapboxEvent.coords.heading });
@@ -164,11 +164,11 @@ export default {
 
             let popup = new Mapbox.Popup({
               closeOnClick: false,
-              anchor: "center"
+              anchor: "center",
             })
               .setLngLat([
                 data.mapboxEvent.coords.longitude,
-                data.mapboxEvent.coords.latitude
+                data.mapboxEvent.coords.latitude,
               ])
               .setDOMContent(div)
               .addTo(this.map);
@@ -192,7 +192,7 @@ export default {
       const markerCoords = [marker.getLngLat().lng, marker.getLngLat().lat];
 
       this.map.flyTo({
-        center: markerCoords
+        center: markerCoords,
       });
 
       this.popupShow = true;
@@ -209,7 +209,7 @@ export default {
 
             let popup = new Mapbox.Popup({
               closeOnClick: false,
-              anchor: "center"
+              anchor: "center",
             })
               .setLngLat(element.coordinates)
               .setDOMContent(div)
@@ -240,7 +240,8 @@ export default {
       let cardTitle = document.createElement("h4");
       cardTitle.textContent = point.title;
       let cardText = document.createElement("p");
-      cardText.textContent = point.description;
+      let description = point.description.replace(/(?:\r\n|\r|\n)/g, "<br />");
+      cardText.innerHTML = description;
       let audioPlayer = document.createElement("audio");
       audioPlayer.src = point.audio;
       audioPlayer.setAttribute("controls", "true");
@@ -261,19 +262,17 @@ export default {
       let audioDuration = Number;
       const audioElemLoaded = new Promise((resolve, reject) => {
         let testAudio = setInterval(() => {
-          console.log(typeof audioElem.duration);
           if (
             typeof audioElem.duration === "number" &&
             audioElem.duration > 0
           ) {
-            console.log(audioElem.duration);
             resolve(audioElem.duration);
             clearInterval(testAudio);
           }
         }, 10);
       });
 
-      audioElemLoaded.then(duration => {
+      audioElemLoaded.then((duration) => {
         audioDuration = duration * 1200;
 
         setTimeout(() => {
@@ -300,7 +299,7 @@ export default {
 
       let address = "";
 
-      $.get(url, function(data) {
+      $.get(url, function (data) {
         address = data.features[0].place_name;
       });
 
@@ -313,11 +312,11 @@ export default {
         }, 10);
       });
 
-      receiveAddress.then(address => {
+      receiveAddress.then((address) => {
         this.markerAddress = address;
         this.$emit("newMarkerAddress", address);
       });
-    }
-  }
+    },
+  },
 };
 </script>

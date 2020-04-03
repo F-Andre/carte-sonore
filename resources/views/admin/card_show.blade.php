@@ -13,7 +13,7 @@
                 <img class="card-img-top" src={{ $card->photo->path }} alt={{ $card->photo->name }}>
                 <div class="card-body">
                   <h4 class="card-title">{{ $card->title }}</h4>
-                  <p class="card-text">{{ $card->description }}</p>
+                  <p class="card-text">{!! nl2br($card->description) !!}</p>
                   <audio class="card-player" src={{ $card->audio->path }} controls></audio>
                 </div>
                 <div class="card-footer ">
