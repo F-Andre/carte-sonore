@@ -21,6 +21,7 @@
       v-bind:point="point"
       :coordinates="point.coordinates"
       :color="point.color"
+      anchor="bottom"
       @click="selectMarker"
     ></MglMarker>
     <MglMarker
@@ -28,6 +29,7 @@
       v-if="addMarker"
       :coordinates="center"
       color="#ff9b9b"
+      anchor="bottom"
       :draggable="true"
     ></MglMarker>
   </MglMap>

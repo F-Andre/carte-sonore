@@ -6479,6 +6479,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 
 
@@ -47121,7 +47123,8 @@ var render = function() {
           attrs: {
             point: point,
             coordinates: point.coordinates,
-            color: point.color
+            color: point.color,
+            anchor: "bottom"
           },
           on: { click: _vm.selectMarker }
         })
@@ -47132,6 +47135,7 @@ var render = function() {
             attrs: {
               coordinates: _vm.center,
               color: "#ff9b9b",
+              anchor: "bottom",
               draggable: true
             },
             on: { dragend: _vm.dragend }
