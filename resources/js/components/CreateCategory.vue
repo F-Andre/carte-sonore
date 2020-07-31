@@ -30,6 +30,7 @@
           name="description"
           id="description"
           @keyup="desc($event)"
+          @blur="desc($event)"
           required
         />
       </div>
@@ -177,31 +178,17 @@ export default {
     checkName(event) {
       const name = event.target.value;
 
-      if (
-        name.length > 3 &&
-        this.namesArray.indexOf(name) === -1 &&
-        this.descNull === false
-      ) {
-        this.submitDisabled = false;
-      } else {
-        this.submitDisabled = true;
-      }
+      this.submitDisabled = !(name.length > 3 &&
+          this.namesArray.indexOf(name) === -1 &&
+          this.descNull === false);
 
-      if (this.namesArray.indexOf(name) !== -1) {
-        this.nameExists = true;
-      } else {
-        this.nameExists = false;
-      }
+      this.nameExists = this.namesArray.indexOf(name) !== -1;
     },
 
     desc(event) {
       const desc = event.target.value;
 
-      if (desc.length > 3) {
-        this.descNull = false;
-      } else {
-        this.descNull = true;
-      }
+      this.descNull = desc.length <= 3;
 
       if (!this.descNull && !this.nameExists) {
         this.submitDisabled = false;
