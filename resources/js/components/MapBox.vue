@@ -3,7 +3,7 @@
     :container="container"
     :accessToken="accessToken"
     :mapStyle.sync="mapStyle"
-    :center="[-3.58, 48.21]"
+    :center="[-4.48, 48.40]"
     :zoom="zoom"
     @load="onMapLoaded"
   >
@@ -75,7 +75,7 @@ export default {
           : new Date().getHours() <= 8
           ? "mapbox://styles/mapbox/dark-v9"
           : "mapbox://styles/mapbox/streets-v10",
-      zoom: 8,
+      zoom: 12,
       center: [-3.58, 48.21],
       positionOptions: { enableHighAccuracy: true, timeout: 1000 },
       trackUserLocation: true,

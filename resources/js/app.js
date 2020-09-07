@@ -7,8 +7,6 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-import Vuetify from 'vuetify';
-Vue.use(Vuetify);
 
 /**
  * The following block of code may be used to automatically register your
@@ -35,5 +33,4 @@ Vue.component('edit-category-form', require('./components/EditCategory.vue').def
 
 const app = new Vue({
   el: '#app',
-  vuetify: new Vuetify(),
 });
