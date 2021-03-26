@@ -14,6 +14,7 @@
   <script src="{{ asset('js/app.js') }}" defer></script>
 
   <!-- Fonts -->
+  <script src="https://kit.fontawesome.com/38b11c099f.js" crossorigin="anonymous"></script>
   <link rel="dns-prefetch" href="//fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
   <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css" type="text/css" />
